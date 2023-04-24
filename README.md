@@ -1,6 +1,6 @@
-# privatenotes
+# TicketerMobileDAO
 
-A new Flutter project.
+Flutter-powered. Main focus is Android dev, but hey. Mb we'd need like a uh... a desktop version of this, lol?
 
 ## Getting Started
 
