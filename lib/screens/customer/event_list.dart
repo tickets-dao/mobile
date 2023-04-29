@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/backend_service/mock_implementations/dao_service.dart';
 import 'package:dao_ticketer/types/event.dart' show Event;
+import './event_list_card.dart' show EventListCard;
 
 class EventsListScreen extends StatefulWidget {
   const EventsListScreen({super.key});
@@ -31,22 +32,9 @@ class _EventListScreenState extends State<EventsListScreen> {
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Container>[
+              children: <EventListCard>[
                 ..._events.map((event) {
-                  return Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black),
-                      color: Color.fromARGB(249, 242, 253, 255),
-                    ),
-                    padding: const EdgeInsets.all(20),
-                    child: Flex(
-                        direction: Axis.vertical,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Text>[
-                          Text(event.name),
-                          Text(event.address),
-                        ]),
-                  );
+                  return EventListCard(event);
                 })
               ]),
         ));
