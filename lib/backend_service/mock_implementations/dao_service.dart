@@ -1,8 +1,8 @@
 import 'dart:math';
 import 'package:http/http.dart' as http;
 
-import "package:privatenotes/types/ticket.dart";
-import "package:privatenotes/types/event.dart";
+import "package:dao_ticketer/types/ticket.dart";
+import "package:dao_ticketer/types/event.dart";
 import "../../types/dao_service.dart";
 
 int getRandom(int max) => Random().nextInt(max);

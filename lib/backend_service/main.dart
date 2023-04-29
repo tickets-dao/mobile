@@ -17,10 +17,10 @@ Future<DAOKeyPair> loadKeysFromFile(String path) async {
 }
 
 Future<void> main() async {
-  final algorithm = Ed25519();
-  final _keyPair = await algorithm.newKeyPair();
-  var keyPair =
-      DAOKeyPair(await _keyPair.extractPublicKey(), await _keyPair.extract());
+  // final algorithm = Ed25519();
+  // final _keyPair = await algorithm.newKeyPair();
+  // var keyPair =
+  //     DAOKeyPair(await _keyPair.extractPublicKey(), await _keyPair.extract());
   // Создаем пару ключей
   // KeyPair keyPair = await generateKeyPair();
   //
@@ -32,7 +32,7 @@ Future<void> main() async {
   // print(base64.encode(keyPair.privateKey.bytes));
 
   // Читаем ключи из файла
-  DAOKeyPair loadedKeyPair = await loadKeysFromFile("keys/private_key.ed25519");
+  // DAOKeyPair loadedKeyPair = await loadKeysFromFile("keys/private_key.ed25519");
   // print(base64EncodeString("100"));
 
   // print("------ new keys --------");
@@ -41,22 +41,22 @@ Future<void> main() async {
   // print(base64.encode(loadedKeyPair.privateKey.bytes));
 
   // Создаем и кодируем JSON массив
-  List<String> data = ["custom_address", "parter", "10   0", "1", "2"];
+  // List<String> data = ["custom_address", "parter", "10   0", "1", "2"];
 
-  List<String> encodedList = data.map(base64EncodeString).toList();
+  // List<String> encodedList = data.map(base64EncodeString).toList();
 
   // print(encodedList);
-  String jsonBody = jsonEncode(encodedList);
+  // String jsonBody = jsonEncode(encodedList);
 
   // Создаем подпись на массив
-  Signature signature =
-      await loadedKeyPair.createSignature(jsonBody, loadedKeyPair.privateKey);
+  // Signature signature =
+  //     await loadedKeyPair.createSignature(jsonBody, loadedKeyPair.privateKey);
 
   // print("Подпись создана: ${base64.encode(signature.bytes)}");
 
-  encodedList.add(base64Encode(signature.bytes));
+  // encodedList.add(base64Encode(signature.bytes));
   // print(jsonEncode(encodedList));
 
-  await sendPostRequest(
-      "http://localhost:9001/invoke", jsonEncode(encodedList));
+  // await sendPostRequest(
+  //     "http://localhost:9001/invoke", jsonEncode(encodedList));
 }
