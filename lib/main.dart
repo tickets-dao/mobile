@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import './screens/scan.dart';
-import './screens/render.dart';
+import 'screens/scan-qr.dart';
+import 'screens/render-qr.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

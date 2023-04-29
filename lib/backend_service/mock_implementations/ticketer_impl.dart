@@ -1,13 +1,14 @@
 import 'dart:math';
 
-class Ticketer{
+import '../../types/ticket.dart';
+
+class Ticketer {
   //
   Future<void> burnTicket(Ticket ticket, String secret) async {
     if (Random().nextInt(10) > 5) {
       throw "try again";
     }
 
-    return Future.delayed(Duration(seconds: 1));
+    return Future.delayed(const Duration(seconds: 1));
   }
-
 }
