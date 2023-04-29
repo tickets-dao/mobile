@@ -1,8 +1,0 @@
-name: backend_service
-environment:
-  sdk: ^2.19.0
-
-
-dependencies:
-  cryptography: ^2.5.0
-  http: ^0.13.3
