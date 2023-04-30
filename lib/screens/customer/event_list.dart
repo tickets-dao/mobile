@@ -3,6 +3,7 @@ import 'package:dao_ticketer/backend_service/mock_implementations/dao_service.im
 import 'package:dao_ticketer/types/event.dart' show Event;
 import 'package:dao_ticketer/components/event_list_card.dart'
     show EventListCard;
+import 'package:dao_ticketer/screens/customer/event.dart' show EventScreen;
 
 class EventsListScreen extends StatefulWidget {
   const EventsListScreen({super.key});
@@ -33,9 +34,11 @@ class _EventListScreenState extends State<EventsListScreen> {
               direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <EventListCard>[
+              children: <Container>[
                 ..._events.map((event) {
-                  return EventListCard(event);
+                  return Container(
+                      margin: const EdgeInsets.all(10),
+                      child: EventListCard(event));
                 })
               ]),
         ));

@@ -31,7 +31,7 @@ class MockedDAOService implements IDAOService {
       getRandomDuration(3),
       () => [
             Event(DateTime.now(), "Loobyanka, 1", "Swan lake", ""),
-            Event(DateTime.now(), "Tintmouth", "Radiohead", ""),
+            Event(DateTime.now(), "Teignmouth", "Radiohead", ""),
             Event(DateTime.now(), "London", "Deep Purple", ""),
             Event(DateTime.now(), "Tverskaya", "Some shish", ""),
           ]);

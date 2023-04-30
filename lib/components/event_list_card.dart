@@ -1,3 +1,4 @@
+import 'package:dao_ticketer/screens/customer/event.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
 
@@ -9,18 +10,41 @@ class EventListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        color: const Color.fromARGB(249, 242, 253, 255),
+      decoration: const BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(255, 211, 228, 239),
+            spreadRadius: 5,
+            blurRadius: 7,
+          ),
+        ],
       ),
       padding: const EdgeInsets.all(20),
       child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Text>[
-            Text(event.name),
-            Text(event.address),
-          ]),
+        direction: Axis.horizontal,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Text>[
+                Text(event.name),
+                Text(event.address),
+              ]),
+          ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EventScreen(event: event)),
+                );
+              },
+              child: const Text('tickets'))
+        ],
+      ),
     );
   }
 }
