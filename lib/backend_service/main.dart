@@ -2,7 +2,7 @@ import "dart:convert";
 import "dart:io";
 import "package:cryptography/cryptography.dart";
 
-import 'mock_implementations/key_pair_impl.dart';
+import 'mock_implementations/key_pair.impl.dart';
 
 Future<DAOKeyPair> loadKeysFromFile(String path) async {
   final publicKeyBytes = await File("keys/public_key.ed25519").readAsBytes();

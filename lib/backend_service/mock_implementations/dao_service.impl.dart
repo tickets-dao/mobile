@@ -1,12 +1,9 @@
-import 'dart:math';
 import 'package:http/http.dart' as http;
 
 import "package:dao_ticketer/types/ticket.dart";
 import "package:dao_ticketer/types/event.dart";
 import "../../types/dao_service.dart";
-
-int getRandom(int max) => Random().nextInt(max);
-Duration getRandomDuration(int max) => Duration(seconds: getRandom(max));
+import "./async_utils.dart";
 
 class MockedDAOService implements IDAOService {
   @override
@@ -40,15 +37,15 @@ class MockedDAOService implements IDAOService {
           ]);
 
   @override
-  Future<List<Ticket>> getTicketsByCategory(
-          String eventID, TicketCategory category) =>
+  Future<List<Ticket>> getTicketsByEvent(
+          String eventID, TicketCategory category, int? sector) =>
       Future.delayed(
           getRandomDuration(3),
           () => [
-                Ticket(category, getRandom(40), 1, 2, 3, eventID),
-                Ticket(category, getRandom(40), 3, 2, 3, eventID),
-                Ticket(category, getRandom(40), 4, 2, 3, eventID),
-                Ticket(category, getRandom(40), 5, 2, 3, eventID),
+                Ticket(category, getRandom(40), sector ?? 1, 2, 3, eventID),
+                Ticket(category, getRandom(40), sector ?? 3, 2, 3, eventID),
+                Ticket(category, getRandom(40), sector ?? 4, 2, 3, eventID),
+                Ticket(category, getRandom(40), sector ?? 5, 2, 3, eventID),
               ]);
 
   @override

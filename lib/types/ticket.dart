@@ -1,4 +1,5 @@
 enum TicketCategory {
+  all,
   parter,
   lodge,
 }

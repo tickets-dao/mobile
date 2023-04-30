@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:dao_ticketer/backend_service/mock_implementations/dao_service.dart';
+import 'package:dao_ticketer/backend_service/mock_implementations/dao_service.impl.dart';
 import 'package:dao_ticketer/types/event.dart' show Event;
-import './event_list_card.dart' show EventListCard;
+import 'package:dao_ticketer/components/event_list_card.dart'
+    show EventListCard;
 
 class EventsListScreen extends StatefulWidget {
   const EventsListScreen({super.key});

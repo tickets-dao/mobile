@@ -5,7 +5,7 @@ import '../../types/ticket.dart';
 class Ticketer {
   //
   Future<void> burnTicket(Ticket ticket, String secret) async {
-    if (Random().nextInt(10) > 5) {
+    if (Random().nextInt(10) > 7) {
       throw "try again";
     }
 
