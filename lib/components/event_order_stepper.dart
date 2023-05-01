@@ -15,6 +15,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
 
   int _selectedSector = 0;
   int number = 0;
+  final List<Ticket> _selectedTickets = [];
 
   int _stepIndex = 0;
 
@@ -41,6 +42,10 @@ class EventOrderStepperState extends State<EventOrderStepper> {
       }
     }
     List<int> sectors = [...ticketsBySectors.keys];
+
+    getTicketsCount(int count) =>
+        count > 1 ? "$count tickets" : "$count ticket";
+
     return Stepper(
       currentStep: _stepIndex,
       onStepCancel: () {
@@ -68,7 +73,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
           content: Column(
             children: <Widget>[
               ListTile(
-                title: Text('Lodge ${tickets.length} tickets'),
+                title: Text('Lodge: ${getTicketsCount(tickets.length)}'),
                 leading: Radio<TicketCategory>(
                   value: TicketCategory.lodge,
                   groupValue: _selectedCategory,
@@ -80,7 +85,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                 ),
               ),
               ListTile(
-                title: Text('Parter ${tickets.length} tickets'),
+                title: Text('Parter: ${getTicketsCount(tickets.length)}'),
                 leading: Radio<TicketCategory>(
                   value: TicketCategory.parter,
                   groupValue: _selectedCategory,
@@ -100,7 +105,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
               children: <Widget>[
                 ...sectors.map((int s) => ListTile(
                       title: Text(
-                          'Sector $s: ${ticketsBySectors[s]?.length ?? 0} tickets'),
+                          'Sector $s: ${getTicketsCount(ticketsBySectors[s]?.length ?? 0)}'),
                       leading: Radio<int>(
                           value: s,
                           groupValue: _selectedSector,
@@ -112,9 +117,44 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                     )),
               ],
             )),
-        const Step(
-          title: Text('Select row'),
-          content: Text('awooga'),
+        Step(
+          title: const Text('Select row'),
+          content: Column(
+            children: <Widget>[
+              ...rowsBySectors[_selectedSector]?.map((row) => Flex(
+                          direction: Axis.vertical,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('Row $row, seats:'),
+                            Row(
+                              children: [
+                                ...(ticketsBySectors[_selectedSector]
+                                        ?.map((t) => Row(
+                                              children: [
+                                                Checkbox(
+                                                    value: false,
+                                                    onChanged: (bool? value) {
+                                                      if (value ?? false) {
+                                                        // setState(() {
+                                                        //   _selectedTickets.add(t);
+                                                        // });
+                                                        _selectedTickets.add(t);
+                                                      } else {
+                                                        _selectedTickets
+                                                            .remove(t);
+                                                      }
+                                                    }),
+                                                Text("${t.number}")
+                                              ],
+                                            )) ??
+                                    [])
+                              ],
+                            )
+                          ])) ??
+                  []
+            ],
+          ),
         ),
       ],
     );

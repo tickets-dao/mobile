@@ -40,6 +40,10 @@ class MockedDAOService implements IDAOService {
           () => [
                 Ticket(category, getRandom(40), 1, 1, 2, eventID),
                 Ticket(category, getRandom(40), 1, 1, 3, eventID),
+                Ticket(category, getRandom(40), 1, 2, 2, eventID),
+                Ticket(category, getRandom(40), 1, 2, 3, eventID),
+                Ticket(category, getRandom(40), 3, 2, 1, eventID),
+                Ticket(category, getRandom(40), 3, 2, 1, eventID),
                 Ticket(category, getRandom(40), 3, 2, 1, eventID),
                 Ticket(category, getRandom(40), 4, 2, 3, eventID),
                 Ticket(category, getRandom(40), 5, 2, 4, eventID),
