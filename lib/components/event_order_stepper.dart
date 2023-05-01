@@ -21,21 +21,26 @@ class EventOrderStepperState extends State<EventOrderStepper> {
   @override
   Widget build(BuildContext context) {
     final tickets = widget.eventTickets;
-    final sectorsSet = Set.from(tickets.map((Ticket t) => t.sector));
-    List<int> sectors = [];
     Map<int, List<int>> rowsBySectors = {};
     Map<int, List<Ticket>> ticketsBySectors = {};
-    // final List<List<int>> _rowsBySectors
-    for (int sector in sectorsSet) {
-      sectors.add(sector);
-      if (!rowsBySectors.containsKey(sector)) {
-        ticketsBySectors.addAll({sector: []});
+
+    for (Ticket t in tickets) {
+      if (ticketsBySectors.containsKey(t.sector)) {
+        ticketsBySectors[t.sector]?.add(t);
+      } else {
+        ticketsBySectors.addAll({
+          t.sector: [t]
+        });
+      }
+      if (rowsBySectors.containsKey(t.sector)) {
+        rowsBySectors[t.sector]?.add(t.row);
+      } else {
+        rowsBySectors.addAll({
+          t.sector: [t.row]
+        });
       }
     }
-    for (Ticket t in widget.eventTickets) {
-      rowsBySectors[t.sector]?.add(t.row);
-      ticketsBySectors[t.sector]?.add(t);
-    }
+    List<int> sectors = [...ticketsBySectors.keys];
     return Stepper(
       currentStep: _stepIndex,
       onStepCancel: () {
@@ -63,7 +68,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
           content: Column(
             children: <Widget>[
               ListTile(
-                title: const Text('Lodge'),
+                title: Text('Lodge ${tickets.length} tickets'),
                 leading: Radio<TicketCategory>(
                   value: TicketCategory.lodge,
                   groupValue: _selectedCategory,
@@ -75,7 +80,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                 ),
               ),
               ListTile(
-                title: const Text('Parter'),
+                title: Text('Parter ${tickets.length} tickets'),
                 leading: Radio<TicketCategory>(
                   value: TicketCategory.parter,
                   groupValue: _selectedCategory,
@@ -94,7 +99,8 @@ class EventOrderStepperState extends State<EventOrderStepper> {
             content: Column(
               children: <Widget>[
                 ...sectors.map((int s) => ListTile(
-                      title: Text('Sector $s'),
+                      title: Text(
+                          'Sector $s: ${ticketsBySectors[s]?.length ?? 0} tickets'),
                       leading: Radio<int>(
                           value: s,
                           groupValue: _selectedSector,
@@ -107,8 +113,8 @@ class EventOrderStepperState extends State<EventOrderStepper> {
               ],
             )),
         const Step(
-          title: const Text('Select row'),
-          content: const Text('awooga'),
+          title: Text('Select row'),
+          content: Text('awooga'),
         ),
       ],
     );

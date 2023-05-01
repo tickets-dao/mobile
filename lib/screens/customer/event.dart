@@ -23,7 +23,7 @@ class EventScreenState extends State<EventScreen> {
   void initState() {
     super.initState();
     service
-        .getTicketsByEvent(widget.event.id, TicketCategory.all, 2)
+        .getTicketsByEvent(widget.event.id, TicketCategory.all)
         .then((eventTickets) {
       setState(() {
         _eventTickets = eventTickets;
@@ -35,20 +35,22 @@ class EventScreenState extends State<EventScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(widget.event.name)),
-      body: Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black),
-            color: const Color.fromARGB(249, 242, 253, 255),
-          ),
-          padding: const EdgeInsets.all(20),
-          child: Flex(
-            direction: Axis.vertical,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              EventCard(widget.event, false),
-              EventOrderStepper(eventTickets: _eventTickets),
-            ],
-          )),
+      body: SingleChildScrollView(
+        child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(color: Colors.black),
+              color: const Color.fromARGB(249, 242, 253, 255),
+            ),
+            padding: const EdgeInsets.all(20),
+            child: Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                EventCard(widget.event, false),
+                EventOrderStepper(eventTickets: _eventTickets),
+              ],
+            )),
+      ),
     );
   }
 }

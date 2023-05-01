@@ -11,11 +11,6 @@ class MockedDAOService implements IDAOService {
       getRandomDuration(3),
       () => [
             Ticket(TicketCategory.lodge, getRandom(50), 1, 2, 3, ""),
-            Ticket(TicketCategory.lodge, getRandom(50), 1, 5, 3, ""),
-            Ticket(TicketCategory.lodge, getRandom(50), 6, 2, 3, ""),
-            Ticket(TicketCategory.lodge, getRandom(50), 3, 2, 3, ""),
-            Ticket(TicketCategory.lodge, getRandom(50), 1, 4, 3, ""),
-            Ticket(TicketCategory.lodge, getRandom(50), 1, 2, 7, ""),
           ]);
 
   @override
@@ -38,14 +33,17 @@ class MockedDAOService implements IDAOService {
 
   @override
   Future<List<Ticket>> getTicketsByEvent(
-          String eventID, TicketCategory category, int? sector) =>
+          String eventID, TicketCategory category,
+          [int? sector]) =>
       Future.delayed(
           getRandomDuration(3),
           () => [
-                Ticket(category, getRandom(40), sector ?? 1, 2, 3, eventID),
-                Ticket(category, getRandom(40), sector ?? 3, 2, 3, eventID),
-                Ticket(category, getRandom(40), sector ?? 4, 2, 3, eventID),
-                Ticket(category, getRandom(40), sector ?? 5, 2, 3, eventID),
+                Ticket(category, getRandom(40), 1, 1, 2, eventID),
+                Ticket(category, getRandom(40), 1, 1, 3, eventID),
+                Ticket(category, getRandom(40), 3, 2, 1, eventID),
+                Ticket(category, getRandom(40), 4, 2, 3, eventID),
+                Ticket(category, getRandom(40), 5, 2, 4, eventID),
+                Ticket(category, getRandom(40), 5, 2, 3, eventID),
               ]);
 
   @override
