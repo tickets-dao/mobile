@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/backend_service/mock_implementations/dao_service.impl.dart';
 import 'package:dao_ticketer/types/event.dart' show Event;
-import 'package:dao_ticketer/components/event_list_card.dart'
-    show EventListCard;
-import 'package:dao_ticketer/screens/customer/event.dart' show EventScreen;
+import 'package:dao_ticketer/components/event_card.dart' show EventCard;
 
 class EventsListScreen extends StatefulWidget {
   const EventsListScreen({super.key});
@@ -20,7 +18,9 @@ class _EventListScreenState extends State<EventsListScreen> {
   void initState() {
     super.initState();
     service.getEvents().then((events) {
-      _events = events;
+      setState(() {
+        _events = events;
+      });
     });
   }
 
@@ -38,7 +38,7 @@ class _EventListScreenState extends State<EventsListScreen> {
                 ..._events.map((event) {
                   return Container(
                       margin: const EdgeInsets.all(10),
-                      child: EventListCard(event));
+                      child: EventCard(event, true));
                 })
               ]),
         ));

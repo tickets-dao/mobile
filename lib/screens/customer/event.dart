@@ -2,8 +2,7 @@ import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/backend_service/mock_implementations/dao_service.impl.dart';
-import 'package:dao_ticketer/components/event_list_card.dart'
-    show EventListCard;
+import 'package:dao_ticketer/components/event_card.dart' show EventCard;
 import 'package:dao_ticketer/components/event_order_stepper.dart'
     show EventOrderStepper;
 
@@ -17,7 +16,7 @@ class EventScreen extends StatefulWidget {
 }
 
 class EventScreenState extends State<EventScreen> {
-  var _eventTickets;
+  List<Ticket> _eventTickets = [];
   MockedDAOService service = MockedDAOService();
 
   @override
@@ -46,7 +45,7 @@ class EventScreenState extends State<EventScreen> {
             direction: Axis.vertical,
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              EventListCard(widget.event),
+              EventCard(widget.event, false),
               EventOrderStepper(eventTickets: _eventTickets),
             ],
           )),

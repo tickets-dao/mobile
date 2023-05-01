@@ -22,12 +22,20 @@ class EventOrderStepperState extends State<EventOrderStepper> {
   Widget build(BuildContext context) {
     final tickets = widget.eventTickets;
     final sectorsSet = Set.from(tickets.map((Ticket t) => t.sector));
-    List<int> _sectors = [];
-    for (int sector in sectorsSet) {
-      _sectors.add(sector);
-    }
+    List<int> sectors = [];
+    Map<int, List<int>> rowsBySectors = {};
+    Map<int, List<Ticket>> ticketsBySectors = {};
     // final List<List<int>> _rowsBySectors
-    // List<List<int>> _rowsBySectors = [];
+    for (int sector in sectorsSet) {
+      sectors.add(sector);
+      if (!rowsBySectors.containsKey(sector)) {
+        ticketsBySectors.addAll({sector: []});
+      }
+    }
+    for (Ticket t in widget.eventTickets) {
+      rowsBySectors[t.sector]?.add(t.row);
+      ticketsBySectors[t.sector]?.add(t);
+    }
     return Stepper(
       currentStep: _stepIndex,
       onStepCancel: () {
@@ -85,7 +93,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
             title: const Text('Select sector'),
             content: Column(
               children: <Widget>[
-                ..._sectors.map((int s) => ListTile(
+                ...sectors.map((int s) => ListTile(
                       title: Text('Sector $s'),
                       leading: Radio<int>(
                           value: s,
