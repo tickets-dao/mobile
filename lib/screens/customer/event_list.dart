@@ -30,17 +30,19 @@ class _EventListScreenState extends State<EventsListScreen> {
         appBar: AppBar(title: const Text('Available events')),
         body: Container(
           alignment: Alignment.center,
-          child: Flex(
-              direction: Axis.vertical,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Container>[
-                ..._events.map((event) {
-                  return Container(
-                      margin: const EdgeInsets.all(10),
-                      child: EventCard(event, true));
-                })
-              ]),
+          child: SingleChildScrollView(
+            child: Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Container>[
+                  ..._events.map((event) {
+                    return Container(
+                        margin: const EdgeInsets.all(10),
+                        child: EventCard(event, true));
+                  })
+                ]),
+          ),
         ));
   }
 }

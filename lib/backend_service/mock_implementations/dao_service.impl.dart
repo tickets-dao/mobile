@@ -27,8 +27,11 @@ class MockedDAOService implements IDAOService {
       () => [
             Event(DateTime.now(), "Loobyanka, 1", "Swan lake", ""),
             Event(DateTime.now(), "Teignmouth", "Radiohead", ""),
+            Event(DateTime.now(), "Glastonbury", "Muse", ""),
+            Event(DateTime.now(), "Lolapalooza", "Arctic Monkeys", ""),
             Event(DateTime.now(), "London", "Deep Purple", ""),
-            Event(DateTime.now(), "Tverskaya", "Some shish", ""),
+            Event(DateTime.now(), "Tverskaya", "Serebrennikov 'Vishnyovy Sad'",
+                ""),
           ]);
 
   @override
