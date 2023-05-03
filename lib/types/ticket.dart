@@ -5,7 +5,7 @@ enum TicketCategory {
 }
 
 class Ticket {
-  late final TicketCategory category;
+  late final String category;
   late final int price;
   late final int sector;
   late final int row;

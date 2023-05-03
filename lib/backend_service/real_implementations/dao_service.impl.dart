@@ -1,41 +1,62 @@
+import "dart:convert";
+import "package:cryptography/cryptography.dart";
+import "package:dao_ticketer/backend_service/real_implementations/sign.dart";
 import 'package:http/http.dart' as http;
-
 import "../../types/ticket.dart";
 import "../../types/event.dart";
 import "../../types/dao_service.dart";
 import "./async_utils.dart";
 
-class MockedDAOService implements IDAOService {
-  @override
-  Future<void> buyTicket(Ticket ticket) => Future.delayed(
-        getRandomDuration(3),
-        () => Ticket(TicketCategory.lodge.toString(), getRandom(50), 1, 2, 3, ""),
-      );
+class RealDAOService implements IDAOService {
+  late SimpleKeyPairData _privateKey;
+
+  init(String filename) async {
+    _privateKey = await readPrivateKeyFromFile(filename);
+  }
+
+  Future<String> invokeWithSign(List<String> params, String fnName) async {
+    List<String> signedArgs =
+        await sign(_privateKey, 'tickets', 'tickets', fnName, params);
+
+    final List<String> encodedArgs =
+        signedArgs.map(base64EncodeString).toList();
+
+    return invokeSmartContract(encodedArgs, fnName);
+  }
 
   @override
-  Future<List<String>> getCategories(String eventID) => Future.delayed(
-      getRandomDuration(3),
-      () => [
-            TicketCategory.lodge.toString(),
-            TicketCategory.parter.toString(),
-          ]);
+  Future<void> buyTicket(Ticket ticket) async {
+    final payload = await invokeWithSign([
+      ticket.category,
+      ticket.sector.toString(),
+      ticket.row.toString(),
+      ticket.number.toString()
+    ], 'buy');
+
+    return jsonDecode(payload)['price'];
+  }
 
   @override
-  Future<List<Event>> getEvents() => Future.delayed(
-      getRandomDuration(3),
-      () => [
-            Event(DateTime.now(), "Loobyanka, 1", "Swan lake", ""),
-            Event(DateTime.now(), "Teignmouth", "Radiohead", ""),
-            Event(DateTime.now(), "Glastonbury", "Muse", ""),
-            Event(DateTime.now(), "Lolapalooza", "Arctic Monkeys", ""),
-            Event(DateTime.now(), "London", "Deep Purple", ""),
-            Event(DateTime.now(), "Tverskaya", "Serebrennikov 'Vishnyovy Sad'",
-                ""),
-          ]);
+  Future<List<String>> getCategories(String eventID) async {
+    // eventID is still unused in blockchain
+    final result =
+        await queryBlockchain([eventID, 'eventCategories'], 'eventCategories');
+
+    return List<String>.from(jsonDecode(result));
+  }
 
   @override
-  Future<List<Ticket>> getTicketsByEvent(
-          String eventID, String category,
+  Future<List<Event>> getEvents() async {
+    // eventID is still unused in blockchain
+    final result = await queryBlockchain(['events'], 'events');
+
+    print(result);
+
+    return parseEvents(result);
+  }
+
+  @override
+  Future<List<Ticket>> getTicketsByEvent(String eventID, String category,
           [int? sector]) =>
       Future.delayed(
           getRandomDuration(3),

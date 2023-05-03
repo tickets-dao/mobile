@@ -1,18 +1,18 @@
 import 'dart:ffi';
 import 'dart:math';
 
-class Event {
+class Show {
   final DateTime startTime;
   final String address;
   final String name;
   final String id;
 
-  Event(this.startTime, this.address, this.name, this.id);
+  Show(this.startTime, this.address, this.name, this.id);
 }
 
-Future<List<Event>> getEvents() async {
+Future<List<Show>> getShows() async {
   return Future.delayed(Duration(seconds: 1),
-      () => [Event(DateTime.now(), "YoY address", "lebedinoe ozero", "123")]);
+      () => [Show(DateTime.now(), "YoY address", "lebedinoe ozero", "123")]);
 }
 
 class Ticket {
