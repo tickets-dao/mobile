@@ -1,7 +1,6 @@
 import "dart:convert";
 import "package:cryptography/cryptography.dart";
 import "package:dao_ticketer/backend_service/real_implementations/sign.dart";
-import 'package:http/http.dart' as http;
 import "../../types/ticket.dart";
 import "../../types/event.dart";
 import "../../types/dao_service.dart";
@@ -10,6 +9,8 @@ import "./async_utils.dart";
 class RealDAOService implements IDAOService {
   late SimpleKeyPairData _privateKey;
 
+  // необходимо вызвать перед инвоуком
+  // инициализация ключа - async, поэтому нельзя вызывать в конструкторе
   init(String filename) async {
     _privateKey = await readPrivateKeyFromFile(filename);
   }
@@ -25,7 +26,7 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<void> buyTicket(Ticket ticket) async {
+  Future<int> buyTicket(Ticket ticket) async {
     final payload = await invokeWithSign([
       ticket.category,
       ticket.sector.toString(),
@@ -33,7 +34,7 @@ class RealDAOService implements IDAOService {
       ticket.number.toString()
     ], 'buy');
 
-    return jsonDecode(payload)['price'];
+    return jsonDecode(payload)['price'] as int;
   }
 
   @override
@@ -56,29 +57,28 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<List<Ticket>> getTicketsByEvent(String eventID, String category,
-          [int? sector]) =>
-      Future.delayed(
-          getRandomDuration(3),
-          () => [
-                Ticket(category, getRandom(40), 1, 1, 2, eventID),
-                Ticket(category, getRandom(40), 1, 1, 3, eventID),
-                Ticket(category, getRandom(40), 1, 2, 2, eventID),
-                Ticket(category, getRandom(40), 1, 2, 3, eventID),
-                Ticket(category, getRandom(40), 3, 2, 1, eventID),
-                Ticket(category, getRandom(40), 3, 2, 1, eventID),
-                Ticket(category, getRandom(40), 3, 2, 1, eventID),
-                Ticket(category, getRandom(40), 4, 2, 3, eventID),
-                Ticket(category, getRandom(40), 5, 2, 4, eventID),
-                Ticket(category, getRandom(40), 5, 2, 3, eventID),
-              ]);
+  Future<List<Ticket>> getTicketsByEventAndCategory(
+      String eventID, String category,
+      [int? sector]) async {
+    final result = await queryBlockchain(
+        [eventID, category, 'ticketsByCategory'], 'ticketsByCategory');
+
+    print('tickets JSON: $result');
+
+    return parseTickets(result);
+  }
 
   @override
-  Future<void> prepareTicket(Ticket ticket, String secret) {
-    if (getRandom(10) > 5) {
-      throw "Network error! Please try again.";
-    }
-    return Future.delayed(getRandomDuration(3), () => true);
+  Future<void> prepareTicket(Ticket ticket, String secret) async {
+    final payload = await invokeWithSign([
+      ticket.category,
+      ticket.sector.toString(),
+      ticket.row.toString(),
+      ticket.number.toString(),
+      generateMd5(secret),
+    ], 'prepare');
+
+    print('after prepare got $payload');
   }
 
   @override
@@ -90,22 +90,9 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<void> sendPostRequest(String url, String jsonBody) async {
-    try {
-      http.Response response = await http.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonBody,
-      );
+  Future<void> addFunds() async {
+    final payload = await invokeWithSign([], 'addAlowedBalance');
 
-      if (response.statusCode == 200) {
-        print('Запрос успешно выполнен: ${response.body}');
-      } else {
-        print(
-            'Ошибка при выполнении запроса. Код ответа: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Произошла ошибка при отправке запроса: $e');
-    }
+    print('addfunds response: $payload');
   }
 }

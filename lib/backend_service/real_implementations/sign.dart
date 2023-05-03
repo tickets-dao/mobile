@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:bs58/bs58.dart';
@@ -48,8 +49,6 @@ Future<SimpleKeyPairData> readPrivateKeyFromFile(String filename) async {
 
   return key.extract();
 }
-
-
 
 Uint8List sha3_256(List<int> data) {
   final sha3 = pc.Digest("SHA3-256");
@@ -106,7 +105,7 @@ Future<String> queryBlockchain(List<String> params, String fnName) async {
   );
 
   if (response.statusCode == 200) {
-    print('Запрос успешно выполнен: ${response.body}');
+    print('Запрос $fnName успешно выполнен: ${response.body}');
   } else {
     throw ('Ошибка при выполнении запроса. Код ответа: ${response.statusCode}, тело: ${response.body}');
   }
@@ -132,11 +131,17 @@ Future<String> invokeSmartContract(List<String> params, String fnName) async {
   );
 
   if (response.statusCode == 200) {
-    print('Запрос успешно выполнен: ${response.body}');
+    print('Запрос $fnName успешно выполнен: ${response.body}');
   } else {
     print(
         'Ошибка при выполнении запроса. Код ответа: ${response.statusCode}, тело: ${response.body}');
   }
 
-  return response.body;
+  final encoded = json.decode(response.body);
+
+  return utf8.decode(base64Decode(encoded["payload"]?? "" ));
+}
+
+String generateMd5(String input) {
+  return md5.convert(utf8.encode(input)).toString();
 }

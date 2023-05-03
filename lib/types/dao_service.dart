@@ -6,14 +6,13 @@ abstract class IDAOService {
 
   Future<List<String>> getCategories(String eventID);
 
-  Future<List<Ticket>> getTicketsByEvent(
+  Future<List<Ticket>> getTicketsByEventAndCategory(
       String eventID, String category, int sector);
 
-  Future<void> buyTicket(Ticket ticket);
+  // price is returned
+  Future<int> buyTicket(Ticket ticket);
 
   Future<void> returnTicket(Ticket ticket);
 
   Future<void> prepareTicket(Ticket ticket, String secret);
-
-  Future<void> sendPostRequest(String url, String jsonBody);
 }

@@ -7,10 +7,8 @@ import "./async_utils.dart";
 
 class MockedDAOService implements IDAOService {
   @override
-  Future<void> buyTicket(Ticket ticket) => Future.delayed(
-        getRandomDuration(3),
-        () => Ticket(TicketCategory.lodge.toString(), getRandom(50), 1, 2, 3, ""),
-      );
+  Future<int> buyTicket(Ticket ticket) =>
+      Future.delayed(getRandomDuration(3), () => getRandom(50));
 
   @override
   Future<List<String>> getCategories(String eventID) => Future.delayed(
@@ -34,8 +32,7 @@ class MockedDAOService implements IDAOService {
           ]);
 
   @override
-  Future<List<Ticket>> getTicketsByEvent(
-          String eventID, String category,
+  Future<List<Ticket>> getTicketsByEventAndCategory(String eventID, String category,
           [int? sector]) =>
       Future.delayed(
           getRandomDuration(3),
