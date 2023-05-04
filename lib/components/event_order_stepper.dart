@@ -2,16 +2,16 @@ import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
 
 class EventOrderStepper extends StatefulWidget {
-  const EventOrderStepper({super.key, required this.eventTickets});
+  const EventOrderStepper({super.key, required this.eventTicketsByCategory});
 
-  final List<Ticket> eventTickets;
+  final List<Ticket> eventTicketsByCategory;
 
   @override
   EventOrderStepperState createState() => EventOrderStepperState();
 }
 
 class EventOrderStepperState extends State<EventOrderStepper> {
-  TicketCategory _selectedCategory = TicketCategory.all;
+  String _selectedCategory = "unselected";
 
   int _selectedSector = 0;
   int number = 0;
@@ -21,7 +21,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
 
   @override
   Widget build(BuildContext context) {
-    final tickets = widget.eventTickets;
+    final tickets = widget.eventTicketsByCategory;
     Map<int, List<int>> rowsBySectors = {};
     Map<int, List<Ticket>> ticketsBySectors = {};
 
@@ -74,24 +74,24 @@ class EventOrderStepperState extends State<EventOrderStepper> {
             children: <Widget>[
               ListTile(
                 title: Text('Lodge: ${getTicketsCount(tickets.length)}'),
-                leading: Radio<TicketCategory>(
-                  value: TicketCategory.lodge,
+                leading: Radio<String>(
+                  value: String,
                   groupValue: _selectedCategory,
-                  onChanged: (TicketCategory? value) {
+                  onChanged: (String? value) {
                     setState(() {
-                      _selectedCategory = value ?? TicketCategory.lodge;
+                      _selectedCategory = value ?? String;
                     });
                   },
                 ),
               ),
               ListTile(
                 title: Text('Parter: ${getTicketsCount(tickets.length)}'),
-                leading: Radio<TicketCategory>(
-                  value: TicketCategory.parter,
+                leading: Radio<String>(
+                  value: String.parter,
                   groupValue: _selectedCategory,
-                  onChanged: (TicketCategory? value) {
+                  onChanged: (String? value) {
                     setState(() {
-                      _selectedCategory = value ?? TicketCategory.parter;
+                      _selectedCategory = value ?? String.parter;
                     });
                   },
                 ),

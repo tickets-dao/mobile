@@ -1,9 +1,9 @@
 import "dart:convert";
 import "package:cryptography/cryptography.dart";
 import "package:dao_ticketer/backend_service/real_implementations/sign.dart";
-import "../../types/ticket.dart";
-import "../../types/event.dart";
-import "../../types/dao_service.dart";
+import "package:dao_ticketer/types/ticket.dart";
+import "package:dao_ticketer/types/event.dart";
+import "package:dao_ticketer/types/dao_service.dart";
 import "./async_utils.dart";
 
 const local = 'localhost';

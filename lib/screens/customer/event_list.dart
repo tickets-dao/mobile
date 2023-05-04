@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:dao_ticketer/backend_service/mock_implementations/dao_service.impl.dart';
+import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
+    show RealDAOService;
 import 'package:dao_ticketer/types/event.dart' show Event;
 import 'package:dao_ticketer/components/event_card.dart' show EventCard;
 
@@ -7,12 +8,12 @@ class EventsListScreen extends StatefulWidget {
   const EventsListScreen({super.key});
 
   @override
-  _EventListScreenState createState() => _EventListScreenState();
+  EventListScreenState createState() => EventListScreenState();
 }
 
-class _EventListScreenState extends State<EventsListScreen> {
+class EventListScreenState extends State<EventsListScreen> {
   List<Event> _events = [];
-  MockedDAOService service = MockedDAOService();
+  RealDAOService service = RealDAOService();
 
   @override
   void initState() {

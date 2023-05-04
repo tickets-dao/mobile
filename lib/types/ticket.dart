@@ -1,11 +1,5 @@
 import 'dart:convert';
 
-enum TicketCategory {
-  all,
-  parter,
-  lodge,
-}
-
 class Ticket {
   late final String category;
   late final int price;

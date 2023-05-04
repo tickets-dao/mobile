@@ -17,28 +17,20 @@ class EventScreen extends StatefulWidget {
 }
 
 class EventScreenState extends State<EventScreen> {
-  List<String> _eventCategories = [];
-  List<Ticket> _eventTicketsByCategory = [];
+  List<Ticket> _eventTickets = [];
   RealDAOService service = RealDAOService();
 
   @override
-  void initState() async {
+  void initState() {
     super.initState();
-    final fetchedCategories = await service.getCategories(widget.event.id);
-    setState(() {
-      _eventCategories = fetchedCategories;
-    });
-    final ticketFutures = <Future<List<Ticket>>>[];
-    for (String category in _eventCategories) {
-      ticketFutures.add(service.getAvailableTicketsByEventAndCategory(
-          widget.event.id, category));
-    }
-    final List<Ticket> ticketsByCategory =
-        await Future.wait(ticketFutures as Iterable<Future<Ticket>>);
-
-    // TODO: create a map of tickets by category
-    setState(() {
-      _eventTicketsByCategory = ticketsByCategory;
+    service
+        .getAvailableTicketsByEventAndCategory(
+            widget.event.id, TicketCategory.all.toString())
+        .then((eventTickets) {
+      print(eventTickets);
+      setState(() {
+        _eventTickets = eventTickets;
+      });
     });
   }
 
@@ -58,8 +50,7 @@ class EventScreenState extends State<EventScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 EventCard(widget.event, false),
-                EventOrderStepper(
-                    eventTicketsByCategory: _eventTicketsByCategory),
+                EventOrderStepper(eventTickets: _eventTickets),
               ],
             )),
       ),
