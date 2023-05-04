@@ -23,7 +23,7 @@ class EventScreenState extends State<EventScreen> {
   void initState() {
     super.initState();
     service
-        .getTicketsByEventAndCategory(widget.event.id, TicketCategory.all.toString())
+        .getAvailableTicketsByEventAndCategory(widget.event.id, TicketCategory.all.toString())
         .then((eventTickets) {
       setState(() {
         _eventTickets = eventTickets;

@@ -6,8 +6,26 @@ import "../../types/event.dart";
 import "../../types/dao_service.dart";
 import "./async_utils.dart";
 
+const local = 'localhost';
+const cloud = '51.250.110.24';
+
 class RealDAOService implements IDAOService {
   late SimpleKeyPairData _privateKey;
+
+  late final Uri queryURL;
+  late final Uri invokeURL;
+
+  RealDAOService([bool? isLocal]) {
+    late String address;
+    if (isLocal ?? false) {
+      address = local;
+    } else {
+      address = cloud;
+    }
+
+    queryURL = Uri.parse('http://$address:9001/query');
+    invokeURL = Uri.parse('http://$address:9001/invoke');
+  }
 
   // необходимо вызвать перед инвоуком
   // инициализация ключа - async, поэтому нельзя вызывать в конструкторе
@@ -22,7 +40,7 @@ class RealDAOService implements IDAOService {
     final List<String> encodedArgs =
         signedArgs.map(base64EncodeString).toList();
 
-    return invokeSmartContract(encodedArgs, fnName);
+    return doRequest(invokeURL, encodedArgs, fnName);
   }
 
   @override
@@ -40,8 +58,8 @@ class RealDAOService implements IDAOService {
   @override
   Future<List<String>> getCategories(String eventID) async {
     // eventID is still unused in blockchain
-    final result =
-        await queryBlockchain([eventID, 'eventCategories'], 'eventCategories');
+    final result = await doRequest(
+        queryURL, [eventID, 'eventCategories'], 'eventCategories');
 
     return List<String>.from(jsonDecode(result));
   }
@@ -49,7 +67,7 @@ class RealDAOService implements IDAOService {
   @override
   Future<List<Event>> getEvents() async {
     // eventID is still unused in blockchain
-    final result = await queryBlockchain(['events'], 'events');
+    final result = await doRequest(queryURL, ['events'], 'events');
 
     print(result);
 
@@ -57,10 +75,10 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<List<Ticket>> getTicketsByEventAndCategory(
+  Future<List<Ticket>> getAvailableTicketsByEventAndCategory(
       String eventID, String category,
       [int? sector]) async {
-    final result = await queryBlockchain(
+    final result = await doRequest(queryURL,
         [eventID, category, 'ticketsByCategory'], 'ticketsByCategory');
 
     print('tickets JSON: $result');
@@ -82,6 +100,7 @@ class RealDAOService implements IDAOService {
   }
 
   @override
+  //TODO update
   Future<void> returnTicket(Ticket ticket) {
     if (getRandom(10) > 5) {
       throw "Network error! Please try again.";

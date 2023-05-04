@@ -19,7 +19,7 @@ Future<void> main() async {
       queryArgs.map(base64EncodeString).toList();
 
   final result =
-      await queryBlockchain(encodedqueryArgsList, "industrialBalanceOf");
+      await doRequest(Uri(), encodedqueryArgsList, "industrialBalanceOf");
 
   print(result);
 
@@ -29,7 +29,7 @@ Future<void> main() async {
   final List<String> encodedAddBalanceList =
       signedAddBalanceArgs.map(base64EncodeString).toList();
 
-  print(await invokeSmartContract(encodedAddBalanceList, "addAlowedBalance"));
+  print(await doRequest(Uri(),encodedAddBalanceList, "addAlowedBalance"));
 
   List<String> signedEmitArgs = await sign(
       privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "2"]);
@@ -38,7 +38,7 @@ Future<void> main() async {
   final List<String> encodedList =
       signedEmitArgs.map(base64EncodeString).toList();
 
-  await invokeSmartContract(encodedList, "buy");
+  await doRequest(Uri(),encodedList, "buy");
 }
 
 Future<SimpleKeyPairData> readPrivateKeyFromFile(String filename) async {
@@ -87,11 +87,11 @@ String base64EncodeString(String input) {
   return base64.encode(utf8.encode(input));
 }
 
-Future<String> queryBlockchain(List<String> params, String fnName) async {
+Future<String> doRequest(Uri url, List<String> params, String fnName) async {
   final List<String> encodedParams = params.map(base64EncodeString).toList();
 
   http.Response response = await http.post(
-    Uri.parse('http://localhost:9001/query'),
+    url,
     headers: {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer test'
@@ -105,41 +105,14 @@ Future<String> queryBlockchain(List<String> params, String fnName) async {
   );
 
   if (response.statusCode == 200) {
-    print('Запрос $fnName успешно выполнен: ${response.body}');
+    print('Запрос $fnName ${url.path} успешно выполнен: ${response.body}');
   } else {
-    throw ('Ошибка при выполнении запроса. Код ответа: ${response.statusCode}, тело: ${response.body}');
+    throw ('Ошибка при выполнении запроса $fnName. Код ответа: ${response.statusCode}, тело: ${response.body}');
   }
 
   final encoded = json.decode(response.body);
 
   return utf8.decode(base64Decode(encoded["payload"]));
-}
-
-Future<String> invokeSmartContract(List<String> params, String fnName) async {
-  http.Response response = await http.post(
-    Uri.parse('http://localhost:9001/invoke'),
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer test'
-    },
-    body: jsonEncode({
-      "args": params,
-      "chaincodeId": "tickets",
-      "channel": "tickets",
-      "fcn": fnName,
-    }),
-  );
-
-  if (response.statusCode == 200) {
-    print('Запрос $fnName успешно выполнен: ${response.body}');
-  } else {
-    print(
-        'Ошибка при выполнении запроса. Код ответа: ${response.statusCode}, тело: ${response.body}');
-  }
-
-  final encoded = json.decode(response.body);
-
-  return utf8.decode(base64Decode(encoded["payload"]?? "" ));
 }
 
 String generateMd5(String input) {

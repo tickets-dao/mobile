@@ -6,7 +6,8 @@ abstract class IDAOService {
 
   Future<List<String>> getCategories(String eventID);
 
-  Future<List<Ticket>> getTicketsByEventAndCategory(
+  // получение билетов, доступных для покупки(находятся у эмитента, ещё не куплены)
+  Future<List<Ticket>> getAvailableTicketsByEventAndCategory(
       String eventID, String category, int sector);
 
   // price is returned
