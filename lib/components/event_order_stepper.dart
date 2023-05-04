@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class EventOrderStepper extends StatefulWidget {
   const EventOrderStepper({super.key, required this.eventTicketsByCategory});
 
-  final List<Ticket> eventTicketsByCategory;
+  final Map<String, List<Ticket>> eventTicketsByCategory;
 
   @override
   EventOrderStepperState createState() => EventOrderStepperState();
@@ -25,6 +25,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
     Map<int, List<int>> rowsBySectors = {};
     Map<int, List<Ticket>> ticketsBySectors = {};
 
+    // TODO: this map should somehow be restricted to the selected category only
     for (Ticket t in tickets) {
       if (ticketsBySectors.containsKey(t.sector)) {
         ticketsBySectors[t.sector]?.add(t);
