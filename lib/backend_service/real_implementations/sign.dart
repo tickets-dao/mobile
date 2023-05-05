@@ -29,7 +29,7 @@ Future<void> main() async {
   final List<String> encodedAddBalanceList =
       signedAddBalanceArgs.map(base64EncodeString).toList();
 
-  print(await doRequest(Uri(),encodedAddBalanceList, "addAlowedBalance"));
+  print(await doRequest(Uri(), encodedAddBalanceList, "addAlowedBalance"));
 
   List<String> signedEmitArgs = await sign(
       privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "2"]);
@@ -38,7 +38,7 @@ Future<void> main() async {
   final List<String> encodedList =
       signedEmitArgs.map(base64EncodeString).toList();
 
-  await doRequest(Uri(),encodedList, "buy");
+  await doRequest(Uri(), encodedList, "buy");
 }
 
 Future<SimpleKeyPairData> readPrivateKeyFromFile(String filename) async {

@@ -1,6 +1,6 @@
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 
-import '../../types/ticket.dart';
+import 'package:dao_ticketer/types/ticket.dart';
 
 Future<void> main() async {
   final realService = RealDAOService();

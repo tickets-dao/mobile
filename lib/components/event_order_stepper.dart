@@ -56,13 +56,14 @@ class EventOrderStepperState extends State<EventOrderStepper> {
       final rowTickets = (tickets[selectedCategory] ?? [])
           .where((ticket) => ticket.row == row);
       return [
-        ...rowTickets.map((Ticket ticket) => Wrap(
+        ...rowTickets.map((Ticket ticket) => Row(
               children: [
                 Radio<Ticket>(
                   groupValue: selectedTicket,
                   value: ticket,
                   onChanged: (Ticket? value) {
                     setState(() {
+                      selectedTicket = value ?? ticket;
                       widget.selectTicketCallback(value ?? ticket);
                     });
                   },
@@ -145,7 +146,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('row $row'),
-                          Flex(
+                          Wrap(
                             direction: Axis.horizontal,
                             // scrollDirection: Axis.horizontal,
                             children: getTicketsByRow(row),

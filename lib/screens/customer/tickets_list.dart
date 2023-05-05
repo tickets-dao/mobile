@@ -24,8 +24,7 @@ class EventScreenState extends State<EventScreen> {
   void initState() {
     super.initState();
     service
-        .getAvailableTicketsByEventAndCategory(
-            widget.event.id, TicketCategory.all.toString())
+        .getAvailableTicketsByEventAndCategory(widget.event.id, "")
         .then((eventTickets) {
       print(eventTickets);
       setState(() {
@@ -50,7 +49,6 @@ class EventScreenState extends State<EventScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 EventCard(widget.event, false),
-                EventOrderStepper(eventTickets: _eventTickets),
               ],
             )),
       ),

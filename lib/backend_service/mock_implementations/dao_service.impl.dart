@@ -14,8 +14,8 @@ class MockedDAOService implements IDAOService {
   Future<List<String>> getCategories(String eventID) => Future.delayed(
       getRandomDuration(3),
       () => [
-            TicketCategory.lodge.toString(),
-            TicketCategory.parter.toString(),
+            "lodge",
+            "parter",
           ]);
 
   @override
@@ -32,7 +32,8 @@ class MockedDAOService implements IDAOService {
           ]);
 
   @override
-  Future<List<Ticket>> getAvailableTicketsByEventAndCategory(String eventID, String category,
+  Future<List<Ticket>> getAvailableTicketsByEventAndCategory(
+          String eventID, String category,
           [int? sector]) =>
       Future.delayed(
           getRandomDuration(3),

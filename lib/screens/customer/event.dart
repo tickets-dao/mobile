@@ -90,7 +90,7 @@ class EventScreenState extends State<EventScreen> {
         floatingActionButton: selectedTicket != null
             ? ElevatedButton(
                 child: Text(
-                    "sector ${selectedTicket?.sector} | row${selectedTicket?.row} | seat ${selectedTicket?.number} | price ${selectedTicket?.price}"),
+                    "sector ${selectedTicket?.sector} | row ${selectedTicket?.row} | seat ${selectedTicket?.number} | price ${selectedTicket?.price}"),
                 onPressed: () {
                   if (selectedTicket != null) {
                     service.buyTicket(selectedTicket ??

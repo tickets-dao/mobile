@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
+    show RealDAOService;
 import 'package:dao_ticketer/screens/customer/event_list.dart';
 import 'scan-qr.dart';
 import 'render-qr.dart';
@@ -56,11 +58,19 @@ ListView getDrawerItems(BuildContext ctx) => ListView(
           ),
         ]);
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  RealDAOService service = RealDAOService();
+
+  @override
   Widget build(BuildContext context) {
+    service.init("../keys/user.private");
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
