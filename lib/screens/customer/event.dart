@@ -19,12 +19,10 @@ class EventScreen extends StatefulWidget {
 class EventScreenState extends State<EventScreen> {
   List<String> _eventCategories = [];
   Map<String, List<Ticket>> _eventTicketsByCategory = {};
+  Ticket? selectedTicket;
   RealDAOService service = RealDAOService();
 
-  @override
-  void initState() async {
-    super.initState();
-    final fetchedCategories = await service.getCategories(widget.event.id);
+  void fetchTicketsByCategories(fetchedCategories) async {
     setState(() {
       _eventCategories = fetchedCategories;
     });
@@ -47,27 +45,60 @@ class EventScreenState extends State<EventScreen> {
     });
   }
 
+  selectTicket(Ticket newTicket) {
+    setState(() {
+      selectedTicket = newTicket;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    service.getCategories(widget.event.id).then(fetchTicketsByCategories);
+  }
+
+  List<Widget> getEventWidgetChildren() {
+    if (_eventTicketsByCategory.isEmpty) {
+      return [EventCard(widget.event, false)];
+    } else {
+      return [
+        EventCard(widget.event, false),
+        EventOrderStepper(
+            eventTicketsByCategory: _eventTicketsByCategory,
+            selectTicketCallback: selectTicket),
+      ];
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.event.name)),
-      body: SingleChildScrollView(
-        child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              color: const Color.fromARGB(249, 242, 253, 255),
-            ),
-            padding: const EdgeInsets.all(20),
-            child: Flex(
-              direction: Axis.vertical,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                EventCard(widget.event, false),
-                EventOrderStepper(
-                    eventTicketsByCategory: _eventTicketsByCategory),
-              ],
-            )),
-      ),
-    );
+        appBar: AppBar(title: Text(widget.event.name)),
+        body: SingleChildScrollView(
+          child: Container(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black),
+                color: const Color.fromARGB(249, 242, 253, 255),
+              ),
+              padding: const EdgeInsets.all(20),
+              child: Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: getEventWidgetChildren(),
+              )),
+        ),
+        floatingActionButton: selectedTicket != null
+            ? ElevatedButton(
+                child: Text(
+                    "sector ${selectedTicket?.sector} | row${selectedTicket?.row} | seat ${selectedTicket?.number} | price ${selectedTicket?.price}"),
+                onPressed: () {
+                  if (selectedTicket != null) {
+                    service.buyTicket(selectedTicket ??
+                        Ticket.fromJson(
+                            {})); // I am struggling to make it work with a Ticket? type argument :()
+                  }
+                },
+              )
+            : null);
   }
 }

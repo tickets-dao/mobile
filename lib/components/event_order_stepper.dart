@@ -2,31 +2,36 @@ import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
 
 class EventOrderStepper extends StatefulWidget {
-  const EventOrderStepper({super.key, required this.eventTicketsByCategory});
+  const EventOrderStepper(
+      {super.key,
+      required this.eventTicketsByCategory,
+      required this.selectTicketCallback});
 
   final Map<String, List<Ticket>> eventTicketsByCategory;
+  final Function selectTicketCallback;
 
   @override
   EventOrderStepperState createState() => EventOrderStepperState();
 }
 
 class EventOrderStepperState extends State<EventOrderStepper> {
-  String _selectedCategory = "unselected";
+  String selectedCategory = "unselected";
 
   int _selectedSector = 0;
   int number = 0;
-  final List<Ticket> _selectedTickets = [];
+  Ticket? selectedTicket;
 
   int _stepIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final tickets = widget.eventTicketsByCategory;
-    Map<int, List<int>> rowsBySectors = {};
+    final List<String> categories = [...widget.eventTicketsByCategory.keys];
+    String selectedCategory = categories[0];
+    Map<int, Set<int>> rowsBySectors = {};
     Map<int, List<Ticket>> ticketsBySectors = {};
 
-    // TODO: this map should somehow be restricted to the selected category only
-    for (Ticket t in tickets) {
+    for (Ticket t in tickets[selectedCategory] ?? []) {
       if (ticketsBySectors.containsKey(t.sector)) {
         ticketsBySectors[t.sector]?.add(t);
       } else {
@@ -38,7 +43,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
         rowsBySectors[t.sector]?.add(t.row);
       } else {
         rowsBySectors.addAll({
-          t.sector: [t.row]
+          t.sector: {t.row}
         });
       }
     }
@@ -46,6 +51,27 @@ class EventOrderStepperState extends State<EventOrderStepper> {
 
     getTicketsCount(int count) =>
         count > 1 ? "$count tickets" : "$count ticket";
+
+    getTicketsByRow(int row) {
+      final rowTickets = (tickets[selectedCategory] ?? [])
+          .where((ticket) => ticket.row == row);
+      return [
+        ...rowTickets.map((Ticket ticket) => Wrap(
+              children: [
+                Radio<Ticket>(
+                  groupValue: selectedTicket,
+                  value: ticket,
+                  onChanged: (Ticket? value) {
+                    setState(() {
+                      widget.selectTicketCallback(value ?? ticket);
+                    });
+                  },
+                ),
+                Text('${ticket.number}'),
+              ],
+            ))
+      ];
+    }
 
     return Stepper(
       currentStep: _stepIndex,
@@ -73,30 +99,20 @@ class EventOrderStepperState extends State<EventOrderStepper> {
           title: const Text('Select category'),
           content: Column(
             children: <Widget>[
-              ListTile(
-                title: Text('Lodge: ${getTicketsCount(tickets.length)}'),
-                leading: Radio<String>(
-                  value: String,
-                  groupValue: _selectedCategory,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _selectedCategory = value ?? String;
-                    });
-                  },
-                ),
-              ),
-              ListTile(
-                title: Text('Parter: ${getTicketsCount(tickets.length)}'),
-                leading: Radio<String>(
-                  value: String.parter,
-                  groupValue: _selectedCategory,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _selectedCategory = value ?? String.parter;
-                    });
-                  },
-                ),
-              ),
+              ...categories.map((category) {
+                return ListTile(
+                  title: Text('$category: ${getTicketsCount(tickets.length)}'),
+                  leading: Radio<String>(
+                    value: category,
+                    groupValue: selectedCategory,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedCategory = value ?? category;
+                      });
+                    },
+                  ),
+                );
+              }),
             ],
           ),
         ),
@@ -122,37 +138,20 @@ class EventOrderStepperState extends State<EventOrderStepper> {
           title: const Text('Select row'),
           content: Column(
             children: <Widget>[
-              ...rowsBySectors[_selectedSector]?.map((row) => Flex(
-                          direction: Axis.vertical,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Row $row, seats:'),
-                            Row(
-                              children: [
-                                ...(ticketsBySectors[_selectedSector]
-                                        ?.map((t) => Row(
-                                              children: [
-                                                Checkbox(
-                                                    value: false,
-                                                    onChanged: (bool? value) {
-                                                      if (value ?? false) {
-                                                        // setState(() {
-                                                        //   _selectedTickets.add(t);
-                                                        // });
-                                                        _selectedTickets.add(t);
-                                                      } else {
-                                                        _selectedTickets
-                                                            .remove(t);
-                                                      }
-                                                    }),
-                                                Text("${t.number}")
-                                              ],
-                                            )) ??
-                                    [])
-                              ],
-                            )
-                          ])) ??
+              ...rowsBySectors[_selectedSector]?.map((row) {
+                    return Flex(
+                        direction: Axis.vertical,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('row $row'),
+                          Flex(
+                            direction: Axis.horizontal,
+                            // scrollDirection: Axis.horizontal,
+                            children: getTicketsByRow(row),
+                          )
+                        ]);
+                  }) ??
                   []
             ],
           ),
