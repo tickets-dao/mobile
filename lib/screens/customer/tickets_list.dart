@@ -1,39 +1,44 @@
-import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:dao_ticketer/types/ticket.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
-import 'package:dao_ticketer/components/event_card.dart' show EventCard;
+import 'package:dao_ticketer/components/ticket_card.dart' show TicketCard;
 
-class EventScreen extends StatefulWidget {
-  const EventScreen({super.key, required this.event});
-
-  final Event event;
+class TicketListScreen extends StatefulWidget {
+  const TicketListScreen({super.key});
 
   @override
-  EventScreenState createState() => EventScreenState();
+  TicketListScreenState createState() => TicketListScreenState();
 }
 
-class EventScreenState extends State<EventScreen> {
-  List<Ticket> _eventTickets = [];
+class TicketListScreenState extends State<TicketListScreen> {
+  List<Ticket> tickets = [];
   RealDAOService service = RealDAOService();
+  bool initialized = false;
 
   @override
   void initState() {
     super.initState();
-    service
-        .getAvailableTicketsByEventAndCategory(widget.event.id, "")
-        .then((eventTickets) {
+  }
+
+  getTickets(service) {
+    if (initialized) return;
+    initialized = true;
+    service.getTicketsByUser().then((eventTickets) {
       setState(() {
-        _eventTickets = eventTickets;
+        tickets = eventTickets;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    getTickets(Provider.of<RealDAOService>(context));
     return Scaffold(
-      appBar: AppBar(title: Text(widget.event.name)),
+      appBar: AppBar(title: const Text('Your tickets')),
       body: SingleChildScrollView(
         child: Container(
             decoration: BoxDecoration(
@@ -41,12 +46,16 @@ class EventScreenState extends State<EventScreen> {
               color: const Color.fromARGB(249, 242, 253, 255),
             ),
             padding: const EdgeInsets.all(20),
-            child: Flex(
-              direction: Axis.vertical,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                EventCard(widget.event, false),
-              ],
+            child: SingleChildScrollView(
+              child: Flex(
+                direction: Axis.vertical,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  ...tickets.map((Ticket t) {
+                    return TicketCard(t);
+                  })
+                ],
+              ),
             )),
       ),
     );

@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
-import 'package:dao_ticketer/screens/customer/event_list.dart';
+import 'package:dao_ticketer/screens/customer/event_list.dart'
+    show EventsListScreen;
+import 'package:dao_ticketer/screens/customer/tickets_list.dart'
+    show TicketListScreen;
 import 'scan-qr.dart';
 import 'render-qr.dart';
 
@@ -11,6 +14,10 @@ void navigateTo(BuildContext context, String screen) {
     case "events":
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const EventsListScreen()));
+      break;
+    case "tickets":
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => TicketListScreen()));
       break;
     case "scan":
       Navigator.push(
@@ -40,21 +47,26 @@ ListView getDrawerItems(BuildContext ctx) => ListView(
             child: Text('Ticketer Menu'),
           ),
           ListTile(
-            title: const Text("Events"),
+            title: const Text('Events'),
             onTap: () {
-              navigateTo(ctx, "events");
+              navigateTo(ctx, 'events');
             },
           ),
           ListTile(
-            title: const Text("Generate QR"),
+              title: const Text('Your tickets'),
+              onTap: () {
+                navigateTo(ctx, 'tickets');
+              }),
+          ListTile(
+            title: const Text('Generate QR'),
             onTap: () {
-              navigateTo(ctx, "generate");
+              navigateTo(ctx, 'generate');
             },
           ),
           ListTile(
-            title: const Text("Scan QR"),
+            title: const Text('Scan QR'),
             onTap: () {
-              navigateTo(ctx, "scan");
+              navigateTo(ctx, 'scan');
             },
           ),
         ]);
