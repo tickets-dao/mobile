@@ -1,5 +1,6 @@
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
@@ -20,28 +21,37 @@ class EventScreenState extends State<EventScreen> {
   List<String> _eventCategories = [];
   Map<String, List<Ticket>> _eventTicketsByCategory = {};
   Ticket? selectedTicket;
-  RealDAOService service = RealDAOService();
+  bool initialized = false;
 
-  void fetchTicketsByCategories(fetchedCategories) async {
-    setState(() {
-      _eventCategories = fetchedCategories;
-    });
-    final ticketFutures = <Future<List<Ticket>>>[];
-    for (String category in _eventCategories) {
-      ticketFutures.add(service.getAvailableTicketsByEventAndCategory(
-          widget.event.id, category));
-    }
-    final List<List<Ticket>> ticketsByCategory =
-        await Future.wait(ticketFutures);
+  void fetchTicketsByCategories(fetchedCategories) async {}
 
-    final Map<String, List<Ticket>> catTicketsMap = {};
+  void getEventsData(service) {
+    if (initialized) return;
+    initialized = true;
 
-    _eventCategories.asMap().forEach((index, category) {
-      catTicketsMap.addAll({category: ticketsByCategory[index]});
-    });
+    service.getCategories(widget.event.id).then((fetchedCategories) async {
+      // once the categories are fetched,
+      // use the service to get all the tickets by those categories
+      setState(() {
+        _eventCategories = fetchedCategories;
+      });
+      final ticketFutures = <Future<List<Ticket>>>[];
+      for (String category in _eventCategories) {
+        ticketFutures.add(service.getAvailableTicketsByEventAndCategory(
+            widget.event.id, category));
+      }
+      final List<List<Ticket>> ticketsByCategory =
+          await Future.wait(ticketFutures);
 
-    setState(() {
-      _eventTicketsByCategory = catTicketsMap;
+      final Map<String, List<Ticket>> catTicketsMap = {};
+
+      _eventCategories.asMap().forEach((index, category) {
+        catTicketsMap.addAll({category: ticketsByCategory[index]});
+      });
+
+      setState(() {
+        _eventTicketsByCategory = catTicketsMap;
+      });
     });
   }
 
@@ -54,7 +64,6 @@ class EventScreenState extends State<EventScreen> {
   @override
   void initState() {
     super.initState();
-    service.getCategories(widget.event.id).then(fetchTicketsByCategories);
   }
 
   List<Widget> getEventWidgetChildren() {
@@ -72,6 +81,8 @@ class EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final service = Provider.of<RealDAOService>(context);
+    getEventsData(service);
     return Scaffold(
         appBar: AppBar(title: Text(widget.event.name)),
         body: SingleChildScrollView(

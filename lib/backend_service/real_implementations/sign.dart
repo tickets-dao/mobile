@@ -1,48 +1,51 @@
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:bs58/bs58.dart';
 import "package:cryptography/cryptography.dart";
 import "package:pointycastle/pointycastle.dart" as pc;
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
 
-Future<void> main() async {
-  final privateKey = await readPrivateKeyFromFile('./keys/user.private');
-  final publicKey = await privateKey.extractPublicKey();
+// Future<void> main() async {
+//   final privateKey = await readPrivateKeyFromFile('./keys/user.private');
+//   final publicKey = await privateKey.extractPublicKey();
 
-  final queryArgs = [
-    '5unWkjiVbpAkDDvyS8pxT1hWuwqEFgFShTb8i4WBr2KdDWuuf',
-    'industrialBalanceOf',
-  ];
-  final List<String> encodedqueryArgsList =
-      queryArgs.map(base64EncodeString).toList();
+//   final queryArgs = [
+//     '5unWkjiVbpAkDDvyS8pxT1hWuwqEFgFShTb8i4WBr2KdDWuuf',
+//     'industrialBalanceOf',
+//   ];
+//   final List<String> encodedqueryArgsList =
+//       queryArgs.map(base64EncodeString).toList();
 
-  final result =
-      await doRequest(Uri(), encodedqueryArgsList, "industrialBalanceOf");
+//   final result =
+//       await doRequest(Uri(), encodedqueryArgsList, "industrialBalanceOf");
 
-  print(result);
+//   print(result);
 
-  List<String> signedAddBalanceArgs =
-      await sign(privateKey, 'tickets', 'tickets', 'addAlowedBalance', []);
+//   List<String> signedAddBalanceArgs =
+//       await sign(privateKey, 'tickets', 'tickets', 'addAlowedBalance', []);
 
-  final List<String> encodedAddBalanceList =
-      signedAddBalanceArgs.map(base64EncodeString).toList();
+//   final List<String> encodedAddBalanceList =
+//       signedAddBalanceArgs.map(base64EncodeString).toList();
 
-  print(await doRequest(Uri(), encodedAddBalanceList, "addAlowedBalance"));
+//   print(await doRequest(Uri(), encodedAddBalanceList, "addAlowedBalance"));
 
-  List<String> signedEmitArgs = await sign(
-      privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "2"]);
-  print(signedEmitArgs);
+//   List<String> signedEmitArgs = await sign(
+//       privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "2"]);
+//   print(signedEmitArgs);
 
-  final List<String> encodedList =
-      signedEmitArgs.map(base64EncodeString).toList();
+//   final List<String> encodedList =
+//       signedEmitArgs.map(base64EncodeString).toList();
 
-  await doRequest(Uri(), encodedList, "buy");
-}
+//   await doRequest(Uri(), encodedList, "buy");
+// }
 
 Future<SimpleKeyPairData> readPrivateKeyFromFile(String filename) async {
-  final fileString = await File(filename).readAsString();
+  // final fileString = await rootBundle.loadString('assets/keys/user.private');
+  final fileString = await rootBundle.loadString(filename);
+
+  // final fileString = await File(filename).readAsString();
   final keySeedBytes = base64Decode(fileString);
 
   final key = await Ed25519().newKeyPairFromSeed(keySeedBytes);
@@ -58,7 +61,7 @@ Uint8List sha3_256(List<int> data) {
   return out;
 }
 
-Future<List<String>> sign(SimpleKeyPairData privateKey, String channel,
+Future<List<String>> sign(SimpleKeyPairData? privateKey, String channel,
     String chaincode, String methodName, List<String> args) async {
   final nonce = DateTime.now().millisecondsSinceEpoch.toString();
   final result = <String>[
@@ -68,13 +71,20 @@ Future<List<String>> sign(SimpleKeyPairData privateKey, String channel,
     channel,
     ...args,
     nonce,
-    base58.encode(privateKey.publicKey.bytes as Uint8List),
+    base58.encode(privateKey?.publicKey.bytes as Uint8List),
   ];
+
+  // We will never need this fallback, but flutter will never shutup abt the
+  // keypair that we have to initialize asyncronously and not in the constructor
+  // of the backendService that calls this function
+  final fallbackKPair = SimpleKeyPairData([],
+      publicKey: SimplePublicKey([], type: KeyPairType.ed25519),
+      type: KeyPairType.ed25519);
 
   final message = sha3_256(utf8.encode(result.join('')));
   final signature = await Ed25519().sign(
     message,
-    keyPair: await privateKey.extract(),
+    keyPair: await privateKey?.extract() ?? fallbackKPair,
   );
 
   return [

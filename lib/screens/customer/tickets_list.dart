@@ -4,8 +4,6 @@ import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
 import 'package:dao_ticketer/components/event_card.dart' show EventCard;
-import 'package:dao_ticketer/components/event_order_stepper.dart'
-    show EventOrderStepper;
 
 class EventScreen extends StatefulWidget {
   const EventScreen({super.key, required this.event});
@@ -26,7 +24,6 @@ class EventScreenState extends State<EventScreen> {
     service
         .getAvailableTicketsByEventAndCategory(widget.event.id, "")
         .then((eventTickets) {
-      print(eventTickets);
       setState(() {
         _eventTickets = eventTickets;
       });

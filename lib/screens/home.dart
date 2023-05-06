@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
 import 'package:dao_ticketer/screens/customer/event_list.dart';
@@ -70,7 +71,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    service.init("../keys/user.private");
+    context.read<RealDAOService>().init('assets/keys/user.private');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
+import 'package:provider/provider.dart';
+
+import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
+    show RealDAOService;
 
 class TicketerDAO extends StatelessWidget {
   const TicketerDAO({super.key});
@@ -11,5 +15,5 @@ class TicketerDAO extends StatelessWidget {
 }
 
 void main() {
-  runApp(const TicketerDAO());
+  runApp(Provider(create: (_) => RealDAOService(), child: const TicketerDAO()));
 }

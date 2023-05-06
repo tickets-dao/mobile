@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
 import 'package:dao_ticketer/types/event.dart' show Event;
@@ -13,11 +14,16 @@ class EventsListScreen extends StatefulWidget {
 
 class EventListScreenState extends State<EventsListScreen> {
   List<Event> _events = [];
-  RealDAOService service = RealDAOService();
+  bool initialized = false;
 
   @override
   void initState() {
     super.initState();
+  }
+
+  getEventsData(service) {
+    if (initialized) return;
+    initialized = true;
     service.getEvents().then((events) {
       setState(() {
         _events = events;
@@ -27,6 +33,8 @@ class EventListScreenState extends State<EventsListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final service = Provider.of<RealDAOService>(context);
+    getEventsData(service);
     return Scaffold(
         appBar: AppBar(title: const Text('Available events')),
         body: Container(

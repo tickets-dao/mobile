@@ -43,6 +43,7 @@ dependencies:
   bs58: ^1.0.2
   pointycastle: ^3.7.3
   asn1lib: ^1.0.0
+  provider: ^6.0.5
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +61,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/
+    - assets/keys/
+    - assets/keys/user.private
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

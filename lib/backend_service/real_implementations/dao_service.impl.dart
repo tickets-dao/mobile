@@ -4,13 +4,14 @@ import "package:dao_ticketer/backend_service/real_implementations/sign.dart";
 import "package:dao_ticketer/types/ticket.dart";
 import "package:dao_ticketer/types/event.dart";
 import "package:dao_ticketer/types/dao_service.dart";
+
 import "./async_utils.dart";
 
 const local = 'localhost';
 const cloud = '51.250.110.24';
 
 class RealDAOService implements IDAOService {
-  late SimpleKeyPairData _privateKey;
+  SimpleKeyPairData? _privateKey;
 
   late final Uri queryURL;
   late final Uri invokeURL;
@@ -30,6 +31,7 @@ class RealDAOService implements IDAOService {
   // необходимо вызвать перед инвоуком
   // инициализация ключа - async, поэтому нельзя вызывать в конструкторе
   init(String filename) async {
+    if (_privateKey != null) return;
     _privateKey = await readPrivateKeyFromFile(filename);
   }
 
@@ -100,7 +102,7 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  //TODO update
+  // TODO: update
   Future<void> returnTicket(Ticket ticket) {
     if (getRandom(10) > 5) {
       throw "Network error! Please try again.";
