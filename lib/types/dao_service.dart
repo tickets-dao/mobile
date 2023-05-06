@@ -17,7 +17,7 @@ abstract class IDAOService {
 
   Future<List<Ticket>> getTicketsByUser();
 
-  Future<Event> getEventByID(String eventID);
+  Future<List<Event>> getEventsByID(List<String> eventID);
 
   Future<void> prepareTicket(Ticket ticket, String secret);
 

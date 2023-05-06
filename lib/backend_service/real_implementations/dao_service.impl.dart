@@ -123,7 +123,7 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<Event> getEventByID(String eventID) {
+  Future<List<Event>> getEventsByID(List<String> eventID) {
     // TODO: implement getEventByID
     throw UnimplementedError();
   }
