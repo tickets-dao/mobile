@@ -47,7 +47,6 @@ class RealDAOService implements IDAOService {
     // encodedArgs.insert(0, 'tickets');
     // encodedArgs.insert(0, 'tickets');
 
-
     return doRequest(invokeURL, signedArgs, fnName);
   }
 
@@ -121,5 +120,17 @@ class RealDAOService implements IDAOService {
     final payload = await invokeWithSign([], 'addAllowedBalance');
 
     print('addfunds response: $payload');
+  }
+
+  @override
+  Future<Event> getEventByID(String eventID) {
+    // TODO: implement getEventByID
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Ticket>> getTicketsByUser() {
+    // TODO: implement getTicketsByUser
+    throw UnimplementedError();
   }
 }

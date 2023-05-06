@@ -16,7 +16,7 @@ class TicketListScreen extends StatefulWidget {
 
 class TicketListScreenState extends State<TicketListScreen> {
   List<Ticket> tickets = [];
-  RealDAOService service = RealDAOService();
+  Map<String, Event> eventsMap = {};
   bool initialized = false;
 
   @override
@@ -27,9 +27,12 @@ class TicketListScreenState extends State<TicketListScreen> {
   getTickets(service) {
     if (initialized) return;
     initialized = true;
-    service.getTicketsByUser().then((eventTickets) {
+    service.getTicketsByUser().then((tickets) {
       setState(() {
-        tickets = eventTickets;
+        tickets = tickets;
+        List<Future> eventPromises = tickets.map((Ticket t) {
+          return service.getEventByID(t.eventID);
+        });
       });
     });
   }
