@@ -29,11 +29,11 @@ import 'package:flutter/services.dart' show rootBundle;
 //   final List<String> encodedAddBalanceList =
 //       signedAddBalanceArgs.map(base64EncodeString).toList();
 
-//   print(await doRequest(Uri(), encodedAddBalanceList, "addAlowedBalance"));
-
-//   List<String> signedEmitArgs = await sign(
-//       privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "2"]);
-//   print(signedEmitArgs);
+  // print(await doRequest(Uri(),encodedAddBalanceList, "addAllowedBalance"));
+  //
+  // List<String> signedEmitArgs = await sign(
+  //     privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "1"]);
+  // print(signedEmitArgs);
 
 //   final List<String> encodedList =
 //       signedEmitArgs.map(base64EncodeString).toList();
@@ -122,7 +122,7 @@ Future<String> doRequest(Uri url, List<String> params, String fnName) async {
 
   final encoded = json.decode(response.body);
 
-  return utf8.decode(base64Decode(encoded["payload"]));
+  return utf8.decode(base64Decode(encoded["payload"]??""));
 }
 
 String generateMd5(String input) {

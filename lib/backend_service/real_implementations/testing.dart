@@ -3,7 +3,7 @@ import 'package:dao_ticketer/backend_service/real_implementations/dao_service.im
 import 'package:dao_ticketer/types/ticket.dart';
 
 Future<void> main() async {
-  final realService = RealDAOService();
+  final realService = RealDAOService(true);
 
   print(await realService.getCategories("eventID"));
   print(await realService.getEvents().toString());
@@ -11,11 +11,11 @@ Future<void> main() async {
       await realService.getAvailableTicketsByEventAndCategory('', 'parter');
   print('tickets response: ${tickets.toString()}');
 
-  // await realService.init("../keys/user.private");
-  //
-  // // await realService.addFunds();
-  // var ticket = Ticket("parter", 0, 1, 1, 1, "eventID");
-  // // print(await realService.buyTicket(ticket));
-  //
-  // await realService.prepareTicket(ticket, "secret");
+  await realService.init("../keys/user.private");
+
+  await realService.addFunds();
+  var ticket = Ticket("parter", 0, 1, 1, 2, "eventID");
+  print(await realService.buyTicket(ticket));
+
+  await realService.prepareTicket(ticket, "secret");
 }

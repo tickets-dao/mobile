@@ -11,6 +11,10 @@ class MockedDAOService implements IDAOService {
       Future.delayed(getRandomDuration(3), () => getRandom(50));
 
   @override
+  Future<void> addFunds() =>
+      Future.delayed(getRandomDuration(3), () => getRandom(50));
+
+  @override
   Future<List<String>> getCategories(String eventID) => Future.delayed(
       getRandomDuration(3),
       () => [

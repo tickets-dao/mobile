@@ -16,4 +16,6 @@ abstract class IDAOService {
   Future<void> returnTicket(Ticket ticket);
 
   Future<void> prepareTicket(Ticket ticket, String secret);
+
+  Future<void> addFunds();
 }

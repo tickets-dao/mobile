@@ -39,10 +39,16 @@ class RealDAOService implements IDAOService {
     List<String> signedArgs =
         await sign(_privateKey, 'tickets', 'tickets', fnName, params);
 
-    final List<String> encodedArgs =
-        signedArgs.map(base64EncodeString).toList();
+    // final List<String> encodedArgs = signedArgs
+    //     .where((string) => string != 'tickets')
+    //     .map(base64EncodeString)
+    //     .toList();
+    //
+    // encodedArgs.insert(0, 'tickets');
+    // encodedArgs.insert(0, 'tickets');
 
-    return doRequest(invokeURL, encodedArgs, fnName);
+
+    return doRequest(invokeURL, signedArgs, fnName);
   }
 
   @override
@@ -112,7 +118,7 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<void> addFunds() async {
-    final payload = await invokeWithSign([], 'addAlowedBalance');
+    final payload = await invokeWithSign([], 'addAllowedBalance');
 
     print('addfunds response: $payload');
   }
