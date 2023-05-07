@@ -65,7 +65,48 @@ class TicketScreenState extends State<TicketScreen> {
                   );
                 },
                 child: const Text('Generate QR code')),
-            ElevatedButton(onPressed: () {}, child: const Text('Send ticket'))
+            Container(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  color: const Color.fromARGB(249, 242, 253, 255),
+                ),
+                child: Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TextField(
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "Send ticket to",
+                        ),
+                        onSubmitted: (String value) async {
+                          await showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Text("Confirm ticket transfer"),
+                                  content:
+                                      Flex(direction: Axis.vertical, children: [
+                                    Text("Send '${widget.event.name}' ticket"),
+                                    Text("To $value"),
+                                  ]),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        service.sendTicketTo(
+                                            widget.ticket, value);
+                                      },
+                                      child: const Text("Confirm"),
+                                    )
+                                  ],
+                                );
+                              });
+                        },
+                      ),
+                      ElevatedButton(
+                          onPressed: () {}, child: const Text('Send ticket'))
+                    ]))
           ],
         ),
       ),

@@ -89,4 +89,34 @@ class MockedDAOService implements IDAOService {
       print('Произошла ошибка при отправке запроса: $e');
     }
   }
+
+  @override
+  Future<List<Event>> getEventsByID(List<String> eventID) {
+    if (getRandom(10) > 5) {
+      throw "Network error! Please try again.";
+    }
+    return Future.delayed(
+        getRandomDuration(3),
+        () => eventID
+            .map((String ei) => Event(DateTime.now(),
+                "mocked event ticket address", "mocked event ticket name", ei))
+            .toList());
+  }
+
+  @override
+  Future<List<Ticket>> getTicketsByUser() {
+    if (getRandom(10) > 5) {
+      throw "Network error! Please try again.";
+    }
+    return Future.delayed(
+        getRandomDuration(3),
+        () => [
+              Ticket("some category", 200, 2, 1, 2, "eventische"),
+              Ticket("some other category", 200, 2, 1, 2, "eventische"),
+              Ticket("the best category", 200, 2, 1, 2, "eventische"),
+              Ticket("not the best category", 200, 2, 1, 2, "eventische"),
+              Ticket("second lowest category", 200, 2, 1, 2, "eventische"),
+              Ticket("category", 200, 2, 1, 2, "eventische"),
+            ]);
+  }
 }

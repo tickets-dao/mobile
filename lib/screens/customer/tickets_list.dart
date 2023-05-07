@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:dao_ticketer/types/event.dart';
+
+import 'package:dao_ticketer/backend_service/mock_implementations/dao_service.impl.dart'
+    show MockedDAOService;
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
 import 'package:dao_ticketer/components/ticket_card.dart' show TicketCard;
@@ -19,6 +22,8 @@ class TicketListScreenState extends State<TicketListScreen> {
   Map<String, Event> eventsMap = {};
   bool initialized = false;
 
+  final mockedService = MockedDAOService();
+
   @override
   void initState() {
     super.initState();
@@ -33,13 +38,25 @@ class TicketListScreenState extends State<TicketListScreen> {
         List<Future> eventPromises = tickets.map((Ticket t) {
           return service.getEventByID(t.eventID);
         });
+
+        Future.wait(eventPromises).then((events) {
+          Map<String, Event> map = {};
+          for (Event event in events) {
+            map.addAll({event.id: event});
+          }
+          setState(() {
+            eventsMap = map;
+          });
+        });
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    getTickets(Provider.of<RealDAOService>(context));
+    // TODO: uncomment the real service call
+    // getTickets(Provider.of<RealDAOService>(context));
+    getTickets(mockedService);
     return Scaffold(
       appBar: AppBar(title: const Text('Your tickets')),
       body: SingleChildScrollView(
@@ -53,11 +70,14 @@ class TicketListScreenState extends State<TicketListScreen> {
               child: Flex(
                 direction: Axis.vertical,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  ...tickets.map((Ticket t) {
-                    return TicketCard(t);
-                  })
-                ],
+                children: eventsMap.length == tickets.length
+                    ? <Widget>[
+                        ...tickets.map((Ticket t) {
+                          return TicketCard(
+                              t, eventsMap[t.eventID] ?? Event.emptyFallback());
+                        })
+                      ]
+                    : [],
               ),
             )),
       ),

@@ -13,9 +13,15 @@ class Event {
         address = json['address'],
         name = json['name'],
         id = json['id'];
+
+  factory Event.emptyFallback() {
+    return Event(DateTime.now(), "no address", "idk, man", "lol");
+  }
 }
 
 List<Event> parseEvents(String jsonString) {
   final parsedList = jsonDecode(jsonString) as List<dynamic>;
-  return parsedList.map((e) => Event.fromJson(e as Map<String, dynamic>)).toList();
+  return parsedList
+      .map((e) => Event.fromJson(e as Map<String, dynamic>))
+      .toList();
 }
