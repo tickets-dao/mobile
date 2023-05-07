@@ -11,6 +11,9 @@ Future<void> main() async {
       await realService.getAvailableTicketsByEventAndCategory('', 'parter');
   print('tickets response: ${tickets.toString()}');
 
+  final myTickets = await realService.getTicketsByUser();
+  myTickets.map((e) => print(e));
+
   await realService.init("../keys/user.private");
 
   await realService.addFunds();
