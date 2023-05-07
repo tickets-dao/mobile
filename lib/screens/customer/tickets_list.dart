@@ -55,8 +55,8 @@ class TicketListScreenState extends State<TicketListScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: uncomment the real service call
-    // getTickets(Provider.of<RealDAOService>(context));
-    getTickets(mockedService);
+    getTickets(Provider.of<RealDAOService>(context));
+    // getTickets(mockedService);
     return Scaffold(
       appBar: AppBar(title: const Text('Your tickets')),
       body: SingleChildScrollView(

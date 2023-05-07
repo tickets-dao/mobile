@@ -1,3 +1,4 @@
+import 'package:dao_ticketer/screens/customer/tickets_list.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -94,8 +95,16 @@ class TicketScreenState extends State<TicketScreen> {
                                   actions: [
                                     TextButton(
                                       onPressed: () {
-                                        service.sendTicketTo(
-                                            widget.ticket, value);
+                                        service
+                                            .sendTicketTo(widget.ticket, value)
+                                            .then((_) {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const TicketListScreen()),
+                                          );
+                                        });
                                       },
                                       child: const Text("Confirm"),
                                     )
