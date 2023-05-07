@@ -11,12 +11,14 @@ const local = 'localhost';
 const cloud = '51.250.110.24';
 
 class RealDAOService implements IDAOService {
+  String? _filename;
   SimpleKeyPairData? _privateKey;
 
   late final Uri queryURL;
   late final Uri invokeURL;
 
-  RealDAOService([bool? isLocal]) {
+  // lines 19 through 36 make this class a singleton
+  RealDAOService._privateConstructor([bool? isLocal]) {
     late String address;
     if (isLocal ?? false) {
       address = local;
@@ -28,16 +30,29 @@ class RealDAOService implements IDAOService {
     invokeURL = Uri.parse('http://$address:9001/invoke');
   }
 
+  static late final RealDAOService _instance;
+
+  RealDAOService([bool? isLocal]) {
+    _instance = RealDAOService._privateConstructor(isLocal);
+    print('realdaoservice public constructor called, instance:');
+    print(_instance);
+  }
+
+  factory RealDAOService.getSingleton() {
+    return _instance;
+  }
+
   // необходимо вызвать перед инвоуком
   // инициализация ключа - async, поэтому нельзя вызывать в конструкторе
   init(String filename) async {
-    if (_privateKey != null) return;
-    _privateKey = await readPrivateKeyFromFile(filename);
+    if (_instance._privateKey != null) return;
+    _instance._filename = filename;
+    _instance._privateKey = await readPrivateKeyFromFile(filename);
   }
 
   Future<String> invokeWithSign(List<String> params, String fnName) async {
     List<String> signedArgs =
-        await sign(_privateKey, 'tickets', 'tickets', fnName, params);
+        await sign(_instance._privateKey, 'tickets', 'tickets', fnName, params);
 
     return doRequest(invokeURL, signedArgs, fnName);
   }
@@ -77,7 +92,7 @@ class RealDAOService implements IDAOService {
   Future<List<Ticket>> getAvailableTicketsByEventAndCategory(
       String eventID, String category,
       [int? sector]) async {
-    final result = await doRequest(queryURL,
+    final result = await doRequest(_instance.queryURL,
         [eventID, category, 'ticketsByCategory'], 'ticketsByCategory');
 
     print('tickets JSON: $result');

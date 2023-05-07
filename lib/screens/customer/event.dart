@@ -1,6 +1,5 @@
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
@@ -21,14 +20,19 @@ class EventScreenState extends State<EventScreen> {
   List<String> _eventCategories = [];
   Map<String, List<Ticket>> _eventTicketsByCategory = {};
   Ticket? selectedTicket;
-  bool initialized = false;
 
-  void fetchTicketsByCategories(fetchedCategories) async {}
+  late final RealDAOService service;
 
-  void getEventsData(service) {
-    if (initialized) return;
-    initialized = true;
+  selectTicket(Ticket newTicket) {
+    setState(() {
+      selectedTicket = newTicket;
+    });
+  }
 
+  @override
+  void initState() {
+    super.initState();
+    service = RealDAOService.getSingleton();
     service.getCategories(widget.event.id).then((fetchedCategories) async {
       // once the categories are fetched,
       // use the service to get all the tickets by those categories
@@ -55,17 +59,6 @@ class EventScreenState extends State<EventScreen> {
     });
   }
 
-  selectTicket(Ticket newTicket) {
-    setState(() {
-      selectedTicket = newTicket;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   List<Widget> getEventWidgetChildren() {
     if (_eventTicketsByCategory.isEmpty) {
       return [EventCard(widget.event, false)];
@@ -81,8 +74,6 @@ class EventScreenState extends State<EventScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final service = Provider.of<RealDAOService>(context);
-    getEventsData(service);
     return Scaffold(
         appBar: AppBar(title: Text(widget.event.name)),
         body: SingleChildScrollView(

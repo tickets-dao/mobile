@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
 import 'package:dao_ticketer/screens/customer/event_list.dart'
@@ -79,11 +78,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  RealDAOService service = RealDAOService();
+  @override
+  void initState() {
+    super.initState();
+    // this call to the service constructor is the first one in the
+    // life cycle of the application, so it will instantiate the singleton
+    RealDAOService service = RealDAOService();
+    service.init('assets/keys/user.private');
+  }
 
   @override
   Widget build(BuildContext context) {
-    context.read<RealDAOService>().init('assets/keys/user.private');
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
