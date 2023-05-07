@@ -6,8 +6,8 @@ import 'package:dao_ticketer/screens/customer/event_list.dart'
     show EventsListScreen;
 import 'package:dao_ticketer/screens/customer/tickets_list.dart'
     show TicketListScreen;
-import 'scan-qr.dart';
-import 'render-qr.dart';
+import 'ticketer/scan-qr.dart';
+import 'customer/render-qr.dart';
 
 void navigateTo(BuildContext context, String screen) {
   switch (screen) {
@@ -16,8 +16,8 @@ void navigateTo(BuildContext context, String screen) {
           MaterialPageRoute(builder: (context) => const EventsListScreen()));
       break;
     case "tickets":
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => TicketListScreen()));
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const TicketListScreen()));
       break;
     case "scan":
       Navigator.push(

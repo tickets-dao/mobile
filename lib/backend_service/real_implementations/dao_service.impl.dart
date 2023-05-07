@@ -135,4 +135,16 @@ class RealDAOService implements IDAOService {
 
     return parseTickets(result);
   }
+
+  @override
+  Future<void> sendTicketTo(Ticket t, String destinationUser) {
+    // TODO: implement sendTicketTo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> burnTicket(String ticketID) {
+    // TODO: implement burnTicket
+    throw UnimplementedError();
+  }
 }

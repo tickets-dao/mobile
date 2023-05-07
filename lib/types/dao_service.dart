@@ -23,5 +23,7 @@ abstract class IDAOService {
 
   Future<void> prepareTicket(Ticket ticket, String secret);
 
+  Future<void> burnTicket(String ticketID);
+
   Future<void> addFunds();
 }
