@@ -123,10 +123,11 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<void> addFunds() async {
+  Future<String> addFunds() async {
     final payload = await invokeWithSign([], 'addAllowedBalance');
 
     print('addfunds response: $payload');
+    return payload;
   }
 
   @override
@@ -160,6 +161,12 @@ class RealDAOService implements IDAOService {
   @override
   Future<void> burnTicket(String ticketID) {
     // TODO: implement burnTicket
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> getUserBalance() {
+    // TODO: implement getUserBalance
     throw UnimplementedError();
   }
 }
