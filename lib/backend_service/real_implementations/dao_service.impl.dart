@@ -145,7 +145,10 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<List<Ticket>> getTicketsByUser() async {
-    final result = await doRequest(queryURL, ['myTickets'], 'myTickets');
+    List<String> signedArgs =
+    await sign(_instance._privateKey, 'tickets', 'tickets', 'myTickets', []);
+
+    final result = await doRequest(queryURL, ['myTickets', ...signedArgs], 'myTickets');
 
     print(result);
 
