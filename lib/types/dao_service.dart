@@ -28,4 +28,8 @@ abstract class IDAOService {
   Future<int> getUserBalance();
 
   Future<void> addFunds();
+
+  Future<List<Event>> getEventsByEmittent();
+
+  Future<void> createEvent(Event e);
 }

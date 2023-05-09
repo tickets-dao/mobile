@@ -6,8 +6,8 @@ import 'package:dao_ticketer/screens/customer/event_list.dart'
     show EventsListScreen;
 import 'package:dao_ticketer/screens/customer/tickets_list.dart'
     show TicketListScreen;
-import 'ticketer/scan-qr.dart';
-import 'customer/render-qr.dart';
+import 'ticketer/scan_qr.dart';
+import 'customer/render_qr.dart';
 
 void navigateTo(BuildContext context, String screen) {
   switch (screen) {

@@ -145,10 +145,11 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<List<Ticket>> getTicketsByUser() async {
-    List<String> signedArgs =
-    await sign(_instance._privateKey, 'tickets', 'tickets', 'myTickets', []);
+    List<String> signedArgs = await sign(
+        _instance._privateKey, 'tickets', 'tickets', 'myTickets', []);
 
-    final result = await doRequest(queryURL, ['myTickets', ...signedArgs], 'myTickets');
+    final result =
+        await doRequest(queryURL, ['myTickets', ...signedArgs], 'myTickets');
 
     print(result);
 
@@ -170,6 +171,18 @@ class RealDAOService implements IDAOService {
   @override
   Future<int> getUserBalance() {
     // TODO: implement getUserBalance
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Event>> getEventsByEmittent() {
+    // TODO: implement getEventsByEmittent
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> createEvent(Event e) {
+    // TODO: implement createEvent
     throw UnimplementedError();
   }
 }
