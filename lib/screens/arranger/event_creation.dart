@@ -82,12 +82,12 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                 }),
                 ElevatedButton(
                   child: const Text('create event'),
-                  onPressed: () {
-                    // TODO: send extra request to create categories to the chaincode
-
+                  onPressed: () async {
                     // TODO: decide on what to do with the id of the event being created
-                    service
+                    String eventID = await service
                         .createEvent(Event(startDateTime, address, name, ""));
+
+                    service.createEventCategories(eventID, categories);
                   },
                 )
               ]),
