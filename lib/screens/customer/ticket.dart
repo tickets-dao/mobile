@@ -5,7 +5,7 @@ import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
 
-import 'package:dao_ticketer/screens/customer/render-qr.dart'
+import 'package:dao_ticketer/screens/customer/render_qr.dart'
     show GenerateScreen;
 
 class TicketScreen extends StatefulWidget {
