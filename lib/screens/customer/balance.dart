@@ -12,14 +12,18 @@ class BalanceScreenState extends State<BalanceScreen> {
   int balance = -1;
   RealDAOService service = RealDAOService.getSingleton();
 
-  @override
-  void initState() {
-    super.initState();
+  getUserBalance() {
     service.getUserBalance().then((int b) {
       setState(() {
         balance = b;
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getUserBalance();
   }
 
   @override
@@ -34,8 +38,9 @@ class BalanceScreenState extends State<BalanceScreen> {
           Text("Your current balance is $balance"),
           ElevatedButton(
               onPressed: () {
-                // TODO: parse response to immediately update the balance in the interface
-                service.addFunds().then((String s) {});
+                service.addFunds().then((_) {
+                  getUserBalance();
+                });
               },
               child: const Text("Add funds"))
         ],

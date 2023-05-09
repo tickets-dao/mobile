@@ -1,3 +1,4 @@
+import 'package:dao_ticketer/screens/customer/balance.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
@@ -17,6 +18,10 @@ void navigateTo(BuildContext context, String screen) {
     case "tickets":
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const TicketListScreen()));
+      break;
+    case "balance":
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const BalanceScreen()));
       break;
     case "scan":
       Navigator.push(
@@ -57,17 +62,10 @@ ListView getDrawerItems(BuildContext ctx) => ListView(
                 navigateTo(ctx, 'tickets');
               }),
           ListTile(
-            title: const Text('Generate QR'),
-            onTap: () {
-              navigateTo(ctx, 'generate');
-            },
-          ),
-          ListTile(
-            title: const Text('Scan QR'),
-            onTap: () {
-              navigateTo(ctx, 'scan');
-            },
-          ),
+              title: const Text('Your balance'),
+              onTap: () {
+                navigateTo(ctx, 'balance');
+              }),
         ]);
 
 class HomeScreen extends StatefulWidget {
