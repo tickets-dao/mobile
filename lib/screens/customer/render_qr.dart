@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'dart:async';
-import 'dart:typed_data';
-// import 'dart:ui';
-import 'dart:io';
 
 class GenerateScreen extends StatefulWidget {
   @override
@@ -69,7 +65,7 @@ class GenerateScreenState extends State<GenerateScreen> {
               right: 10.0,
               bottom: _topSectionBottomPadding,
             ),
-            child: Container(
+            child: SizedBox(
               height: _topSectionHeight,
               child: Row(
                 mainAxisSize: MainAxisSize.max,
