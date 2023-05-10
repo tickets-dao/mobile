@@ -84,10 +84,13 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                   child: const Text('create event'),
                   onPressed: () async {
                     // TODO: decide on what to do with the id of the event being created
-                    String eventID = await service
-                        .createEvent(Event(startDateTime, address, name, ""));
+                    String eventID = await service.createEvent(
+                        Event(startDateTime, address, name, ""), categories);
 
-                    service.createEventCategories(eventID, categories);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => EventScreen()),
+                    );
                   },
                 )
               ]),

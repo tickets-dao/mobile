@@ -32,7 +32,5 @@ abstract class IDAOService {
   Future<List<Event>> getEventsByEmittent();
 
   // returns eventID
-  Future<String> createEvent(Event e);
-
-  Future<void> createEventCategories(String eid, Map<String, int> categories);
+  Future<String> createEvent(Event e, Map<String, int> categories);
 }

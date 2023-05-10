@@ -182,15 +182,8 @@ class RealDAOService implements IDAOService {
 
   // returns eventID?
   @override
-  Future<String> createEvent(Event e) {
+  Future<String> createEvent(Event e, Map<String, int> categories) {
     // TODO: implement createEvent
-    throw UnimplementedError();
-  }
-
-  // to be called asynchronously after the event has been created
-  @override
-  Future<void> createEventCategories(String eid, Map<String, int> categories) {
-    // TODO: implement createEventCategories
     throw UnimplementedError();
   }
 }
