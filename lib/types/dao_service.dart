@@ -35,4 +35,6 @@ abstract class IDAOService {
   Future<String> createEvent(Event e, Map<String, int> categories);
 
   Future<Map<String, int>> getEmittentEventCategories(String eid);
+
+  Future<bool> setCategoryPices(Map<String, int> categoryPrices);
 }

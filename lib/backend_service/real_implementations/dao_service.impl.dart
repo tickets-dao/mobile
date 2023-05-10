@@ -192,4 +192,10 @@ class RealDAOService implements IDAOService {
     // TODO: implement getEmittentEventCategories
     throw UnimplementedError();
   }
+
+  @override
+  Future<bool> setCategoryPices(Map<String, int> categoryPrices) {
+    // TODO: implement setCategoryPices
+    throw UnimplementedError();
+  }
 }
