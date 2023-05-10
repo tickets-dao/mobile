@@ -3,6 +3,8 @@ import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/components/categories_editor.dart'
     show CategoriesEditor;
 import 'package:flutter/material.dart';
+import 'package:dao_ticketer/screens/emitent/event.dart'
+    show EmittentEventScreen;
 
 class EventCreationScreen extends StatefulWidget {
   const EventCreationScreen({super.key});
@@ -75,22 +77,27 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                         startTime = value;
                       });
                     }),
-                CategoriesEditor((value) {
-                  setState(() {
-                    categories = value;
-                  });
-                }),
+                CategoriesEditor(
+                    value: categories,
+                    onChanged: (value) {
+                      setState(() {
+                        categories = value;
+                      });
+                    }),
                 ElevatedButton(
                   child: const Text('create event'),
-                  onPressed: () async {
-                    // TODO: decide on what to do with the id of the event being created
-                    String eventID = await service.createEvent(
-                        Event(startDateTime, address, name, ""), categories);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => EventScreen()),
-                    );
+                  onPressed: () {
+                    service
+                        .createEvent(
+                            Event(startDateTime, address, name, ""), categories)
+                        .then((eid) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                EmittentEventScreen(eventID: eid)),
+                      );
+                    });
                   },
                 )
               ]),

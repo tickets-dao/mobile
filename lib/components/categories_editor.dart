@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CategoriesEditor extends StatefulWidget {
-  CategoriesEditor(onChanged, {super.key});
+  const CategoriesEditor(
+      {required value, required onChanged, fixCategoryKeys = false, super.key});
+
+  final Map<String, int> value;
+  Map<String, int> onChanged(Map<String, int> value) => value;
+  final bool fixCategoryKeys;
 
   @override
   State<CategoriesEditor> createState() => _CategoriesEditorState();

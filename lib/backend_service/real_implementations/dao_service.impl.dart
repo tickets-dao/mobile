@@ -186,4 +186,10 @@ class RealDAOService implements IDAOService {
     // TODO: implement createEvent
     throw UnimplementedError();
   }
+
+  @override
+  Future<Map<String, int>> getEmittentEventCategories(String eid) {
+    // TODO: implement getEmittentEventCategories
+    throw UnimplementedError();
+  }
 }
