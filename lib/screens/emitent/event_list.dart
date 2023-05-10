@@ -1,7 +1,7 @@
 import 'package:dao_ticketer/components/event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
-import 'package:dao_ticketer/screens/arranger/event_creation.dart';
+import 'package:dao_ticketer/screens/emitent/event_creation.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 
 class EmitterEventsListScreen extends StatefulWidget {
