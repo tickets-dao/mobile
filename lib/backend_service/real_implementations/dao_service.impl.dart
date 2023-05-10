@@ -198,4 +198,15 @@ class RealDAOService implements IDAOService {
     // TODO: implement setCategoryPices
     throw UnimplementedError();
   }
+
+  // Presuming that each there will be multiple error states:
+  // for every role and every invoke.
+  // Even if the role isn't necessary, I'd suggest we keep it in the function
+  // signature
+  // cuz who knows...
+  @override
+  Future<String> getUserErrorState(String role, String invokeKey) {
+    // TODO: implement getUserErrorState
+    throw UnimplementedError();
+  }
 }

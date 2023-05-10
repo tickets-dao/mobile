@@ -2,6 +2,8 @@ import 'event.dart';
 import 'ticket.dart';
 
 abstract class IDAOService {
+  Future<String> getUserErrorState(String role, String invokeKey);
+
   Future<List<Event>> getEvents();
 
   Future<List<String>> getCategories(String eventID);
