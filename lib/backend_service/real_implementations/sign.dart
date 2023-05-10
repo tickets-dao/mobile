@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:base58check/base58check.dart';
 import 'package:crypto/crypto.dart';
 import 'dart:typed_data';
 import 'package:bs58/bs58.dart';
@@ -29,17 +30,27 @@ import 'package:flutter/services.dart' show rootBundle;
 //   final List<String> encodedAddBalanceList =
 //       signedAddBalanceArgs.map(base64EncodeString).toList();
 
-  // print(await doRequest(Uri(),encodedAddBalanceList, "addAllowedBalance"));
-  //
-  // List<String> signedEmitArgs = await sign(
-  //     privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "1"]);
-  // print(signedEmitArgs);
+// print(await doRequest(Uri(),encodedAddBalanceList, "addAllowedBalance"));
+//
+// List<String> signedEmitArgs = await sign(
+//     privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "1"]);
+// print(signedEmitArgs);
 
 //   final List<String> encodedList =
 //       signedEmitArgs.map(base64EncodeString).toList();
 
 //   await doRequest(Uri(), encodedList, "buy");
 // }
+
+String getAddressByPublicKey(SimplePublicKey publicKey) {
+  final hash = sha3_256(publicKey.bytes);
+  final encoded = Base58CheckCodec(Base58CheckCodec.BITCOIN_ALPHABET)
+      .encode(Base58CheckPayload(hash[0], hash.sublist(1)));
+
+  print('encoded address is $encoded}');
+
+  return encoded;
+}
 
 Future<SimpleKeyPairData> readPrivateKeyFromFile(String filename) async {
   // final fileString = await rootBundle.loadString('assets/keys/user.private');
@@ -61,7 +72,7 @@ Uint8List sha3_256(List<int> data) {
   return out;
 }
 
-Future<List<String>> sign(SimpleKeyPairData? privateKey, String channel,
+Future<List<String>> sign(SimpleKeyPairData privateKey, String channel,
     String chaincode, String methodName, List<String> args) async {
   final nonce = DateTime.now().millisecondsSinceEpoch.toString();
   final result = <String>[
@@ -71,20 +82,13 @@ Future<List<String>> sign(SimpleKeyPairData? privateKey, String channel,
     channel,
     ...args,
     nonce,
-    base58.encode(privateKey?.publicKey.bytes as Uint8List),
+    base58.encode(privateKey.publicKey.bytes as Uint8List),
   ];
-
-  // We will never need this fallback, but flutter will never shutup abt the
-  // keypair that we have to initialize asyncronously and not in the constructor
-  // of the backendService that calls this function
-  final fallbackKPair = SimpleKeyPairData([],
-      publicKey: SimplePublicKey([], type: KeyPairType.ed25519),
-      type: KeyPairType.ed25519);
 
   final message = sha3_256(utf8.encode(result.join('')));
   final signature = await Ed25519().sign(
     message,
-    keyPair: await privateKey?.extract() ?? fallbackKPair,
+    keyPair: privateKey,
   );
 
   return [
@@ -122,7 +126,7 @@ Future<String> doRequest(Uri url, List<String> params, String fnName) async {
 
   final encoded = json.decode(response.body);
 
-  return utf8.decode(base64Decode(encoded["payload"]??""));
+  return utf8.decode(base64Decode(encoded["payload"] ?? ""));
 }
 
 String generateMd5(String input) {

@@ -82,6 +82,10 @@ class _HomeScreenState extends State<HomeScreen> {
     // this call to the service constructor is the first one in the
     // life cycle of the application, so it will instantiate the singleton
     RealDAOService service = RealDAOService();
+
+    // for local chaincode use
+    // RealDAOService service = RealDAOService(true);
+
     service.init('assets/keys/user.private');
   }
 

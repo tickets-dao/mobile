@@ -1,5 +1,6 @@
 import "dart:convert";
 import "package:cryptography/cryptography.dart";
+import 'package:bs58/bs58.dart';
 import "package:dao_ticketer/backend_service/real_implementations/sign.dart";
 import "package:dao_ticketer/types/ticket.dart";
 import "package:dao_ticketer/types/event.dart";
@@ -7,7 +8,7 @@ import "package:dao_ticketer/types/dao_service.dart";
 
 import "./async_utils.dart";
 
-const local = 'localhost';
+const local = '192.168.1.151';
 const cloud = '51.250.110.24';
 
 class RealDAOService implements IDAOService {
@@ -16,6 +17,17 @@ class RealDAOService implements IDAOService {
 
   late final Uri queryURL;
   late final Uri invokeURL;
+
+  Future<SimpleKeyPairData> _getPrivate() async {
+    // We will never need this fallback, but flutter will never shutup abt the
+    // keypair that we have to initialize asyncronously and not in the constructor
+    // of the backendService that calls this function
+    final fallbackKPair = SimpleKeyPairData([],
+        publicKey: SimplePublicKey([], type: KeyPairType.ed25519),
+        type: KeyPairType.ed25519);
+
+    return await _instance._privateKey?.extract() ?? fallbackKPair;
+  }
 
   // lines 19 through 36 make this class a singleton
   RealDAOService._privateConstructor([bool? isLocal]) {
@@ -51,10 +63,17 @@ class RealDAOService implements IDAOService {
   }
 
   Future<String> invokeWithSign(List<String> params, String fnName) async {
-    List<String> signedArgs =
-        await sign(_instance._privateKey, 'tickets', 'tickets', fnName, params);
+    List<String> signedArgs = await sign(
+        await _instance._getPrivate(), 'tickets', 'tickets', fnName, params);
 
     return doRequest(invokeURL, signedArgs, fnName);
+  }
+
+  Future<String> queryWithSign(List<String> params, String fnName) async {
+    List<String> signedArgs = await sign(
+        await _instance._getPrivate(), 'tickets', 'tickets', fnName, params);
+
+    return doRequest(queryURL, signedArgs, fnName);
   }
 
   @override
@@ -133,10 +152,10 @@ class RealDAOService implements IDAOService {
   @override
   Future<List<Event>> getEventsByID(List<String> eventID) async {
     // eventID is still unused in blockchain
-    var params = ['eventsByID'];
+    var params = ['eventsByIDs'];
     params.addAll(eventID);
 
-    final result = await doRequest(queryURL, params, 'eventsByID');
+    final result = await doRequest(queryURL, params, 'eventsByIDs');
 
     print(result);
 
@@ -145,11 +164,7 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<List<Ticket>> getTicketsByUser() async {
-    List<String> signedArgs = await sign(
-        _instance._privateKey, 'tickets', 'tickets', 'myTickets', []);
-
-    final result =
-        await doRequest(queryURL, ['myTickets', ...signedArgs], 'myTickets');
+    final result = await queryWithSign([], 'myTickets');
 
     print(result);
 
@@ -169,9 +184,16 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<int> getUserBalance() {
-    // TODO: implement getUserBalance
-    throw UnimplementedError();
+  Future<int> getUserBalance() async {
+    final keyPairData = (await _instance._getPrivate());
+    final result = await doRequest(
+        queryURL,
+        [getAddressByPublicKey(await keyPairData.extractPublicKey()), "RUB"],
+        'allowedBalanceOf');
+
+    print(result);
+
+    return int.parse(result.replaceAll('"', ''));
   }
 
   @override

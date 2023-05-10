@@ -119,4 +119,58 @@ class MockedDAOService implements IDAOService {
               Ticket("category", 200, 2, 1, 2, "eventische"),
             ]);
   }
+
+  @override
+  Future<void> burnTicket(String ticketID) {
+    // TODO: implement burnTicket
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> createEvent(Event e, Map<String, int> prices) {
+    // TODO: implement createEvent
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> createEventCategories(String eid, Map<String, int> categories) {
+    // TODO: implement createEventCategories
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<Event>> getEventsByEmittent() {
+    // TODO: implement getEventsByEmittent
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> getUserBalance() {
+    // TODO: implement getUserBalance
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> sendTicketTo(Ticket t, String destinationUser) {
+    // TODO: implement sendTicketTo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<String, int>> getEmittentEventCategories(String eid) {
+    // TODO: implement getEmittentEventCategories
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> getUserErrorState(String role, String invokeKey) {
+    // TODO: implement getUserErrorState
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> setCategoryPices(Map<String, int> categoryPrices) {
+    // TODO: implement setCategoryPices
+    throw UnimplementedError();
+  }
 }

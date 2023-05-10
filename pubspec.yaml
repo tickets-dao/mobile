@@ -43,6 +43,7 @@ dependencies:
   bs58: ^1.0.2
   pointycastle: ^3.7.3
   asn1lib: ^1.0.0
+  base58check: ^2.0.0
 
 dev_dependencies:
   flutter_test:
