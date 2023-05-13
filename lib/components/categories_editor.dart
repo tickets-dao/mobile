@@ -1,13 +1,30 @@
 import 'package:flutter/material.dart';
+import 'dart:async';
+
+class Entry {
+  Entry({this.key_ = "", this.value_ = -1});
+
+  String key_;
+  int value_;
+
+  String get key => key_;
+  int get value => value_;
+
+  void setKey(newKey) {
+    key_ = newKey;
+  }
+
+  void setValue(newValue) {
+    value_ = newValue;
+  }
+}
 
 class CategoriesEditor extends StatefulWidget {
-  const CategoriesEditor(
-      {required value,
+  CategoriesEditor(
+      {required this.value,
       required onChanged,
-      fixCategoryKeys = false,
-      super.key,
-      required this.value,
-      required this.fixCategoryKeys});
+      this.fixCategoryKeys = false,
+      super.key});
 
   final Map<String, int> value;
 
@@ -21,10 +38,86 @@ class CategoriesEditor extends StatefulWidget {
 class _CategoriesEditorState extends State<CategoriesEditor> {
   void onChanged;
   Map<String, int> categoriesMap = {};
+  List<Entry> editableValue = [];
+
+  Timer? _debounce;
+
+  @override
+  void initState() {
+    super.initState();
+    editableValue = [
+      ...widget.value.entries.map((e) => Entry(key_: e.key, value_: e.value))
+    ];
+  }
+
+  listToMap(List<Entry> list) {
+    const res = {};
+    for (Entry e in list) {
+      res.addAll({e.key: e.value});
+    }
+    return res;
+  }
+
+  syncWithParent() {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      widget.onChanged(listToMap(editableValue));
+    });
+  }
+
+  List<Widget> getEntriesUIwithButton() {
+    List<Widget> res = editableValue
+        .map(
+          (e) => Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), label: Text("cat. name")),
+                onChanged: (newKey) {
+                  e.setKey(newKey);
+                  syncWithParent();
+                },
+              ),
+              TextField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), label: Text("price")),
+                onChanged: (newValue) {
+                  e.setValue(newValue);
+                  syncWithParent();
+                },
+              ),
+              ElevatedButton(
+                  onPressed: () {
+                    int index = editableValue.indexOf(e);
+                    setState(() {
+                      editableValue.removeAt(index);
+                    });
+                  },
+                  child: const Text("Delete"))
+            ],
+          ),
+        )
+        .toList();
+    res.add(ElevatedButton(
+        onPressed: () {
+          setState(() {
+            editableValue.add(Entry(key_: "", value_: 0));
+          });
+        },
+        child: const Text("+ add category")));
+    return res;
+  }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build of input pairs where the key is for the category name and the value is for the price
-    throw UnimplementedError();
+    return Flex(
+      direction: Axis.vertical,
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: getEntriesUIwithButton(),
+    );
   }
 }
