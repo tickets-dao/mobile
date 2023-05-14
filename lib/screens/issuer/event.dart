@@ -1,4 +1,5 @@
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
+import 'package:dao_ticketer/types/price_category.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/components/event_card.dart';
@@ -16,7 +17,7 @@ class EmittentEventScreen extends StatefulWidget {
 
 class _EmittentEventScreenState extends State<EmittentEventScreen> {
   Event event = Event.emptyFallback();
-  Map<String, int> categories = {};
+  List<PriceCategory> categories = [];
   RealDAOService service = RealDAOService.getSingleton();
 
   void initEventData() async {
@@ -28,8 +29,7 @@ class _EmittentEventScreenState extends State<EmittentEventScreen> {
       event = widget.event ?? Event.emptyFallback();
     }
     service
-        .getIssuerEventCategories(
-            widget.event?.id ?? "uninitialized event ID")
+        .getIssuerEventCategories(widget.event?.id ?? "uninitialized event ID")
         .then((cs) {
       setState(() {
         categories = cs;

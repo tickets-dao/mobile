@@ -217,15 +217,14 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<Map<String, PriceCategory>> getIssuerEventCategories(
-      String eid) async {
+  Future<List<PriceCategory>> getIssuerEventCategories(String eid) async {
     final result = await doRequest(queryURL, [eid], 'eventCategories');
-
-    return priceCategoryFromJson(result);
+    List<Map<String, dynamic>> categoriesJson = jsonDecode(result);
+    return categoriesJson.map((json) => PriceCategory.fromJson(json)).toList();
   }
 
   @override
-  Future<bool> setCategoryPices(Map<String, int> categoryPrices) {
+  Future<bool> setCategoryPices(List<PriceCategory> categories) {
     // TODO: implement setCategoryPices
     throw UnimplementedError();
   }

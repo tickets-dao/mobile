@@ -8,10 +8,12 @@ import "./async_utils.dart";
 
 class MockedDAOService implements IDAOService {
   @override
-  Future<int> buyTicket(Ticket ticket) => Future.delayed(getRandomDuration(3), () => getRandom(50));
+  Future<int> buyTicket(Ticket ticket) =>
+      Future.delayed(getRandomDuration(3), () => getRandom(50));
 
   @override
-  Future<void> addFunds() => Future.delayed(getRandomDuration(3), () => getRandom(50));
+  Future<void> addFunds() =>
+      Future.delayed(getRandomDuration(3), () => getRandom(50));
 
   @override
   Future<List<String>> getCategories(String eventID) => Future.delayed(
@@ -30,11 +32,13 @@ class MockedDAOService implements IDAOService {
             Event(DateTime.now(), "Glastonbury", "Muse", ""),
             Event(DateTime.now(), "Lolapalooza", "Arctic Monkeys", ""),
             Event(DateTime.now(), "London", "Deep Purple", ""),
-            Event(DateTime.now(), "Tverskaya", "Serebrennikov 'Vishnyovy Sad'", ""),
+            Event(DateTime.now(), "Tverskaya", "Serebrennikov 'Vishnyovy Sad'",
+                ""),
           ]);
 
   @override
-  Future<List<Ticket>> getAvailableTicketsByEventAndCategory(String eventID, String category,
+  Future<List<Ticket>> getAvailableTicketsByEventAndCategory(
+          String eventID, String category,
           [int? sector]) =>
       Future.delayed(
           getRandomDuration(3),
@@ -79,7 +83,8 @@ class MockedDAOService implements IDAOService {
       if (response.statusCode == 200) {
         print('Запрос успешно выполнен: ${response.body}');
       } else {
-        print('Ошибка при выполнении запроса. Код ответа: ${response.statusCode}');
+        print(
+            'Ошибка при выполнении запроса. Код ответа: ${response.statusCode}');
       }
     } catch (e) {
       print('Произошла ошибка при отправке запроса: $e');
@@ -94,8 +99,8 @@ class MockedDAOService implements IDAOService {
     return Future.delayed(
         getRandomDuration(3),
         () => eventID
-            .map((String ei) => Event(
-                DateTime.now(), "mocked event ticket address", "mocked event ticket name", ei))
+            .map((String ei) => Event(DateTime.now(),
+                "mocked event ticket address", "mocked event ticket name", ei))
             .toList());
   }
 
@@ -153,7 +158,7 @@ class MockedDAOService implements IDAOService {
   }
 
   @override
-  Future<Map<String, PriceCategory>> getIssuerEventCategories(String eid) {
+  Future<List<PriceCategory>> getIssuerEventCategories(String eid) {
     // TODO: implement getEmittentEventCategories
     throw UnimplementedError();
   }
@@ -165,7 +170,7 @@ class MockedDAOService implements IDAOService {
   }
 
   @override
-  Future<bool> setCategoryPices(Map<String, int> categoryPrices) {
+  Future<bool> setCategoryPices(List<PriceCategory> categories) {
     // TODO: implement setCategoryPices
     throw UnimplementedError();
   }

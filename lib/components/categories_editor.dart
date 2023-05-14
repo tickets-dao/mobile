@@ -91,7 +91,8 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
         ElevatedButton(
             onPressed: () {
               setState(() {
-                editableValue.add(Entry(key_: "", value_: 0));
+                editableValue.add(
+                    PriceCategory(name: "", price: 200, rows: 10, seats: 10));
               });
             },
             child: const Text("+ add category"))

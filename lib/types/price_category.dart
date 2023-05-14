@@ -41,10 +41,3 @@ class PriceCategory {
         rows = json['rows'],
         seats = json['seats'];
 }
-
-Map<String, PriceCategory> priceCategoryFromJson(String str) {
-  final List<dynamic> jsonData = jsonDecode(str);
-  return {
-    for (var item in jsonData) item['name']: PriceCategory.fromJson(item)
-  };
-}

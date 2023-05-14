@@ -38,7 +38,7 @@ abstract class IDAOService {
   // returns eventID
   Future<String> createEvent(Event e, List<PriceCategory> categories);
 
-  Future<Map<String, PriceCategory>> getIssuerEventCategories(String eid);
+  Future<List<PriceCategory>> getIssuerEventCategories(String eid);
 
-  Future<bool> setCategoryPices(Map<String, int> categoryPrices);
+  Future<bool> setCategoryPices(List<PriceCategory> categories);
 }
