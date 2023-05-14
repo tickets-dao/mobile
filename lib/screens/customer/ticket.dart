@@ -56,7 +56,9 @@ class TicketScreenState extends State<TicketScreen> {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GenerateScreen()),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GenerateScreen(ticket: widget.ticket)),
                   );
                 },
                 child: const Text('Generate QR code')),

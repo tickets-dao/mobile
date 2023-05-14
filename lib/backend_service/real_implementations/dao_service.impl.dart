@@ -1,11 +1,12 @@
 import "dart:convert";
 import "package:cryptography/cryptography.dart";
-import 'package:bs58/bs58.dart';
+import "package:bs58/bs58.dart";
 import "package:dao_ticketer/backend_service/real_implementations/sign.dart";
 import "package:dao_ticketer/types/price_category.dart";
 import "package:dao_ticketer/types/ticket.dart";
 import "package:dao_ticketer/types/event.dart";
 import "package:dao_ticketer/types/dao_service.dart";
+import "package:localstorage/localstorage.dart" show LocalStorage;
 
 import "./async_utils.dart";
 
@@ -18,6 +19,7 @@ class RealDAOService implements IDAOService {
 
   late final Uri queryURL;
   late final Uri invokeURL;
+  final localStorage = LocalStorage('ticketer_data.json');
 
   Future<SimpleKeyPairData> _getPrivate() async {
     // We will never need this fallback, but flutter will never shutup abt the
@@ -79,11 +81,9 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<int> buyTicket(Ticket ticket) async {
-    final payload = await invokeWithSign([
-      ticket.category,
-      ticket.row.toString(),
-      ticket.number.toString()
-    ], 'buy');
+    final payload = await invokeWithSign(
+        [ticket.category, ticket.row.toString(), ticket.number.toString()],
+        'buy');
 
     return jsonDecode(payload)['price'] as int;
   }
@@ -192,6 +192,18 @@ class RealDAOService implements IDAOService {
     print(result);
 
     return int.parse(result.replaceAll('"', ''));
+  }
+
+  @override
+  String getLocalTicketSecret(Ticket t) {
+    return localStorage
+        .getItem("${t.eventID}:${t.category}:${t.row}${t.number}");
+  }
+
+  @override
+  void setLocalTicketSecret(Ticket t, String secret) {
+    localStorage.setItem(
+        "${t.eventID}:${t.category}:${t.row}${t.number}", secret);
   }
 
   @override

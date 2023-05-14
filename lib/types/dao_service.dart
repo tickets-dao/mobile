@@ -27,6 +27,9 @@ abstract class IDAOService {
 
   Future<void> prepareTicket(Ticket ticket, String secret);
 
+  String getLocalTicketSecret(Ticket t);
+  void setLocalTicketSecret(Ticket t, String secret);
+
   Future<void> burnTicket(String ticketID);
 
   Future<int> getUserBalance();

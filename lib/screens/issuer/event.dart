@@ -59,7 +59,7 @@ class _EmittentEventScreenState extends State<EmittentEventScreen> {
                     categories = value;
                   });
                 },
-                fixCategoryKeys: true,
+                pricesOnly: true,
               ),
             ),
           ],

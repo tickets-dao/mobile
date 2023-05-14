@@ -117,18 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: const Text('SCAN QR CODE')),
           ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => GenerateScreen()),
-                  );
-                },
-                child: const Text('GENERATE QR CODE')),
-          ),
         ],
       )),
     );

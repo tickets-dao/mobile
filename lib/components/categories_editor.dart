@@ -6,13 +6,13 @@ class CategoriesEditor extends StatefulWidget {
   const CategoriesEditor(
       {required this.value,
       required onChanged,
-      this.fixCategoryKeys = false,
+      this.pricesOnly = false,
       super.key});
 
   final List<PriceCategory> value;
 
   List<PriceCategory> onChanged(List<PriceCategory> value) => value;
-  final bool fixCategoryKeys;
+  final bool pricesOnly;
 
   @override
   State<CategoriesEditor> createState() => _CategoriesEditorState();

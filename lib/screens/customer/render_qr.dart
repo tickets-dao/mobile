@@ -1,7 +1,22 @@
+import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
+import 'package:dao_ticketer/types/ticket.dart';
+
+import 'dart:math';
+
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+Random _rnd = Random();
+
+String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));
+
 class GenerateScreen extends StatefulWidget {
+  const GenerateScreen({required this.ticket, super.key});
+
+  final Ticket ticket;
+
   @override
   State<StatefulWidget> createState() => GenerateScreenState();
 }
@@ -11,110 +26,76 @@ class GenerateScreenState extends State<GenerateScreen> {
   static const double _topSectionBottomPadding = 20.0;
   static const double _topSectionHeight = 50.0;
 
-  GlobalKey globalKey = new GlobalKey();
+  GlobalKey globalKey = GlobalKey();
   String _dataString = "Hello from this QR";
   String _inputErrorText = "no error";
+  RealDAOService service = RealDAOService.getSingleton();
+  bool ticketPrepared = false;
   final TextEditingController _textController = TextEditingController();
+  late final _secret;
+
+  rememberSecret() {
+    service.prepareTicket(widget.ticket, _secret).then((_) {
+      setState(() {
+        ticketPrepared = true;
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    String rememberedSecret = service.getLocalTicketSecret(widget.ticket);
+
+    _secret = rememberedSecret ?? getRandomString(10);
+
+    if (rememberedSecret == null || rememberedSecret == "") {
+      rememberSecret();
+    } else {
+      ticketPrepared = true;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('QR Code Generator'),
-        // actions: <Widget>[
-        //   IconButton(
-        //     icon: const Icon(Icons.share),
-        //     onPressed: _captureAndSharePng,
-        //   )
-        // ],
+        title: const Text('Ticket QR'),
       ),
       body: _contentWidget(),
     );
   }
-
-  // Future<void> _captureAndSharePng() async {
-  //   try {
-  //     RenderRepaintBoundary boundary =
-  //         globalKey.currentContext.findRenderObject();
-  //     var image = await boundary.toImage();
-  //     ByteData byteData = await image.toByteData(format: ImageByteFormat.png);
-  //     Uint8List pngBytes = byteData.buffer.asUint8List();
-
-  //     final tempDir = await getTemporaryDirectory();
-  //     final file = await new File('${tempDir.path}/image.png').create();
-  //     await file.writeAsBytes(pngBytes);
-
-  //     final channel = const MethodChannel('channel:me.alfian.share/share');
-  //     channel.invokeMethod('shareFile', 'image.png');
-  //   } catch (e) {
-  //     print(e.toString());
-  //   }
-  // }
 
   _contentWidget() {
     final bodyHeight = MediaQuery.of(context).size.height -
         MediaQuery.of(context).viewInsets.bottom;
     return Container(
       color: const Color(0xFFFFFFFF),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(
-              top: _topSectionTopPadding,
-              left: 20.0,
-              right: 10.0,
-              bottom: _topSectionBottomPadding,
-            ),
-            child: SizedBox(
-              height: _topSectionHeight,
-              child: Row(
-                mainAxisSize: MainAxisSize.max,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Expanded(
-                    child: TextField(
-                      controller: _textController,
-                      decoration: InputDecoration(
-                        hintText: "Enter a custom message",
-                        errorText: _inputErrorText,
+      child: ticketPrepared
+          ? Column(
+              children: <Widget>[
+                Expanded(
+                  child: Center(
+                    child: RepaintBoundary(
+                      key: globalKey,
+                      child: QrImage(
+                        data: _secret,
+                        size: 0.5 * bodyHeight,
+                        // onError: (ex) {
+                        //   setState(() {
+                        //     _inputErrorText =
+                        //         "Error! Maybe your input value is too long?";
+                        //   });
+                        // },
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0),
-                    child: ElevatedButton(
-                      child: const Text("SUBMIT"),
-                      onPressed: () {
-                        setState(() {
-                          _dataString = _textController.text;
-                          _inputErrorText = "ok";
-                        });
-                      },
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Expanded(
-            child: Center(
-              child: RepaintBoundary(
-                key: globalKey,
-                child: QrImage(
-                  data: _dataString,
-                  size: 0.5 * bodyHeight,
-                  // onError: (ex) {
-                  //   setState(() {
-                  //     _inputErrorText =
-                  //         "Error! Maybe your input value is too long?";
-                  //   });
-                  // },
                 ),
-              ),
-            ),
-          ),
-        ],
-      ),
+              ],
+            )
+          : const Text("Generating your secret...",
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
     );
   }
 }
