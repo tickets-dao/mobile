@@ -7,6 +7,7 @@ import 'package:dao_ticketer/backend_service/real_implementations/dao_service.im
 
 import 'package:dao_ticketer/screens/customer/render_qr.dart'
     show GenerateScreen;
+import 'package:intl/intl.dart';
 
 class TicketScreen extends StatefulWidget {
   const TicketScreen({super.key, required this.ticket, required this.event});
@@ -20,6 +21,7 @@ class TicketScreen extends StatefulWidget {
 
 class TicketScreenState extends State<TicketScreen> {
   RealDAOService service = RealDAOService.getSingleton();
+  late final DateFormat dateFormatter = DateFormat("dd.MM hh:mm");
 
   @override
   void initState() {
@@ -34,9 +36,9 @@ class TicketScreenState extends State<TicketScreen> {
         child: Column(
           children: [
             Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: const Color.fromARGB(249, 242, 253, 255),
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  color: Color.fromARGB(249, 242, 253, 255),
                 ),
                 padding: const EdgeInsets.all(20),
                 child: Flex(
@@ -45,8 +47,9 @@ class TicketScreenState extends State<TicketScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        "${widget.event.name}, ${widget.event.startTime.toUtc().toString()}"),
-                    Text("${widget.ticket.category}, ${widget.ticket.price}"),
+                        "${widget.event.name}, ${dateFormatter.format(widget.event.startTime)}"),
+                    Text(
+                        "${widget.ticket.category}, price: ${widget.ticket.price}"),
                   ],
                 )),
             ElevatedButton(
@@ -58,51 +61,54 @@ class TicketScreenState extends State<TicketScreen> {
                 },
                 child: const Text('Generate QR code')),
             Container(
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  color: const Color.fromARGB(249, 242, 253, 255),
-                ),
+                margin: const EdgeInsets.all(10),
                 child: Flex(
                     direction: Axis.horizontal,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      TextField(
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          labelText: "Send ticket to",
+                      Expanded(
+                        child: TextField(
+                          decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "Send ticket to",
+                          ),
+                          onSubmitted: (String value) async {
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title:
+                                        const Text("Confirm ticket transfer"),
+                                    content: Flex(
+                                        direction: Axis.vertical,
+                                        children: [
+                                          Text(
+                                              "Send '${widget.event.name}' ticket"),
+                                          Text("To $value"),
+                                        ]),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          service
+                                              .sendTicketTo(
+                                                  widget.ticket, value)
+                                              .then((_) {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      const TicketListScreen()),
+                                            );
+                                          });
+                                        },
+                                        child: const Text("Confirm"),
+                                      )
+                                    ],
+                                  );
+                                });
+                          },
                         ),
-                        onSubmitted: (String value) async {
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Text("Confirm ticket transfer"),
-                                  content:
-                                      Flex(direction: Axis.vertical, children: [
-                                    Text("Send '${widget.event.name}' ticket"),
-                                    Text("To $value"),
-                                  ]),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        service
-                                            .sendTicketTo(widget.ticket, value)
-                                            .then((_) {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    const TicketListScreen()),
-                                          );
-                                        });
-                                      },
-                                      child: const Text("Confirm"),
-                                    )
-                                  ],
-                                );
-                              });
-                        },
                       ),
                       ElevatedButton(
                           onPressed: () {}, child: const Text('Send ticket'))
