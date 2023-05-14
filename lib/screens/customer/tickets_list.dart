@@ -47,10 +47,6 @@ class TicketListScreenState extends State<TicketListScreen> {
       appBar: AppBar(title: const Text('Your tickets')),
       body: SingleChildScrollView(
         child: Container(
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              color: const Color.fromARGB(249, 242, 253, 255),
-            ),
             padding: const EdgeInsets.all(20),
             child: SingleChildScrollView(
               child: Flex(
