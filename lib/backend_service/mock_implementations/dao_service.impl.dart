@@ -38,21 +38,20 @@ class MockedDAOService implements IDAOService {
 
   @override
   Future<List<Ticket>> getAvailableTicketsByEventAndCategory(
-          String eventID, String category,
-          [int? sector]) =>
+          String eventID, String category) =>
       Future.delayed(
           getRandomDuration(3),
           () => [
-                Ticket(category, getRandom(40), 1, 1, 2, eventID),
-                Ticket(category, getRandom(40), 1, 1, 3, eventID),
-                Ticket(category, getRandom(40), 1, 2, 2, eventID),
-                Ticket(category, getRandom(40), 1, 2, 3, eventID),
-                Ticket(category, getRandom(40), 3, 2, 1, eventID),
-                Ticket(category, getRandom(40), 3, 2, 1, eventID),
-                Ticket(category, getRandom(40), 3, 2, 1, eventID),
-                Ticket(category, getRandom(40), 4, 2, 3, eventID),
-                Ticket(category, getRandom(40), 5, 2, 4, eventID),
-                Ticket(category, getRandom(40), 5, 2, 3, eventID),
+                Ticket(category, getRandom(40), 1, 2, eventID),
+                Ticket(category, getRandom(40), 1, 3, eventID),
+                Ticket(category, getRandom(40), 2, 2, eventID),
+                Ticket(category, getRandom(40), 2, 3, eventID),
+                Ticket(category, getRandom(40), 2, 1, eventID),
+                Ticket(category, getRandom(40), 2, 1, eventID),
+                Ticket(category, getRandom(40), 2, 1, eventID),
+                Ticket(category, getRandom(40), 2, 3, eventID),
+                Ticket(category, getRandom(40), 2, 4, eventID),
+                Ticket(category, getRandom(40), 2, 3, eventID),
               ]);
 
   @override
@@ -112,12 +111,12 @@ class MockedDAOService implements IDAOService {
     return Future.delayed(
         getRandomDuration(3),
         () => [
-              Ticket("some category", 200, 2, 1, 2, "eventische"),
-              Ticket("some other category", 200, 2, 1, 2, "eventische"),
-              Ticket("the best category", 200, 2, 1, 2, "eventische"),
-              Ticket("not the best category", 200, 2, 1, 2, "eventische"),
-              Ticket("second lowest category", 200, 2, 1, 2, "eventische"),
-              Ticket("category", 200, 2, 1, 2, "eventische"),
+              Ticket("some category", 200, 1, 2, "eventische"),
+              Ticket("some other category", 200, 1, 2, "eventische"),
+              Ticket("the best category", 200, 1, 2, "eventische"),
+              Ticket("not the best category", 200, 1, 2, "eventische"),
+              Ticket("second lowest category", 200, 1, 2, "eventische"),
+              Ticket("category", 200, 1, 2, "eventische"),
             ]);
   }
 
@@ -170,7 +169,7 @@ class MockedDAOService implements IDAOService {
   }
 
   @override
-  Future<bool> setCategoryPices(List<PriceCategory> categories) {
+  Future<bool> setCategoryPrices(List<PriceCategory> categories) {
     // TODO: implement setCategoryPices
     throw UnimplementedError();
   }

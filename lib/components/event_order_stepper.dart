@@ -29,25 +29,6 @@ class EventOrderStepperState extends State<EventOrderStepper> {
     final List<String> categories = [...widget.eventTicketsByCategory.keys];
     String selectedCategory = categories[0];
     Map<int, Set<int>> rowsBySectors = {};
-    Map<int, List<Ticket>> ticketsBySectors = {};
-
-    for (Ticket t in tickets[selectedCategory] ?? []) {
-      if (ticketsBySectors.containsKey(t.sector)) {
-        ticketsBySectors[t.sector]?.add(t);
-      } else {
-        ticketsBySectors.addAll({
-          t.sector: [t]
-        });
-      }
-      if (rowsBySectors.containsKey(t.sector)) {
-        rowsBySectors[t.sector]?.add(t.row);
-      } else {
-        rowsBySectors.addAll({
-          t.sector: {t.row}
-        });
-      }
-    }
-    List<int> sectors = [...ticketsBySectors.keys];
 
     getTicketsCount(int count) =>
         count > 1 ? "$count tickets" : "$count ticket";
@@ -117,24 +98,6 @@ class EventOrderStepperState extends State<EventOrderStepper> {
             ],
           ),
         ),
-        Step(
-            title: const Text('Select sector'),
-            content: Column(
-              children: <Widget>[
-                ...sectors.map((int s) => ListTile(
-                      title: Text(
-                          'Sector $s: ${getTicketsCount(ticketsBySectors[s]?.length ?? 0)}'),
-                      leading: Radio<int>(
-                          value: s,
-                          groupValue: _selectedSector,
-                          onChanged: (int? value) {
-                            setState(() {
-                              _selectedSector = value ?? s;
-                            });
-                          }),
-                    )),
-              ],
-            )),
         Step(
           title: const Text('Select row'),
           content: Column(

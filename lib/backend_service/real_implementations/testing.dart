@@ -17,7 +17,7 @@ Future<void> main() async {
   await realService.init("../keys/user.private");
 
   await realService.addFunds();
-  var ticket = Ticket("parter", 0, 1, 1, 2, "eventID");
+  var ticket = Ticket("parter", 0, 1, 1, "eventID");
   print(await realService.buyTicket(ticket));
 
   await realService.prepareTicket(ticket, "secret");

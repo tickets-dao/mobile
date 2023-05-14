@@ -1,3 +1,4 @@
+import 'package:dao_ticketer/types/price_category.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
@@ -17,7 +18,7 @@ class EventScreen extends StatefulWidget {
 }
 
 class EventScreenState extends State<EventScreen> {
-  List<String> _eventCategories = [];
+  List<PriceCategory> _eventCategories = [];
   Map<String, List<Ticket>> _eventTicketsByCategory = {};
   Ticket? selectedTicket;
 
@@ -40,9 +41,9 @@ class EventScreenState extends State<EventScreen> {
         _eventCategories = fetchedCategories;
       });
       final ticketFutures = <Future<List<Ticket>>>[];
-      for (String category in _eventCategories) {
+      for (PriceCategory category in _eventCategories) {
         ticketFutures.add(service.getAvailableTicketsByEventAndCategory(
-            widget.event.id, category));
+            widget.event.id, category.name));
       }
       final List<List<Ticket>> ticketsByCategory =
           await Future.wait(ticketFutures);
@@ -50,7 +51,7 @@ class EventScreenState extends State<EventScreen> {
       final Map<String, List<Ticket>> catTicketsMap = {};
 
       _eventCategories.asMap().forEach((index, category) {
-        catTicketsMap.addAll({category: ticketsByCategory[index]});
+        catTicketsMap.addAll({category.name: ticketsByCategory[index]});
       });
 
       setState(() {
@@ -92,7 +93,7 @@ class EventScreenState extends State<EventScreen> {
         floatingActionButton: selectedTicket != null
             ? ElevatedButton(
                 child: Text(
-                    "sector ${selectedTicket?.sector} | row ${selectedTicket?.row} | seat ${selectedTicket?.number} | price ${selectedTicket?.price}"),
+                    "row ${selectedTicket?.row} | seat ${selectedTicket?.number} | price ${selectedTicket?.price}"),
                 onPressed: () {
                   if (selectedTicket != null) {
                     service.buyTicket(selectedTicket ??

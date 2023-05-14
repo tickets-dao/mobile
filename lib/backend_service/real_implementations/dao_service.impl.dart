@@ -81,7 +81,6 @@ class RealDAOService implements IDAOService {
   Future<int> buyTicket(Ticket ticket) async {
     final payload = await invokeWithSign([
       ticket.category,
-      ticket.sector.toString(),
       ticket.row.toString(),
       ticket.number.toString()
     ], 'buy');
@@ -90,12 +89,12 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<List<String>> getCategories(String eventID) async {
+  Future<List<PriceCategory>> getCategories(String eventID) async {
     // eventID is still unused in blockchain
     final result = await doRequest(
         queryURL, [eventID, 'eventCategories'], 'eventCategories');
 
-    return List<String>.from(jsonDecode(result));
+    return parsePriceCategories(result);
   }
 
   @override
@@ -110,8 +109,7 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<List<Ticket>> getAvailableTicketsByEventAndCategory(
-      String eventID, String category,
-      [int? sector]) async {
+      String eventID, String category) async {
     final result = await doRequest(_instance.queryURL,
         [eventID, category, 'ticketsByCategory'], 'ticketsByCategory');
 
@@ -124,7 +122,6 @@ class RealDAOService implements IDAOService {
   Future<void> prepareTicket(Ticket ticket, String secret) async {
     final payload = await invokeWithSign([
       ticket.category,
-      ticket.sector.toString(),
       ticket.row.toString(),
       ticket.number.toString(),
       generateMd5(secret),
@@ -211,20 +208,23 @@ class RealDAOService implements IDAOService {
 
   // returns eventID?
   @override
-  Future<String> createEvent(Event e, List<PriceCategory> categories) {
-    // TODO: implement createEvent
-    throw UnimplementedError();
+  Future<String> createEvent(Event e, List<PriceCategory> categories) async {
+    final payload = await invokeWithSign(
+        [jsonEncode(categories), e.name, e.address, e.startTime.toString()],
+        'emission');
+
+    return payload;
   }
 
   @override
   Future<List<PriceCategory>> getIssuerEventCategories(String eid) async {
     final result = await doRequest(queryURL, [eid], 'eventCategories');
-    List<Map<String, dynamic>> categoriesJson = jsonDecode(result);
-    return categoriesJson.map((json) => PriceCategory.fromJson(json)).toList();
+
+    return parsePriceCategories(result);
   }
 
   @override
-  Future<bool> setCategoryPices(List<PriceCategory> categories) {
+  Future<bool> setCategoryPrices(List<PriceCategory> categories) {
     // TODO: implement setCategoryPices
     throw UnimplementedError();
   }
