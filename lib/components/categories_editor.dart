@@ -75,21 +75,32 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisSize: MainAxisSize.min,
             children: [
-              TextField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), label: Text("cat. name")),
-                onChanged: (newKey) {
-                  e.setKey(newKey);
-                  syncWithParent();
-                },
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: TextField(
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), label: Text("cat. name")),
+                    onChanged: (newKey) {
+                      e.setKey(newKey);
+                      syncWithParent();
+                    },
+                  ),
+                ),
               ),
-              TextField(
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), label: Text("price")),
-                onChanged: (newValue) {
-                  e.setValue(newValue);
-                  syncWithParent();
-                },
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: TextField(
+                    keyboardType: TextInputType.number,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), label: Text("price")),
+                    onChanged: (newValue) {
+                      e.setValue(newValue);
+                      syncWithParent();
+                    },
+                  ),
+                ),
               ),
               ElevatedButton(
                   onPressed: () {
@@ -103,13 +114,17 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
           ),
         )
         .toList();
-    // res.add(ElevatedButton(
-    //     onPressed: () {
-    //       setState(() {
-    //         editableValue.add(Entry(key_: "", value_: 0));
-    //       });
-    //     },
-    //     child: const Text("+ add category")));
+    res.add(Row(
+      children: [
+        ElevatedButton(
+            onPressed: () {
+              setState(() {
+                editableValue.add(Entry(key_: "", value_: 0));
+              });
+            },
+            child: const Text("+ add category"))
+      ],
+    ));
     return res;
   }
 

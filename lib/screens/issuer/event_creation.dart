@@ -67,6 +67,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: InputDatePickerFormField(
+                  fieldLabelText: "Event date",
                   firstDate: DateTime.now(),
                   lastDate: DateTime.now().add(const Duration(days: 365)),
                   onDateSubmitted: (DateTime dt) {
@@ -88,6 +89,12 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                         startTime = value;
                       });
                     }),
+              ),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                child: Text("Edit categories",
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
