@@ -2,6 +2,7 @@ import "dart:convert";
 import "package:cryptography/cryptography.dart";
 import 'package:bs58/bs58.dart';
 import "package:dao_ticketer/backend_service/real_implementations/sign.dart";
+import "package:dao_ticketer/types/price_category.dart";
 import "package:dao_ticketer/types/ticket.dart";
 import "package:dao_ticketer/types/event.dart";
 import "package:dao_ticketer/types/dao_service.dart";
@@ -204,7 +205,7 @@ class RealDAOService implements IDAOService {
 
   // returns eventID?
   @override
-  Future<String> createEvent(Event e, Map<String, int> categories) {
+  Future<String> createEvent(Event e, List<PriceCategory> categories) {
     // TODO: implement createEvent
     throw UnimplementedError();
   }

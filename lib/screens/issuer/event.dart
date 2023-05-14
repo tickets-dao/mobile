@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/components/event_card.dart';
 import 'package:dao_ticketer/components/categories_editor.dart';
-import 'package:dao_ticketer/screens/issuer/emission.dart'
-    show TicketEmissionScreen;
 
 class EmittentEventScreen extends StatefulWidget {
   const EmittentEventScreen({this.event, this.eventID, super.key});
@@ -62,16 +60,6 @@ class _EmittentEventScreenState extends State<EmittentEventScreen> {
               },
               fixCategoryKeys: true,
             ),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            TicketEmissionScreen(event: event)),
-                  );
-                },
-                child: const Text('Issue tickets'))
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'event.dart';
 import 'ticket.dart';
+import 'price_category.dart';
 
 abstract class IDAOService {
   Future<String> getUserErrorState(String role, String invokeKey);
@@ -34,7 +35,7 @@ abstract class IDAOService {
   Future<List<Event>> getEventsByIssuer();
 
   // returns eventID
-  Future<String> createEvent(Event e, Map<String, int> categories);
+  Future<String> createEvent(Event e, List<PriceCategory> categories);
 
   Future<Map<String, int>> getEmittentEventCategories(String eid);
 
