@@ -1,18 +1,17 @@
 import 'package:dao_ticketer/components/event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
-import 'package:dao_ticketer/screens/emitent/event_creation.dart';
+import 'package:dao_ticketer/screens/issuer/event_creation.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 
-class EmitterEventsListScreen extends StatefulWidget {
-  const EmitterEventsListScreen({super.key});
+class IssuerEventsListScreen extends StatefulWidget {
+  const IssuerEventsListScreen({super.key});
 
   @override
-  State<EmitterEventsListScreen> createState() =>
-      _EmitterEventsListScreenState();
+  State<IssuerEventsListScreen> createState() => _IssuerEventsListScreenState();
 }
 
-class _EmitterEventsListScreenState extends State<EmitterEventsListScreen> {
+class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
   List<Event> events = [];
   RealDAOService service = RealDAOService.getSingleton();
 
@@ -27,7 +26,7 @@ class _EmitterEventsListScreenState extends State<EmitterEventsListScreen> {
   @override
   initState() {
     super.initState();
-    service.getEventsByEmittent().then((es) {
+    service.getEventsByIssuer().then((es) {
       setState(() {
         events = es;
       });

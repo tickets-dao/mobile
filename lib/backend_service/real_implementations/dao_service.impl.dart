@@ -197,7 +197,7 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<List<Event>> getEventsByEmittent() {
+  Future<List<Event>> getEventsByIssuer() {
     // TODO: implement getEventsByEmittent
     throw UnimplementedError();
   }

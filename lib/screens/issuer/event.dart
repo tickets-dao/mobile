@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/components/event_card.dart';
 import 'package:dao_ticketer/components/categories_editor.dart';
-import 'package:dao_ticketer/screens/emitent/emission.dart'
+import 'package:dao_ticketer/screens/issuer/emission.dart'
     show TicketEmissionScreen;
 
 class EmittentEventScreen extends StatefulWidget {

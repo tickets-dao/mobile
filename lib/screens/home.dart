@@ -4,6 +4,8 @@ import 'package:dao_ticketer/backend_service/real_implementations/dao_service.im
     show RealDAOService;
 import 'package:dao_ticketer/screens/customer/event_list.dart'
     show EventsListScreen;
+import 'package:dao_ticketer/screens/issuer/event_list.dart'
+    show IssuerEventsListScreen;
 import 'package:dao_ticketer/screens/customer/tickets_list.dart'
     show TicketListScreen;
 import 'ticketer/scan_qr.dart';
@@ -23,16 +25,10 @@ void navigateTo(BuildContext context, String screen) {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => const BalanceScreen()));
       break;
-    case "scan":
+    case "emittentEvents":
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const ScanScreen()),
-      );
-      break;
-    case "generate":
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => GenerateScreen()),
+        MaterialPageRoute(builder: (context) => const IssuerEventsListScreen()),
       );
       break;
     default:
@@ -65,6 +61,11 @@ ListView getDrawerItems(BuildContext ctx) => ListView(
               title: const Text('Your balance'),
               onTap: () {
                 navigateTo(ctx, 'balance');
+              }),
+          ListTile(
+              title: const Text('issuer: Events'),
+              onTap: () {
+                navigateTo(ctx, 'emittentEvents');
               }),
         ]);
 
