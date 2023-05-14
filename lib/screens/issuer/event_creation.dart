@@ -113,7 +113,15 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                   onPressed: () {
                     service
                         .createEvent(
-                            Event(startDateTime, address, name, ""), categories)
+                            Event(
+                                startDate.add(Duration(
+                                    hours: int.parse(startTime.split(":")[0]),
+                                    minutes:
+                                        int.parse(startTime.split(":")[1]))),
+                                address,
+                                name,
+                                ""),
+                            categories)
                         .then((eid) {
                       Navigator.push(
                         context,
