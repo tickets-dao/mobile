@@ -28,7 +28,7 @@ class _EmittentEventScreenState extends State<EmittentEventScreen> {
       event = widget.event ?? Event.emptyFallback();
     }
     service
-        .getEmittentEventCategories(
+        .getIssuerEventCategories(
             widget.event?.id ?? "uninitialized event ID")
         .then((cs) {
       setState(() {
