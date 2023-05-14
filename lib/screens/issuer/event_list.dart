@@ -18,7 +18,10 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
   List<Widget> getEventCardWidgets() {
     return [
       ...events.map((e) {
-        return EventCard(e, true);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+          child: EventCard(e, true),
+        );
       })
     ];
   }
@@ -38,11 +41,14 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Created events')),
       body: SingleChildScrollView(
-        child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: getEventCardWidgets(),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
+          child: Flex(
+            direction: Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: getEventCardWidgets(),
+          ),
         ),
       ),
       floatingActionButton: ElevatedButton(

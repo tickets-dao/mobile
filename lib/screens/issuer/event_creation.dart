@@ -4,8 +4,8 @@ import 'package:dao_ticketer/components/categories_editor.dart'
     show CategoriesEditor;
 import 'package:dao_ticketer/types/price_category.dart';
 import 'package:flutter/material.dart';
-import 'package:dao_ticketer/screens/issuer/event.dart'
-    show EmittentEventScreen;
+import 'package:dao_ticketer/screens/issuer/event_list.dart'
+    show IssuerEventsListScreen;
 import 'package:dao_ticketer/components/date_picker.dart' show DatePickerWidget;
 import 'package:dao_ticketer/components/time_picker.dart' show TimePickerWidget;
 import 'package:intl/intl.dart';
@@ -110,11 +110,12 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                             Event(startDateTime, address, name, ""), categories)
                         .then((eid) {
                       Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                EmittentEventScreen(eventID: eid)),
-                      );
+                          context,
+                          // MaterialPageRoute(
+                          //     builder: (context) => EmittentEventScreen(eventID: eid)),
+                          MaterialPageRoute(
+                            builder: (_) => const IssuerEventsListScreen(),
+                          ));
                     });
                   },
                 ),
