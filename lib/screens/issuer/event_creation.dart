@@ -30,14 +30,16 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('event creation')),
       body: SingleChildScrollView(
-        child: Form(
-          key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
           child: Flex(
-              direction: Axis.vertical,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
+            direction: Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: TextField(
                   onChanged: (String value) {
                     setState(() {
                       name = value;
@@ -48,7 +50,10 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                     labelText: "Name of the event",
                   ),
                 ),
-                TextField(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: TextField(
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Event address",
@@ -58,7 +63,10 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                         startTime = value;
                       });
                     }),
-                InputDatePickerFormField(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: InputDatePickerFormField(
                   firstDate: DateTime.now(),
                   lastDate: DateTime.now().add(const Duration(days: 365)),
                   onDateSubmitted: (DateTime dt) {
@@ -67,7 +75,10 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                     });
                   },
                 ),
-                TextField(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: TextField(
                     decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       labelText: "Event start time",
@@ -77,14 +88,20 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                         startTime = value;
                       });
                     }),
-                CategoriesEditor(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: CategoriesEditor(
                     value: categories,
                     onChanged: (value) {
                       setState(() {
                         categories = value;
                       });
                     }),
-                ElevatedButton(
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                child: ElevatedButton(
                   child: const Text('create event'),
                   onPressed: () {
                     service
@@ -99,8 +116,10 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                       );
                     });
                   },
-                )
-              ]),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

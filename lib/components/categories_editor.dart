@@ -66,12 +66,14 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
   }
 
   List<Widget> getEntriesUIwithButton() {
+    print('categories editor: editableValue: $editableValue');
     List<Widget> res = editableValue
         .map(
           (e) => Flex(
             direction: Axis.horizontal,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 decoration: const InputDecoration(
@@ -101,13 +103,13 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
           ),
         )
         .toList();
-    res.add(ElevatedButton(
-        onPressed: () {
-          setState(() {
-            editableValue.add(Entry(key_: "", value_: 0));
-          });
-        },
-        child: const Text("+ add category")));
+    // res.add(ElevatedButton(
+    //     onPressed: () {
+    //       setState(() {
+    //         editableValue.add(Entry(key_: "", value_: 0));
+    //       });
+    //     },
+    //     child: const Text("+ add category")));
     return res;
   }
 
