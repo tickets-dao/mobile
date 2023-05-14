@@ -54,7 +54,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                     child: TextField(
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
-                          label: Text("cat. name")),
+                          label: Text("Cat. name")),
                       onChanged: (newName) {
                         e.setName(newName);
                         syncWithParent();
@@ -81,7 +81,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(), label: Text("price")),
+                    border: OutlineInputBorder(), label: Text("Price")),
                 onChanged: (newPrice) {
                   e.setPrice(int.parse(newPrice));
                   syncWithParent();
@@ -105,7 +105,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(), label: Text("Rows")),
+                    border: OutlineInputBorder(), label: Text("Seats")),
                 onChanged: (newSeats) {
                   e.setSeats(int.parse(newSeats));
                   syncWithParent();
