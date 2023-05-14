@@ -173,4 +173,15 @@ class MockedDAOService implements IDAOService {
     // TODO: implement setCategoryPices
     throw UnimplementedError();
   }
+
+  @override
+  String getLocalTicketSecret(Ticket t) {
+    // TODO: implement getLocalTicketSecret
+    throw UnimplementedError();
+  }
+
+  @override
+  void setLocalTicketSecret(Ticket t, String secret) {
+    // TODO: implement setLocalTicketSecret
+  }
 }

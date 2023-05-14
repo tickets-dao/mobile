@@ -149,10 +149,8 @@ class RealDAOService implements IDAOService {
   @override
   Future<List<Event>> getEventsByID(List<String> eventID) async {
     // eventID is still unused in blockchain
-    var params = ['eventsByIDs'];
-    params.addAll(eventID);
 
-    final result = await doRequest(queryURL, params, 'eventsByIDs');
+    final result = await doRequest(queryURL, [jsonEncode(eventID)], 'eventsByIDs');
 
     print(result);
 
