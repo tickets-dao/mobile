@@ -22,17 +22,10 @@ class GenerateScreen extends StatefulWidget {
 }
 
 class GenerateScreenState extends State<GenerateScreen> {
-  static const double _topSectionTopPadding = 50.0;
-  static const double _topSectionBottomPadding = 20.0;
-  static const double _topSectionHeight = 50.0;
-
   GlobalKey globalKey = GlobalKey();
-  String _dataString = "Hello from this QR";
-  String _inputErrorText = "no error";
   RealDAOService service = RealDAOService.getSingleton();
   bool ticketPrepared = false;
-  final TextEditingController _textController = TextEditingController();
-  late final _secret;
+  late final String _secret;
 
   rememberSecret() {
     service.prepareTicket(widget.ticket, _secret).then((_) {
