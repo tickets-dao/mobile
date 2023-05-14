@@ -40,23 +40,14 @@ class TicketCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Flex(
-                    direction: Axis.vertical,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(event.name),
-                      Text("${dateFormatter.format(event.startTime)}"),
-                    ]),
-                Flex(
-                  direction: Axis.horizontal,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(ticket.category),
-                    Text('${ticket.price}'),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                  child: Text(event.name,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
+                Text(dateFormatter.format(event.startTime)),
+                Text("${ticket.category}, price ${ticket.price}"),
               ]),
           ElevatedButton(
               onPressed: () {

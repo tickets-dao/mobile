@@ -36,18 +36,18 @@ class TicketScreenState extends State<TicketScreen> {
         child: Column(
           children: [
             Container(
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(5)),
-                  color: Color.fromARGB(249, 242, 253, 255),
-                ),
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(10),
                 child: Flex(
                   direction: Axis.vertical,
                   mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    Text(
-                        "${widget.event.name}, ${dateFormatter.format(widget.event.startTime)}"),
+                    Text(widget.event.name,
+                        style: const TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold)),
+                    Text(dateFormatter.format(widget.event.startTime),
+                        style: const TextStyle(
+                            fontSize: 30, fontWeight: FontWeight.bold)),
                     Text(
                         "${widget.ticket.category}, price: ${widget.ticket.price}"),
                   ],
@@ -110,8 +110,11 @@ class TicketScreenState extends State<TicketScreen> {
                           },
                         ),
                       ),
-                      ElevatedButton(
-                          onPressed: () {}, child: const Text('Send ticket'))
+                      Container(
+                        margin: const EdgeInsets.all(5),
+                        child: ElevatedButton(
+                            onPressed: () {}, child: const Text('Send ticket')),
+                      )
                     ]))
           ],
         ),

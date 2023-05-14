@@ -29,21 +29,29 @@ class BalanceScreenState extends State<BalanceScreen> {
   @override
   Widget build(Object context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Your balance')),
-      body: Flex(
-        direction: Axis.vertical,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text("Your current balance is $balance"),
-          ElevatedButton(
-              onPressed: () {
-                service.addFunds().then((_) {
-                  getUserBalance();
-                });
-              },
-              child: const Text("Add funds"))
-        ],
+      appBar: AppBar(title: const Text('Wallet')),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text("Your current balance: $balance",
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+              child: ElevatedButton(
+                  onPressed: () {
+                    service.addFunds().then((_) {
+                      getUserBalance();
+                    });
+                  },
+                  child: const Text("Add funds")),
+            )
+          ],
+        ),
       ),
     );
   }
