@@ -16,11 +16,11 @@ class MockedDAOService implements IDAOService {
       Future.delayed(getRandomDuration(3), () => getRandom(50));
 
   @override
-  Future<List<String>> getCategories(String eventID) => Future.delayed(
+  Future<List<PriceCategory>> getCategories(String eventID) => Future.delayed(
       getRandomDuration(3),
       () => [
-            "lodge",
-            "parter",
+            PriceCategory(name: "lodge", price: 100, rows: 2, seats: 10),
+            PriceCategory(name: "parter", price: 200, rows: 10, seats: 3),
           ]);
 
   @override
