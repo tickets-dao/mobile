@@ -8,11 +8,11 @@ abstract class IDAOService {
 
   Future<List<Event>> getEvents();
 
-  Future<List<String>> getCategories(String eventID);
+  Future<List<PriceCategory>> getCategories(String eventID);
 
   // получение билетов, доступных для покупки(находятся у эмитента, ещё не куплены)
   Future<List<Ticket>> getAvailableTicketsByEventAndCategory(
-      String eventID, String category, int sector);
+      String eventID, String category);
 
   // price is returned
   Future<int> buyTicket(Ticket ticket);
@@ -40,5 +40,5 @@ abstract class IDAOService {
 
   Future<List<PriceCategory>> getIssuerEventCategories(String eid);
 
-  Future<bool> setCategoryPices(List<PriceCategory> categories);
+  Future<bool> setCategoryPrices(List<PriceCategory> categories);
 }

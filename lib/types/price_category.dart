@@ -35,9 +35,18 @@ class PriceCategory {
         'rows': rows,
         'seats': seats,
       };
+
   PriceCategory.fromJson(Map<String, dynamic> json)
       : price = int.parse(json['price'].replaceAll('"', '')),
         name = json['name'],
         rows = json['rows'],
         seats = json['seats'];
+}
+
+
+List<PriceCategory> parsePriceCategories(String jsonString) {
+  final parsedList = jsonDecode(jsonString) as List<dynamic>;
+  return parsedList
+      .map((e) => PriceCategory.fromJson(e as Map<String, dynamic>))
+      .toList();
 }
