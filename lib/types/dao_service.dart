@@ -1,11 +1,8 @@
 import 'price_category.dart';
 import 'event.dart';
 import 'ticket.dart';
-import 'price_category.dart';
 
 abstract class IDAOService {
-  Future<String> getUserErrorState(String role, String invokeKey);
-
   Future<List<Event>> getEvents();
 
   Future<List<PriceCategory>> getCategories(String eventID);
@@ -28,6 +25,7 @@ abstract class IDAOService {
   Future<void> prepareTicket(Ticket ticket, String secret);
 
   String getLocalTicketSecret(Ticket t);
+
   void setLocalTicketSecret(Ticket t, String secret);
 
   Future<void> burnTicket(String ticketID);

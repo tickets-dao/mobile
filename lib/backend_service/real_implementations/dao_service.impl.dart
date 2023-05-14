@@ -99,7 +99,6 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<List<Event>> getEvents() async {
-    // eventID is still unused in blockchain
     final result = await doRequest(queryURL, ['events'], 'events');
 
     print(result);
@@ -170,9 +169,18 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<void> sendTicketTo(Ticket t, String destinationUser) {
-    // TODO: implement sendTicketTo
-    throw UnimplementedError();
+  Future<void> sendTicketTo(Ticket t, String destinationUser) async {
+    final keyPairData = await _instance._getPrivate();
+    final payload = await invokeWithSign([
+      getAddressByPublicKey(await keyPairData.extractPublicKey()),
+      destinationUser,
+      t.eventID,
+      t.category,
+      t.row.toString(),
+      t.number.toString()
+    ], 'transferTo');
+
+    print('transfer $payload succeeded');
   }
 
   @override
@@ -238,17 +246,6 @@ class RealDAOService implements IDAOService {
   @override
   Future<bool> setCategoryPrices(List<PriceCategory> categories) {
     // TODO: implement setCategoryPices
-    throw UnimplementedError();
-  }
-
-  // Presuming that each there will be multiple error states:
-  // for every role and every invoke.
-  // Even if the role isn't necessary, I'd suggest we keep it in the function
-  // signature
-  // cuz who knows...
-  @override
-  Future<String> getUserErrorState(String role, String invokeKey) {
-    // TODO: implement getUserErrorState
     throw UnimplementedError();
   }
 }
