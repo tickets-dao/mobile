@@ -6,6 +6,9 @@ import 'package:dao_ticketer/types/price_category.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/screens/issuer/event.dart'
     show EmittentEventScreen;
+import 'package:dao_ticketer/components/date_picker.dart' show DatePickerWidget;
+import 'package:dao_ticketer/components/time_picker.dart' show TimePickerWidget;
+import 'package:intl/intl.dart';
 
 class EventCreationScreen extends StatefulWidget {
   const EventCreationScreen({super.key});
@@ -17,10 +20,10 @@ class EventCreationScreen extends StatefulWidget {
 class _EventCreationScreenState extends State<EventCreationScreen> {
   String name = "";
   String address = "";
-  DateTime startDate = DateTime.now();
-  String startTime = "";
   DateTime startDateTime = DateTime.now();
   List<PriceCategory> categories = [];
+
+  final dateFormatter = DateFormat("dd.MM hh:mm");
 
   RealDAOService service = RealDAOService.getSingleton();
 
@@ -50,45 +53,37 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                   ),
                 ),
               ),
+              Text("Start time: ${dateFormatter.format(startDateTime)}",
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Event address",
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    DatePickerWidget(
+                      onSelected: (value) {
+                        setState(() {
+                          startDateTime = value;
+                        });
+                      },
                     ),
-                    onChanged: (String value) {
-                      setState(() {
-                        startTime = value;
-                      });
-                    }),
-              ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: InputDatePickerFormField(
-                  fieldLabelText: "Event date",
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime.now().add(const Duration(days: 365)),
-                  onDateSubmitted: (DateTime dt) {
-                    setState(() {
-                      startDate = dt;
-                    });
-                  },
+                    TimePickerWidget(
+                      onSelected: (TimeOfDay time) {
+                        setState(() {
+                          startDateTime = startDateTime.add(
+                              Duration(hours: time.hour, minutes: time.minute));
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: TextField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Event start time",
-                    ),
-                    onChanged: (String value) {
-                      setState(() {
-                        startTime = value;
-                      });
-                    }),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+              //   child:
+              // ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: Text("Edit categories",
@@ -112,15 +107,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                   onPressed: () {
                     service
                         .createEvent(
-                            Event(
-                                startDate.add(Duration(
-                                    hours: int.parse(startTime.split(":")[0]),
-                                    minutes:
-                                        int.parse(startTime.split(":")[1]))),
-                                address,
-                                name,
-                                ""),
-                            categories)
+                            Event(startDateTime, address, name, ""), categories)
                         .then((eid) {
                       Navigator.push(
                         context,
