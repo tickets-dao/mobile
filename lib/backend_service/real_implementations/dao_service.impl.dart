@@ -49,8 +49,8 @@ class RealDAOService implements IDAOService {
 
   RealDAOService([bool? isLocal]) {
     _instance = RealDAOService._privateConstructor(isLocal);
-    print('realdaoservice public constructor called, instance:');
-    print(_instance);
+    print('realdaoservice public constructor called with local $isLocal');
+    print(_instance.queryURL.toString());
   }
 
   factory RealDAOService.getSingleton() {

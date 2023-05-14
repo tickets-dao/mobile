@@ -20,6 +20,10 @@ class Event {
 }
 
 List<Event> parseEvents(String jsonString) {
+  if (jsonString == "null") {
+    return [];
+  }
+
   final parsedList = jsonDecode(jsonString) as List<dynamic>;
   return parsedList
       .map((e) => Event.fromJson(e as Map<String, dynamic>))
