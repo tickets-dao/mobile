@@ -51,14 +51,16 @@ class _EmittentEventScreenState extends State<EmittentEventScreen> {
         child: Column(
           children: [
             EventCard(event, false),
-            CategoriesEditor(
-              value: categories,
-              onChanged: (value) {
-                setState(() {
-                  categories = value;
-                });
-              },
-              fixCategoryKeys: true,
+            Expanded(
+              child: CategoriesEditor(
+                value: categories,
+                onChanged: (value) {
+                  setState(() {
+                    categories = value;
+                  });
+                },
+                fixCategoryKeys: true,
+              ),
             ),
           ],
         ),

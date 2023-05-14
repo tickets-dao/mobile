@@ -25,7 +25,7 @@ class PriceCategory {
     rows = newRows;
   }
 
-  void newSeats(newSeats) {
+  void setSeats(newSeats) {
     seats = newSeats;
   }
 
