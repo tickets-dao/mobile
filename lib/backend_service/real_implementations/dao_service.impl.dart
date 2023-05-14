@@ -91,8 +91,7 @@ class RealDAOService implements IDAOService {
   @override
   Future<List<PriceCategory>> getCategories(String eventID) async {
     // eventID is still unused in blockchain
-    final result = await doRequest(
-        queryURL, [eventID, 'eventCategories'], 'eventCategories');
+    final result = await doRequest(queryURL, [eventID], 'eventCategories');
 
     return parsePriceCategories(result);
   }
@@ -150,7 +149,8 @@ class RealDAOService implements IDAOService {
   Future<List<Event>> getEventsByID(List<String> eventID) async {
     // eventID is still unused in blockchain
 
-    final result = await doRequest(queryURL, [jsonEncode(eventID)], 'eventsByIDs');
+    final result =
+        await doRequest(queryURL, [jsonEncode(eventID)], 'eventsByIDs');
 
     print(result);
 
@@ -227,9 +227,11 @@ class RealDAOService implements IDAOService {
   // returns eventID?
   @override
   Future<String> createEvent(Event e, List<PriceCategory> categories) async {
+    var encode = jsonEncode(categories);
+    print('encoded categories: $categories');
+
     final payload = await invokeWithSign(
-        [jsonEncode(categories), e.name, e.address, e.startTime.toString()],
-        'emission');
+        [encode, e.name, e.address, e.startTime.toString()], 'emission');
 
     return payload;
   }
