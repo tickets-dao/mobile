@@ -198,9 +198,15 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<List<Event>> getEventsByIssuer() {
-    // throw UnimplementedError();
-    return Future.delayed(getRandomDuration(3), () => []);
+  // вернуть эвенты, для которых пользователь является эмитентом
+  Future<List<Event>> getEventsByIssuer() async {
+    final keyPairData = (await _instance._getPrivate());
+    final result = await doRequest(
+        queryURL,
+        [getAddressByPublicKey(await keyPairData.extractPublicKey())],
+        'eventsByIssuer');
+
+    return parseEvents(result);
   }
 
   // returns eventID?
@@ -211,9 +217,11 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<Map<String, int>> getEmittentEventCategories(String eid) {
-    // TODO: implement getEmittentEventCategories
-    throw UnimplementedError();
+  Future<Map<String, PriceCategory>> getIssuerEventCategories(
+      String eid) async {
+    final result = await doRequest(queryURL, [eid], 'eventCategories');
+
+    return priceCategoryFromJson(result);
   }
 
   @override

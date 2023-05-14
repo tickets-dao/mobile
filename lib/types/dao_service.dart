@@ -1,3 +1,4 @@
+import 'price_category.dart';
 import 'event.dart';
 import 'ticket.dart';
 import 'price_category.dart';
@@ -37,7 +38,7 @@ abstract class IDAOService {
   // returns eventID
   Future<String> createEvent(Event e, List<PriceCategory> categories);
 
-  Future<Map<String, int>> getEmittentEventCategories(String eid);
+  Future<Map<String, PriceCategory>> getIssuerEventCategories(String eid);
 
   Future<bool> setCategoryPices(Map<String, int> categoryPrices);
 }
