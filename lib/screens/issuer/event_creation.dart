@@ -2,6 +2,7 @@ import 'package:dao_ticketer/backend_service/real_implementations/dao_service.im
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/components/categories_editor.dart'
     show CategoriesEditor;
+import 'package:dao_ticketer/types/price_category.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/screens/issuer/event.dart'
     show EmittentEventScreen;
@@ -14,14 +15,12 @@ class EventCreationScreen extends StatefulWidget {
 }
 
 class _EventCreationScreenState extends State<EventCreationScreen> {
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   String name = "";
   String address = "";
   DateTime startDate = DateTime.now();
   String startTime = "";
-  // TODO: concatenate the two previous fields to get this following one
   DateTime startDateTime = DateTime.now();
-  Map<String, int> categories = {};
+  List<PriceCategory> categories = [];
 
   RealDAOService service = RealDAOService.getSingleton();
 

@@ -1,34 +1,17 @@
+import 'package:dao_ticketer/types/price_category.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-class Entry {
-  Entry({this.key_ = "", this.value_ = -1});
-
-  String key_;
-  int value_;
-
-  String get key => key_;
-  int get value => value_;
-
-  void setKey(newKey) {
-    key_ = newKey;
-  }
-
-  void setValue(newValue) {
-    value_ = newValue;
-  }
-}
-
 class CategoriesEditor extends StatefulWidget {
-  CategoriesEditor(
+  const CategoriesEditor(
       {required this.value,
       required onChanged,
       this.fixCategoryKeys = false,
       super.key});
 
-  final Map<String, int> value;
+  final List<PriceCategory> value;
 
-  Map<String, int> onChanged(Map<String, int> value) => value;
+  List<PriceCategory> onChanged(List<PriceCategory> value) => value;
   final bool fixCategoryKeys;
 
   @override
@@ -38,35 +21,24 @@ class CategoriesEditor extends StatefulWidget {
 class _CategoriesEditorState extends State<CategoriesEditor> {
   void onChanged;
   Map<String, int> categoriesMap = {};
-  List<Entry> editableValue = [];
+  List<PriceCategory> editableValue = [];
 
   Timer? _debounce;
 
   @override
   void initState() {
     super.initState();
-    editableValue = [
-      ...widget.value.entries.map((e) => Entry(key_: e.key, value_: e.value))
-    ];
-  }
-
-  listToMap(List<Entry> list) {
-    const res = {};
-    for (Entry e in list) {
-      res.addAll({e.key: e.value});
-    }
-    return res;
+    editableValue = [...widget.value];
   }
 
   syncWithParent() {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      widget.onChanged(listToMap(editableValue));
+      widget.onChanged(editableValue);
     });
   }
 
   List<Widget> getEntriesUIwithButton() {
-    print('categories editor: editableValue: $editableValue');
     List<Widget> res = editableValue
         .map(
           (e) => Flex(
@@ -81,8 +53,8 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                   child: TextField(
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), label: Text("cat. name")),
-                    onChanged: (newKey) {
-                      e.setKey(newKey);
+                    onChanged: (newName) {
+                      e.setName(newName);
                       syncWithParent();
                     },
                   ),
@@ -95,8 +67,8 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                     keyboardType: TextInputType.number,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), label: Text("price")),
-                    onChanged: (newValue) {
-                      e.setValue(newValue);
+                    onChanged: (newPrice) {
+                      e.setPrice(int.parse(newPrice));
                       syncWithParent();
                     },
                   ),

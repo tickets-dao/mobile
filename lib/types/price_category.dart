@@ -10,4 +10,27 @@ class PriceCategory {
   int price;
   int rows;
   int seats;
+
+  void setName(String newName) {
+    name = newName;
+  }
+
+  void setPrice(int newPrice) {
+    price = newPrice;
+  }
+
+  void setRows(int newRows) {
+    rows = newRows;
+  }
+
+  void newSeats(newSeats) {
+    seats = newSeats;
+  }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'price': price,
+        'rows': rows,
+        'seats': seats,
+      };
 }
