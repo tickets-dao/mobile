@@ -26,7 +26,9 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
   @override
   void initState() {
     super.initState();
-    editableValue = [...widget.value];
+    setState(() {
+      editableValue = widget.value;
+    });
   }
 
   syncWithParent() {
@@ -38,7 +40,11 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
 
   getTextFieldOrInput(PriceCategory e) {
     return widget.pricesOnly
-        ? Text(e.name)
+        ? Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
+            child: Text("Category: ${e.name}",
+                style: const TextStyle(fontSize: 18)),
+          )
         : Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
             child: Row(
@@ -114,6 +120,10 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: TextField(
+                // TODO: this controller should only be created once
+                // TODO: categories editor in edit mode should render
+                // TODO: a 'save updates' button instead of sync-ing updates via debounced
+                controller: TextEditingController(text: "${e.price}"),
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(), label: Text("Price")),
@@ -129,16 +139,15 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
       )
     ];
 
-    Widget addCategoryButton = ElevatedButton(
-        onPressed: () {
-          setState(() {
-            editableValue
-                .add(PriceCategory(name: "", price: 200, rows: 10, seats: 10));
-          });
-        },
-        child: const Text("+ add category"));
-
     if (!widget.pricesOnly) {
+      Widget addCategoryButton = ElevatedButton(
+          onPressed: () {
+            setState(() {
+              editableValue.add(
+                  PriceCategory(name: "", price: 200, rows: 10, seats: 10));
+            });
+          },
+          child: const Text("+ add category"));
       res.add(addCategoryButton);
     }
     res.add(

@@ -29,12 +29,10 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
     } else {
       event = widget.event ?? Event.emptyFallback();
     }
-    service
-        .getIssuerEventCategories(widget.event?.id ?? "uninitialized event ID")
-        .then((cs) {
-      setState(() {
-        categories = cs;
-      });
+    List<PriceCategory> cs = await service
+        .getIssuerEventCategories(widget.event?.id ?? "uninitialized event ID");
+    setState(() {
+      categories = cs;
     });
   }
 
@@ -49,22 +47,47 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Event')),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            EventCard(event, false, AppRouteName.empty),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: CategoriesEditor(
-                value: categories,
-                onChanged: (value) {
-                  setState(() {
-                    categories = value;
-                  });
-                },
-                pricesOnly: true,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Flex(
+                    direction: Axis.vertical,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Text>[
+                      Text(event.name),
+                      Text(event.address),
+                    ]),
               ),
-            ),
-          ],
+              const Divider(),
+              const Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Text("Update category prices",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                ),
+              ),
+              categories.isNotEmpty
+                  ? Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                      child: CategoriesEditor(
+                        value: categories,
+                        onChanged: (value) {
+                          setState(() {
+                            categories = value;
+                          });
+                        },
+                        pricesOnly: true,
+                      ),
+                    )
+                  : Container(),
+            ],
+          ),
         ),
       ),
     );
