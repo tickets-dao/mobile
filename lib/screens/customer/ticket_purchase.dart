@@ -80,10 +80,6 @@ class TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
         appBar: AppBar(title: Text(widget.event.name)),
         body: SingleChildScrollView(
           child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                color: const Color.fromARGB(249, 242, 253, 255),
-              ),
               padding: const EdgeInsets.all(20),
               child: Flex(
                 direction: Axis.vertical,

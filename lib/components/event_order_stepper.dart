@@ -1,3 +1,4 @@
+import 'package:dao_ticketer/types/price_category.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,6 @@ class EventOrderStepper extends StatefulWidget {
 class EventOrderStepperState extends State<EventOrderStepper> {
   String selectedCategory = "unselected";
 
-  int _selectedSector = 0;
   int number = 0;
   Ticket? selectedTicket;
 
@@ -28,7 +28,13 @@ class EventOrderStepperState extends State<EventOrderStepper> {
     final tickets = widget.eventTicketsByCategory;
     final List<String> categories = [...widget.eventTicketsByCategory.keys];
     String selectedCategory = categories[0];
-    Map<int, Set<int>> rowsBySectors = {};
+    Map<String, Set<int>> rowsByCategories = {};
+
+    for (String category in categories) {
+      rowsByCategories.addAll({
+        category: tickets[category]?.map((Ticket t) => t.row).toSet() ?? {}
+      });
+    }
 
     getTicketsCount(int count) =>
         count > 1 ? "$count tickets" : "$count ticket";
@@ -65,7 +71,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
         }
       },
       onStepContinue: () {
-        if (_stepIndex <= 0) {
+        if (_stepIndex <= 3) {
           setState(() {
             _stepIndex += 1;
           });
@@ -102,7 +108,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
           title: const Text('Select row'),
           content: Column(
             children: <Widget>[
-              ...rowsBySectors[_selectedSector]?.map((row) {
+              ...rowsByCategories[selectedCategory]?.map((row) {
                     return Flex(
                         direction: Axis.vertical,
                         mainAxisAlignment: MainAxisAlignment.start,
