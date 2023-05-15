@@ -1,6 +1,5 @@
 import 'package:dao_ticketer/screens/asset_file_selection.dart';
 import 'package:flutter/material.dart';
-import 'screens/home.dart';
 
 class TicketerDAO extends StatelessWidget {
   const TicketerDAO({super.key});
@@ -12,7 +11,7 @@ class TicketerDAO extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Scaffold(body: AssetFileSelectionWidget()),
+      home: const Scaffold(body: AssetFileSelectionWidget()),
     );
   }
 }

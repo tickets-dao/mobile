@@ -1,4 +1,4 @@
-import 'package:dao_ticketer/components/event_card.dart';
+import 'package:dao_ticketer/components/issuer_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/screens/issuer/event_creation.dart';
@@ -20,7 +20,7 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
       ...events.map((e) {
         return Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-          child: EventCard(e, true),
+          child: IssuerEventCard(e, true),
         );
       })
     ];

@@ -5,17 +5,17 @@ import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/components/event_card.dart';
 import 'package:dao_ticketer/components/categories_editor.dart';
 
-class EmittentEventScreen extends StatefulWidget {
-  const EmittentEventScreen({this.event, this.eventID, super.key});
+class IssuerEventScreen extends StatefulWidget {
+  const IssuerEventScreen({this.event, this.eventID, super.key});
 
   final Event? event;
   final String? eventID;
 
   @override
-  State<EmittentEventScreen> createState() => _EmittentEventScreenState();
+  State<IssuerEventScreen> createState() => _IssuerEventScreenState();
 }
 
-class _EmittentEventScreenState extends State<EmittentEventScreen> {
+class _IssuerEventScreenState extends State<IssuerEventScreen> {
   Event event = Event.emptyFallback();
   List<PriceCategory> categories = [];
   RealDAOService service = RealDAOService.getSingleton();
