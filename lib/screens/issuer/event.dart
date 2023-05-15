@@ -51,7 +51,8 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
         child: Column(
           children: [
             EventCard(event, false),
-            Expanded(
+            Padding(
+              padding: const EdgeInsets.all(5),
               child: CategoriesEditor(
                 value: categories,
                 onChanged: (value) {

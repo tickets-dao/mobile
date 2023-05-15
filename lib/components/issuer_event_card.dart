@@ -31,7 +31,7 @@ class IssuerEventCard extends StatelessWidget {
                               IssuerEventScreen(event: event)),
                     );
                   },
-                  child: const Text('tickets'))
+                  child: const Text('Open'))
             ]
           : [eventInfo];
     }
