@@ -4,6 +4,8 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
 class AssetFileSelectionWidget extends StatefulWidget {
+  const AssetFileSelectionWidget({super.key});
+
   @override
   _AssetFileSelectionWidgetState createState() =>
       _AssetFileSelectionWidgetState();
@@ -11,6 +13,9 @@ class AssetFileSelectionWidget extends StatefulWidget {
 
 class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
   List<String> files = [];
+
+  // todo create map to display nice roles, and not filenames
+  Map<String, String> filesMap = {};
   String _selectedOption = "";
 
   @override
@@ -22,7 +27,7 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
   Future<void> loadAssetFileList() async {
     // Load asset manifest
     final String manifestContent =
-    await rootBundle.loadString('AssetManifest.json');
+        await rootBundle.loadString('AssetManifest.json');
 
     // Decode it to JSON
     final Map<String, dynamic> manifestMap = json.decode(manifestContent);
@@ -37,14 +42,10 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
     });
   }
 
-  void fileTapped(String filename) {
-    print("Selected File: $filename");
-    // Here you can handle the selected file and initialize your app
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
         child: Column(
           children: <Widget>[
             ...files.map((option) {
@@ -68,10 +69,9 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            HomeScreen(
-                                key: Key("aaaa"),
-                                selectedFile: _selectedOption)));
+                        builder: (context) => HomeScreen(
+                            key: const Key("aaaa"),
+                            selectedFile: _selectedOption)));
               },
               child: const Text('Confirm'),
             ),

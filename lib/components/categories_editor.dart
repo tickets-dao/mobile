@@ -5,13 +5,13 @@ import 'dart:async';
 class CategoriesEditor extends StatefulWidget {
   const CategoriesEditor(
       {required this.value,
-      required onChanged,
+      required this.onChanged,
       this.pricesOnly = false,
       super.key});
 
   final List<PriceCategory> value;
 
-  List<PriceCategory> onChanged(List<PriceCategory> value) => value;
+  final Function onChanged;
   final bool pricesOnly;
 
   @override
@@ -19,8 +19,6 @@ class CategoriesEditor extends StatefulWidget {
 }
 
 class _CategoriesEditorState extends State<CategoriesEditor> {
-  void onChanged;
-  Map<String, int> categoriesMap = {};
   List<PriceCategory> editableValue = [];
 
   Timer? _debounce;
@@ -70,6 +68,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                         setState(() {
                           editableValue.removeAt(index);
                         });
+                        syncWithParent();
                       },
                     ),
                   )

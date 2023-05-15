@@ -27,6 +27,12 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
 
   RealDAOService service = RealDAOService.getSingleton();
 
+  updateCategories(value) {
+    setState(() {
+      categories = value;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,10 +86,6 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                   ],
                 ),
               ),
-              // Padding(
-              //   padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-              //   child:
-              // ),
               const Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
                 child: Text("Edit categories",
@@ -91,15 +93,11 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               ),
               Padding(
-                padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: CategoriesEditor(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+                  child: CategoriesEditor(
                     value: categories,
-                    onChanged: (value) {
-                      setState(() {
-                        categories = value;
-                      });
-                    }),
-              ),
+                    onChanged: updateCategories,
+                  )),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: ElevatedButton(
@@ -109,13 +107,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                         .createEvent(
                             Event(startDateTime, address, name, ""), categories)
                         .then((eid) {
-                      Navigator.push(
-                          context,
-                          // MaterialPageRoute(
-                          //     builder: (context) => EmittentEventScreen(eventID: eid)),
-                          MaterialPageRoute(
-                            builder: (_) => const IssuerEventsListScreen(),
-                          ));
+                      Navigator.pop(context);
                     });
                   },
                 ),
