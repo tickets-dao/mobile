@@ -20,6 +20,7 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
   Event event = Event.emptyFallback();
   List<PriceCategory> categories = [];
   RealDAOService service = RealDAOService.getSingleton();
+  bool pricesChanged = false;
 
   void initEventData() async {
     if (widget.event == null) {
@@ -80,6 +81,7 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
                         onChanged: (value) {
                           setState(() {
                             categories = value;
+                            pricesChanged = true;
                           });
                         },
                         pricesOnly: true,
@@ -90,6 +92,14 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
           ),
         ),
       ),
+      floatingActionButton: pricesChanged
+          ? ElevatedButton(
+              onPressed: () {
+                service.setCategoryPrices(categories);
+              },
+              child: const Text("Save price updates"),
+            )
+          : null,
     );
   }
 }
