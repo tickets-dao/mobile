@@ -119,6 +119,7 @@ class RealDAOService implements IDAOService {
   @override
   Future<void> prepareTicket(Ticket ticket, String secret) async {
     final payload = await invokeWithSign([
+      ticket.eventID,
       ticket.category,
       ticket.row.toString(),
       ticket.number.toString(),

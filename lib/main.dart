@@ -1,3 +1,4 @@
+import 'package:dao_ticketer/screens/asset_file_selection.dart';
 import 'package:flutter/material.dart';
 import 'screens/home.dart';
 
@@ -6,7 +7,13 @@ class TicketerDAO extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: HomeScreen());
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(body: AssetFileSelectionWidget()),
+    );
   }
 }
 

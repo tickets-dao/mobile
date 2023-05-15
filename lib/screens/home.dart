@@ -70,16 +70,22 @@ ListView getDrawerItems(BuildContext ctx) => ListView(
         ]);
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  final String selectedFile;
+
+  HomeScreen({required Key key, required this.selectedFile}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String get selectedFile => widget.selectedFile;
+
   @override
   void initState() {
     super.initState();
+    print("selected file: $selectedFile");
+
     // this call to the service constructor is the first one in the
     // life cycle of the application, so it will instantiate the singleton
     RealDAOService service = RealDAOService();
@@ -87,7 +93,7 @@ class _HomeScreenState extends State<HomeScreen> {
     // for local chaincode use
     // RealDAOService service = RealDAOService(true);
 
-    service.init('assets/keys/issuer.private');
+    service.init(selectedFile);
   }
 
   @override
