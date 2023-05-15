@@ -1,12 +1,14 @@
-import 'package:dao_ticketer/screens/customer/event.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard(this.event, this.renderButton, {super.key});
+  const EventCard(this.event, this.renderButton, this.redirectTo,
+      {this.redirectArguments, super.key});
 
   final Event event;
   final bool renderButton;
+  final String redirectTo;
+  final Object? redirectArguments;
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +26,8 @@ class EventCard extends StatelessWidget {
               eventInfo,
               ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => EventScreen(event: event)),
-                    );
+                    Navigator.pushNamed(context, redirectTo,
+                        arguments: redirectArguments);
                   },
                   child: const Text('tickets'))
             ]

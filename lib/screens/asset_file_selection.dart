@@ -1,4 +1,7 @@
 import 'package:dao_ticketer/screens/home.dart';
+import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
+import 'package:dao_ticketer/types/route_names.dart';
+import 'package:dao_ticketer/types/screen_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
@@ -40,42 +43,45 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
     setState(() {
       files = paths;
     });
+
+    // this call to the service constructor is the first one in the
+    // life cycle of the application, so it will instantiate the singleton
+    RealDAOService service = RealDAOService();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
-        child: Column(
-          children: <Widget>[
-            ...files.map((option) {
-              return ListTile(
-                title: Text(option),
-                leading: Radio<String>(
-                  value: option,
-                  groupValue: _selectedOption,
-                  onChanged: (value) {
-                    setState(() {
-                      _selectedOption = value!;
-                    });
-                  },
-                ),
-              );
-            }).toList(),
-            ElevatedButton(
-              onPressed: () {
-                print('Selected option: $_selectedOption');
+    return Scaffold(
+      appBar: AppBar(title: const Text('Select the user')),
+      body: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
+          child: Column(
+            children: <Widget>[
+              ...files.map((option) {
+                return ListTile(
+                  title: Text(option),
+                  leading: Radio<String>(
+                    value: option,
+                    groupValue: _selectedOption,
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedOption = value!;
+                      });
+                    },
+                  ),
+                );
+              }).toList(),
+              ElevatedButton(
+                onPressed: () {
+                  print('Selected option: $_selectedOption');
 
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => HomeScreen(
-                            key: const Key("aaaa"),
-                            selectedFile: _selectedOption)));
-              },
-              child: const Text('Confirm'),
-            ),
-          ],
-        ));
+                  Navigator.pushNamed(context, AppRouteName.home,
+                      arguments: HomeScreenArguments(_selectedOption));
+                },
+                child: const Text('Confirm'),
+              ),
+            ],
+          )),
+    );
   }
 }

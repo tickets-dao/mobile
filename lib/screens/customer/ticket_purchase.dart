@@ -1,4 +1,5 @@
 import 'package:dao_ticketer/types/price_category.dart';
+import 'package:dao_ticketer/types/route_names.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
@@ -8,16 +9,16 @@ import 'package:dao_ticketer/components/event_card.dart' show EventCard;
 import 'package:dao_ticketer/components/event_order_stepper.dart'
     show EventOrderStepper;
 
-class EventScreen extends StatefulWidget {
-  const EventScreen({super.key, required this.event});
+class TicketPurchaseScreen extends StatefulWidget {
+  const TicketPurchaseScreen({super.key, required this.event});
 
   final Event event;
 
   @override
-  EventScreenState createState() => EventScreenState();
+  TicketPurchaseScreenState createState() => TicketPurchaseScreenState();
 }
 
-class EventScreenState extends State<EventScreen> {
+class TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
   List<PriceCategory> _eventCategories = [];
   Map<String, List<Ticket>> _eventTicketsByCategory = {};
   Ticket? selectedTicket;
@@ -62,10 +63,10 @@ class EventScreenState extends State<EventScreen> {
 
   List<Widget> getEventWidgetChildren() {
     if (_eventTicketsByCategory.isEmpty) {
-      return [EventCard(widget.event, false)];
+      return [EventCard(widget.event, false, AppRouteName.empty)];
     } else {
       return [
-        EventCard(widget.event, false),
+        EventCard(widget.event, false, AppRouteName.empty),
         EventOrderStepper(
             eventTicketsByCategory: _eventTicketsByCategory,
             selectTicketCallback: selectTicket),

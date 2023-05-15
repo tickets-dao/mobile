@@ -36,57 +36,45 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
     });
   }
 
-  List<Widget> getEntriesUIwithButton() {
-    List<Widget> res = [
-      ...editableValue.map(
-        (e) => Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Text("Cat. name")),
-                      onChanged: (newName) {
-                        e.setName(newName);
-                        syncWithParent();
-                      },
-                    ),
+  getTextFieldOrInput(PriceCategory e) {
+    return widget.pricesOnly
+        ? Text(e.name)
+        : Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), label: Text("Cat. name")),
+                    onChanged: (newName) {
+                      e.setName(newName);
+                      syncWithParent();
+                    },
                   ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: IconButton(
-                      icon: const Icon(Icons.delete_outline),
-                      onPressed: () {
-                        int index = editableValue.indexOf(e);
-                        setState(() {
-                          editableValue.removeAt(index);
-                        });
-                        syncWithParent();
-                      },
-                    ),
-                  )
-                ],
-              ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
+                  child: IconButton(
+                    icon: const Icon(Icons.delete_outline),
+                    onPressed: () {
+                      int index = editableValue.indexOf(e);
+                      setState(() {
+                        editableValue.removeAt(index);
+                      });
+                      syncWithParent();
+                    },
+                  ),
+                )
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-              child: TextField(
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), label: Text("Price")),
-                onChanged: (newPrice) {
-                  e.setPrice(int.parse(newPrice));
-                  syncWithParent();
-                },
-              ),
-            ),
+          );
+  }
+
+  getRowsSeatsEditors(PriceCategory e) {
+    return widget.pricesOnly
+        ? []
+        : [
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: TextField(
@@ -111,7 +99,31 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                 },
               ),
             ),
-            const Divider(),
+          ];
+  }
+
+  List<Widget> getEntriesUIwithButton() {
+    List<Widget> res = [
+      ...editableValue.map(
+        (e) => Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            getTextFieldOrInput(e),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: TextField(
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(), label: Text("Price")),
+                onChanged: (newPrice) {
+                  e.setPrice(int.parse(newPrice));
+                  syncWithParent();
+                },
+              ),
+            ),
+            ...getRowsSeatsEditors(e),
           ],
         ),
       )
@@ -125,7 +137,13 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
           });
         },
         child: const Text("+ add category"));
-    res.add(addCategoryButton);
+
+    if (!widget.pricesOnly) {
+      res.add(addCategoryButton);
+    }
+    res.add(
+      const Divider(),
+    );
     return res;
   }
 

@@ -33,6 +33,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
     });
   }
 
+  // TODO: block create button once it's pressed
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,7 +1,8 @@
-import 'package:dao_ticketer/components/issuer_event_card.dart';
+import 'package:dao_ticketer/components/event_card.dart';
+import 'package:dao_ticketer/types/route_names.dart';
+import 'package:dao_ticketer/types/screen_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
-import 'package:dao_ticketer/screens/issuer/event_creation.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 
 class IssuerEventsListScreen extends StatefulWidget {
@@ -20,7 +21,8 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
       ...events.map((e) {
         return Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
-          child: IssuerEventCard(e, true),
+          child: EventCard(e, true, AppRouteName.issuerEvent,
+             redirectArguments: IssuerEventScreenArguments(e, null)),
         );
       })
     ];
@@ -54,10 +56,7 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
       floatingActionButton: ElevatedButton(
         child: const Text('+ add new event'),
         onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => const EventCreationScreen()));
+          Navigator.pushNamed(context, AppRouteName.issuerEventCreation);
         },
       ),
     );

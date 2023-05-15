@@ -1,5 +1,6 @@
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 import 'package:dao_ticketer/types/price_category.dart';
+import 'package:dao_ticketer/types/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/components/event_card.dart';
@@ -50,7 +51,7 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            EventCard(event, false),
+            EventCard(event, false, AppRouteName.empty),
             Padding(
               padding: const EdgeInsets.all(5),
               child: CategoriesEditor(

@@ -1,8 +1,10 @@
+import 'package:dao_ticketer/types/screen_arguments.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
 import 'package:dao_ticketer/types/event.dart' show Event;
 import 'package:dao_ticketer/components/event_card.dart' show EventCard;
+import 'package:dao_ticketer/types/route_names.dart';
 
 class EventsListScreen extends StatefulWidget {
   const EventsListScreen({super.key});
@@ -40,7 +42,10 @@ class EventListScreenState extends State<EventsListScreen> {
                   ..._events.map((event) {
                     return Container(
                         margin: const EdgeInsets.all(10),
-                        child: EventCard(event, true));
+                        child: EventCard(
+                            event, true, AppRouteName.customerTicketPurchase,
+                            redirectArguments:
+                                CustomerTicketPurchaseScreenArguments(event)));
                   })
                 ]),
           ),

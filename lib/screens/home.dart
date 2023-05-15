@@ -1,78 +1,59 @@
-import 'package:dao_ticketer/screens/customer/balance.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
-import 'package:dao_ticketer/screens/customer/event_list.dart'
-    show EventsListScreen;
-import 'package:dao_ticketer/screens/issuer/event_list.dart'
-    show IssuerEventsListScreen;
-import 'package:dao_ticketer/screens/customer/tickets_list.dart'
-    show TicketListScreen;
-import 'ticketer/scan_qr.dart';
-import 'customer/render_qr.dart';
 
-void navigateTo(BuildContext context, String screen) {
-  switch (screen) {
-    case "events":
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const EventsListScreen()));
-      break;
-    case "tickets":
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const TicketListScreen()));
-      break;
-    case "balance":
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const BalanceScreen()));
-      break;
-    case "emittentEvents":
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const IssuerEventsListScreen()),
-      );
-      break;
-    default:
-      return;
-  }
-}
+import 'package:dao_ticketer/types/route_names.dart';
 
-ListView getDrawerItems(BuildContext ctx) => ListView(
+ListView getDrawerItems(BuildContext context) => ListView(
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
-          const DrawerHeader(
-            decoration: BoxDecoration(
+          DrawerHeader(
+            decoration: const BoxDecoration(
               color: Colors.blue,
             ),
-            child: Text('Ticketer Menu'),
+            child: Flex(
+              direction: Axis.vertical,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Ticketer Menu'),
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, AppRouteName.userSelect);
+                    },
+                    icon: const Icon(Icons.logout_outlined))
+              ],
+            ),
           ),
-          ListTile(
-            title: const Text('Events'),
-            onTap: () {
-              navigateTo(ctx, 'events');
-            },
-          ),
-          ListTile(
-              title: const Text('Your tickets'),
-              onTap: () {
-                navigateTo(ctx, 'tickets');
-              }),
           ListTile(
               title: const Text('Your balance'),
               onTap: () {
-                navigateTo(ctx, 'balance');
+                Navigator.pushNamed(context, AppRouteName.userBalance);
               }),
           ListTile(
-              title: const Text('issuer: Events'),
+              title: const Text('Your tickets'),
               onTap: () {
-                navigateTo(ctx, 'emittentEvents');
+                Navigator.pushNamed(context, AppRouteName.userTickets);
+              }),
+          ListTile(
+            title: const Text('Customer: Events'),
+            onTap: () {
+              Navigator.pushNamed(context, AppRouteName.customerEvents);
+            },
+          ),
+          ListTile(
+              title: const Text('Issuer: events'),
+              onTap: () {
+                Navigator.pushNamed(context, AppRouteName.issuerEventList);
               }),
         ]);
 
 class HomeScreen extends StatefulWidget {
   final String selectedFile;
 
-  HomeScreen({required Key key, required this.selectedFile}) : super(key: key);
+  const HomeScreen({required this.selectedFile, super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -80,15 +61,12 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String get selectedFile => widget.selectedFile;
+  RealDAOService service = RealDAOService.getSingleton();
 
   @override
   void initState() {
     super.initState();
     print("selected file: $selectedFile");
-
-    // this call to the service constructor is the first one in the
-    // life cycle of the application, so it will instantiate the singleton
-    RealDAOService service = RealDAOService();
 
     // for local chaincode use
     // RealDAOService service = RealDAOService(true);
@@ -110,20 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ScanScreen()),
-                  );
-                },
-                child: const Text('SCAN QR CODE')),
-          ),
-        ],
+        children: const <Widget>[],
       )),
     );
   }

@@ -7,8 +7,11 @@ class Ticket {
   late final int number;
   late final String eventID;
 
-  Ticket(this.category, this.price,this.row, this.number,
-      this.eventID);
+  Ticket(this.category, this.price, this.row, this.number, this.eventID);
+
+  factory Ticket.emptyPlug() {
+    return Ticket("no category", -1, -1, -1, "no event");
+  }
 
   Ticket.fromJson(Map<String, dynamic> json)
       : category = json['category'],

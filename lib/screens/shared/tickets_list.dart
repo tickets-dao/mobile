@@ -14,6 +14,7 @@ class TicketListScreen extends StatefulWidget {
   TicketListScreenState createState() => TicketListScreenState();
 }
 
+// TODO: break up the listing into pages
 class TicketListScreenState extends State<TicketListScreen> {
   List<Ticket> tickets = [];
   Map<String, Event> eventsMap = {};

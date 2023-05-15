@@ -1,4 +1,6 @@
-import 'package:dao_ticketer/screens/customer/tickets_list.dart';
+import 'package:dao_ticketer/screens/shared/tickets_list.dart';
+import 'package:dao_ticketer/types/route_names.dart';
+import 'package:dao_ticketer/types/screen_arguments.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
@@ -54,12 +56,12 @@ class TicketScreenState extends State<TicketScreen> {
                 )),
             ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) =>
-                            GenerateScreen(ticket: widget.ticket)),
-                  );
+                  Navigator.pushNamed(
+                      context,
+                      // GenerateScreen(ticket: widget.ticket)
+                      AppRouteName.customerGenerateQR,
+                      arguments:
+                          CustomerGenerateQRScreenArguments(widget.ticket));
                 },
                 child: const Text('Generate QR code')),
             Container(
@@ -96,12 +98,8 @@ class TicketScreenState extends State<TicketScreen> {
                                               .sendTicketTo(
                                                   widget.ticket, value)
                                               .then((_) {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      const TicketListScreen()),
-                                            );
+                                            Navigator.pushNamed(context,
+                                                AppRouteName.userTickets);
                                           });
                                         },
                                         child: const Text("Confirm"),

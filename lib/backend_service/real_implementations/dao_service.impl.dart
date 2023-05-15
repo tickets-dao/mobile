@@ -21,6 +21,8 @@ class RealDAOService implements IDAOService {
   late final Uri invokeURL;
   final localStorage = LocalStorage('ticketer_data.json');
 
+  static late RealDAOService _instance;
+
   Future<SimpleKeyPairData> _getPrivate() async {
     // We will never need this fallback, but flutter will never shutup abt the
     // keypair that we have to initialize asyncronously and not in the constructor
@@ -45,11 +47,8 @@ class RealDAOService implements IDAOService {
     invokeURL = Uri.parse('http://$address:9001/invoke');
   }
 
-  static late final RealDAOService _instance;
-
   RealDAOService([bool? isLocal]) {
     _instance = RealDAOService._privateConstructor(isLocal);
-    print('realdaoservice public constructor called with local $isLocal');
     print(_instance.queryURL.toString());
   }
 

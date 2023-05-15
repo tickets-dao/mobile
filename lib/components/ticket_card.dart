@@ -1,8 +1,8 @@
+import 'package:dao_ticketer/types/route_names.dart';
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/ticket.dart' show Ticket;
 import 'package:dao_ticketer/types/event.dart' show Event;
-
-import 'package:dao_ticketer/screens/customer/ticket.dart' show TicketScreen;
+import 'package:dao_ticketer/types/screen_arguments.dart';
 import 'package:intl/intl.dart';
 
 class TicketCard extends StatelessWidget {
@@ -51,11 +51,10 @@ class TicketCard extends StatelessWidget {
               ]),
           ElevatedButton(
               onPressed: () {
-                Navigator.push(
+                Navigator.pushNamed(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) =>
-                          TicketScreen(ticket: ticket, event: event)),
+                  AppRouteName.userTicket,
+                  arguments: TicketScreenArguments(ticket, event),
                 );
               },
               child: const Text('Open'))
