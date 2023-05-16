@@ -81,7 +81,7 @@ class RealDAOService implements IDAOService {
   @override
   Future<int> buyTicket(Ticket ticket) async {
     final payload = await invokeWithSign(
-        [ticket.category, ticket.row.toString(), ticket.number.toString()],
+        [ticket.eventID, ticket.category, ticket.row.toString(), ticket.number.toString()],
         'buy');
 
     return jsonDecode(payload)['price'] as int;
@@ -182,9 +182,16 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<void> burnTicket(String ticketID) {
-    // TODO: implement burnTicket
-    throw UnimplementedError();
+  Future<void> burnTicket(Ticket ticket, String secretPhrase) async {
+    final payload = await invokeWithSign([
+      ticket.eventID,
+      ticket.category,
+      ticket.row.toString(),
+      ticket.number.toString(),
+      secretPhrase
+    ], 'burn');
+
+    print('transfer $payload succeeded');
   }
 
   @override
@@ -244,8 +251,17 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<bool> setCategoryPrices(List<PriceCategory> categories) {
-    // TODO: implement setCategoryPices
-    throw UnimplementedError();
+  Future<bool> setCategoryPrices(String eventID, List<PriceCategory> categories) async {
+
+    final Map<String, PriceCategory> categoryMap = categories.asMap().map(
+          (index, category) => MapEntry(category.name, category),
+    );
+
+    final payload = await invokeWithSign(
+        [eventID, jsonEncode(categoryMap) ], 'setPricesCategories');
+
+    print("after setting price categories got reponse: $payload");
+
+    return true;
   }
 }

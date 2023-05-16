@@ -46,7 +46,7 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
 
     // this call to the service constructor is the first one in the
     // life cycle of the application, so it will instantiate the singleton
-    RealDAOService service = RealDAOService();
+    RealDAOService service = RealDAOService(true);
   }
 
   @override

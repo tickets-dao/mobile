@@ -95,7 +95,7 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
       floatingActionButton: pricesChanged
           ? ElevatedButton(
               onPressed: () {
-                service.setCategoryPrices(categories);
+                service.setCategoryPrices(event.id, categories);
               },
               child: const Text("Save price updates"),
             )

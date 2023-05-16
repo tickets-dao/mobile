@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
+import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,7 +33,7 @@ class _ScanState extends State<ScanScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.QR);
-      service.burnTicket(barcodeScanRes);
+      service.burnTicket(Ticket("", 0, 0, 0, ""), barcodeScanRes);
       print(barcodeScanRes);
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';

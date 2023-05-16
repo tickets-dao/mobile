@@ -32,10 +32,10 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
   }
 
   syncWithParent() {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
-      widget.onChanged(editableValue);
-    });
+    // if (_debounce?.isActive ?? false) _debounce?.cancel();
+    // _debounce = Timer(const Duration(milliseconds: 500), () {
+    widget.onChanged(editableValue);
+    // });
   }
 
   getTextFieldOrInput(PriceCategory e) {
@@ -120,18 +120,22 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
               child: TextField(
-                // TODO: this controller should only be created once
-                // TODO: categories editor in edit mode should render
-                // TODO: a 'save updates' button instead of sync-ing updates via debounced
-                controller: TextEditingController(text: "${e.price}"),
-                keyboardType: TextInputType.number,
-                decoration: const InputDecoration(
-                    border: OutlineInputBorder(), label: Text("Price")),
-                onChanged: (newPrice) {
-                  e.setPrice(int.parse(newPrice));
-                  syncWithParent();
-                },
-              ),
+                  controller: TextEditingController(text: "${e.price}"),
+                  keyboardType: TextInputType.number,
+                  decoration: const InputDecoration(
+                      border: OutlineInputBorder(), label: Text("Price")),
+                  onSubmitted: (newPrice) {
+                    // Check if the input is a valid number
+                    var tryParsePrice = int.tryParse(newPrice);
+                    if (tryParsePrice != null) {
+                      print('Price: $newPrice');
+                      e.setPrice(tryParsePrice);
+                      syncWithParent();
+                    }
+                  },
+                  onTapOutside: (event) {
+                    syncWithParent();
+                  }),
             ),
             ...getRowsSeatsEditors(e),
           ],
