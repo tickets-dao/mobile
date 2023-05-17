@@ -1,5 +1,5 @@
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
-import 'package:dao_ticketer/backend_service/real_implementations/local_store_service.dart';
+import 'package:dao_ticketer/backend_service/real_implementations/local_store_service.impl.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -41,14 +41,16 @@ class GenerateScreenState extends State<GenerateScreen> {
   void initState() {
     super.initState();
 
-    String rememberedSecret = lsService.getLocalTicketSecret(widget.ticket);
+    String? rememberedSecret = lsService.getLocalTicketSecret(widget.ticket);
 
     _secret = rememberedSecret ?? getRandomString(10);
 
     if (rememberedSecret == null || rememberedSecret == "") {
       rememberSecret();
     } else {
-      ticketPrepared = true;
+      setState(() {
+        ticketPrepared = true;
+      });
     }
   }
 

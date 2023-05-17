@@ -20,26 +20,28 @@ class TicketListScreenState extends State<TicketListScreen> {
   Map<String, Event> eventsMap = {};
   RealDAOService service = RealDAOService.getSingleton();
 
-  @override
-  void initState() {
-    super.initState();
+  fetchTickets() {
     service.getTicketsByUser().then((ts) {
-      setState(() {
-        tickets = ts;
-
-        service
-            .getEventsByID(ts.map((Ticket t) => t.eventID).toList())
-            .then((events) {
-          Map<String, Event> map = {};
-          for (Event event in events) {
-            map.addAll({event.id: event});
-          }
-          setState(() {
-            eventsMap = map;
-          });
+      service
+          .getEventsByID(ts.map((Ticket t) => t.eventID).toList())
+          .then((events) {
+        Map<String, Event> map = {};
+        for (Event event in events) {
+          print("adding to map");
+          map.addAll({event.id: event});
+        }
+        setState(() {
+          tickets = ts;
+          eventsMap = map;
         });
       });
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchTickets();
   }
 
   @override
@@ -53,11 +55,14 @@ class TicketListScreenState extends State<TicketListScreen> {
               child: Flex(
                 direction: Axis.vertical,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: eventsMap.length == tickets.length
+                children: tickets.isNotEmpty
                     ? <Widget>[
                         ...tickets.map((Ticket t) {
-                          return TicketCard(
-                              t, eventsMap[t.eventID] ?? Event.emptyFallback());
+                          return Padding(
+                            padding: const EdgeInsets.fromLTRB(0, 0, 0, 8),
+                            child: TicketCard(t,
+                                eventsMap[t.eventID] ?? Event.emptyFallback()),
+                          );
                         })
                       ]
                     : [],

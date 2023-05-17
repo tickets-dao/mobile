@@ -6,7 +6,7 @@ import 'dart:convert';
 
 class DAOLocalStoreService extends LocalStoreService {
   String? _filename;
-  final localStorage = LocalStorage('ticketer_data.json');
+  late final LocalStorage localStorage;
 
   static late DAOLocalStoreService _instance;
 
@@ -14,6 +14,7 @@ class DAOLocalStoreService extends LocalStoreService {
 
   DAOLocalStoreService() {
     _instance = DAOLocalStoreService._privateConstructor();
+    _instance.localStorage = LocalStorage('ticketer_data.json');
   }
 
   factory DAOLocalStoreService.getSingleton() {
@@ -43,14 +44,14 @@ class DAOLocalStoreService extends LocalStoreService {
   }
 
   @override
-  String getLocalTicketSecret(Ticket t) {
-    return localStorage
+  String? getLocalTicketSecret(Ticket t) {
+    return _instance.localStorage
         .getItem("${t.eventID}:${t.category}:${t.row}${t.number}");
   }
 
   @override
   void setLocalTicketSecret(Ticket t, String secret) {
-    localStorage.setItem(
-        "${t.eventID}:${t.category}:${t.row}${t.number}", secret);
+    _instance.localStorage
+        .setItem("${t.eventID}:${t.category}:${t.row}${t.number}", secret);
   }
 }

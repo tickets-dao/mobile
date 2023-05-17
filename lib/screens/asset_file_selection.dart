@@ -1,4 +1,4 @@
-import 'package:dao_ticketer/backend_service/real_implementations/local_store_service.dart';
+import 'package:dao_ticketer/backend_service/real_implementations/local_store_service.impl.dart';
 import 'package:dao_ticketer/screens/home.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 import 'package:dao_ticketer/types/route_names.dart';
@@ -38,7 +38,7 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
     // these calls to the service constructors are the first ones in the
     // life cycle of the application, so they will instantiate the singletons
     lsService = DAOLocalStoreService();
-    service = RealDAOService(true);
+    service = RealDAOService();
     // lsService.loadKeyFiles();
     loadAssetFileList();
   }
