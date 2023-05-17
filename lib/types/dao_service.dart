@@ -24,10 +24,6 @@ abstract class IDAOService {
 
   Future<void> prepareTicket(Ticket ticket, String secret);
 
-  String getLocalTicketSecret(Ticket t);
-
-  void setLocalTicketSecret(Ticket t, String secret);
-
   Future<void> burnTicket(Ticket ticket, String secretPhrase);
 
   Future<int> getUserBalance();
@@ -41,5 +37,6 @@ abstract class IDAOService {
 
   Future<List<PriceCategory>> getIssuerEventCategories(String eid);
 
-  Future<bool> setCategoryPrices(String eventID, List<PriceCategory> categories);
+  Future<bool> setCategoryPrices(
+      String eventID, List<PriceCategory> categories);
 }

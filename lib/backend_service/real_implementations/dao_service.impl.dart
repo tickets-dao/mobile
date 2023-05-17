@@ -6,7 +6,6 @@ import "package:dao_ticketer/types/price_category.dart";
 import "package:dao_ticketer/types/ticket.dart";
 import "package:dao_ticketer/types/event.dart";
 import "package:dao_ticketer/types/dao_service.dart";
-import "package:localstorage/localstorage.dart" show LocalStorage;
 
 import "./async_utils.dart";
 
@@ -14,12 +13,10 @@ const local = '192.168.1.151';
 const cloud = '51.250.110.24';
 
 class RealDAOService implements IDAOService {
-  String? _filename;
   SimpleKeyPairData? _privateKey;
 
   late final Uri queryURL;
   late final Uri invokeURL;
-  final localStorage = LocalStorage('ticketer_data.json');
 
   static late RealDAOService _instance;
 
@@ -60,7 +57,6 @@ class RealDAOService implements IDAOService {
   // инициализация ключа - async, поэтому нельзя вызывать в конструкторе
   init(String filename) async {
     if (_instance._privateKey != null) return;
-    _instance._filename = filename;
     _instance._privateKey = await readPrivateKeyFromFile(filename);
   }
 
@@ -80,9 +76,12 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<int> buyTicket(Ticket ticket) async {
-    final payload = await invokeWithSign(
-        [ticket.eventID, ticket.category, ticket.row.toString(), ticket.number.toString()],
-        'buy');
+    final payload = await invokeWithSign([
+      ticket.eventID,
+      ticket.category,
+      ticket.row.toString(),
+      ticket.number.toString()
+    ], 'buy');
 
     return jsonDecode(payload)['price'] as int;
   }
@@ -208,18 +207,6 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  String getLocalTicketSecret(Ticket t) {
-    return localStorage
-        .getItem("${t.eventID}:${t.category}:${t.row}${t.number}");
-  }
-
-  @override
-  void setLocalTicketSecret(Ticket t, String secret) {
-    localStorage.setItem(
-        "${t.eventID}:${t.category}:${t.row}${t.number}", secret);
-  }
-
-  @override
   // вернуть эвенты, для которых пользователь является эмитентом
   Future<List<Event>> getEventsByIssuer() async {
     final keyPairData = (await _instance._getPrivate());
@@ -251,14 +238,14 @@ class RealDAOService implements IDAOService {
   }
 
   @override
-  Future<bool> setCategoryPrices(String eventID, List<PriceCategory> categories) async {
-
+  Future<bool> setCategoryPrices(
+      String eventID, List<PriceCategory> categories) async {
     final Map<String, PriceCategory> categoryMap = categories.asMap().map(
           (index, category) => MapEntry(category.name, category),
-    );
+        );
 
     final payload = await invokeWithSign(
-        [eventID, jsonEncode(categoryMap) ], 'setPricesCategories');
+        [eventID, jsonEncode(categoryMap)], 'setPricesCategories');
 
     print("after setting price categories got reponse: $payload");
 

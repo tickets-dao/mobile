@@ -1,4 +1,5 @@
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
+import 'package:dao_ticketer/backend_service/real_implementations/local_store_service.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -24,6 +25,7 @@ class GenerateScreen extends StatefulWidget {
 class GenerateScreenState extends State<GenerateScreen> {
   GlobalKey globalKey = GlobalKey();
   RealDAOService service = RealDAOService.getSingleton();
+  DAOLocalStoreService lsService = DAOLocalStoreService.getSingleton();
   bool ticketPrepared = false;
   late final String _secret;
 
@@ -39,7 +41,7 @@ class GenerateScreenState extends State<GenerateScreen> {
   void initState() {
     super.initState();
 
-    String rememberedSecret = service.getLocalTicketSecret(widget.ticket);
+    String rememberedSecret = lsService.getLocalTicketSecret(widget.ticket);
 
     _secret = rememberedSecret ?? getRandomString(10);
 

@@ -1,10 +1,9 @@
+import 'package:dao_ticketer/backend_service/real_implementations/local_store_service.dart';
 import 'package:dao_ticketer/screens/home.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 import 'package:dao_ticketer/types/route_names.dart';
 import 'package:dao_ticketer/types/screen_arguments.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'dart:convert';
 
 class AssetFileSelectionWidget extends StatefulWidget {
   const AssetFileSelectionWidget({super.key});
@@ -17,36 +16,31 @@ class AssetFileSelectionWidget extends StatefulWidget {
 class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
   List<String> files = [];
 
+  late DAOLocalStoreService lsService;
+  late RealDAOService service;
+
   // todo create map to display nice roles, and not filenames
   Map<String, String> filesMap = {};
   String _selectedOption = "";
 
+  loadAssetFileList() async {
+    List<String> loadedPaths = await lsService.loadKeyFiles();
+
+    setState(() {
+      files = loadedPaths;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+
+    // these calls to the service constructors are the first ones in the
+    // life cycle of the application, so they will instantiate the singletons
+    lsService = DAOLocalStoreService();
+    service = RealDAOService(true);
+    // lsService.loadKeyFiles();
     loadAssetFileList();
-  }
-
-  Future<void> loadAssetFileList() async {
-    // Load asset manifest
-    final String manifestContent =
-        await rootBundle.loadString('AssetManifest.json');
-
-    // Decode it to JSON
-    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
-
-    // Get list of all asset paths
-    final List<String> paths = manifestMap.keys
-        .where((String key) => key.startsWith('assets/'))
-        .toList();
-
-    setState(() {
-      files = paths;
-    });
-
-    // this call to the service constructor is the first one in the
-    // life cycle of the application, so it will instantiate the singleton
-    RealDAOService service = RealDAOService(true);
   }
 
   @override
