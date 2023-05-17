@@ -207,6 +207,16 @@ class RealDAOService implements IDAOService {
   }
 
   @override
+  Future<List<Event>> getUserEvents() {
+    throw new UnimplementedError();
+  }
+
+  @override
+  Future<List<Ticket>> getUserEventTitckets() {
+    throw new UnimplementedError();
+  }
+
+  @override
   // вернуть эвенты, для которых пользователь является эмитентом
   Future<List<Event>> getEventsByIssuer() async {
     final keyPairData = (await _instance._getPrivate());

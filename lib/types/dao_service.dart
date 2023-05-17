@@ -27,6 +27,8 @@ abstract class IDAOService {
   Future<void> burnTicket(Ticket ticket, String secretPhrase);
 
   Future<int> getUserBalance();
+  Future<List<Event>> getUserEvents();
+  Future<List<Ticket>> getUserEventTitckets();
 
   Future<void> addFunds();
 
