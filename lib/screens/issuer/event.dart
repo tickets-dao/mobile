@@ -19,8 +19,11 @@ class IssuerEventScreen extends StatefulWidget {
 class _IssuerEventScreenState extends State<IssuerEventScreen> {
   Event event = Event.emptyFallback();
   List<PriceCategory> categories = [];
-  RealDAOService service = RealDAOService.getSingleton();
+  List<String> ticketers = [];
   bool pricesChanged = false;
+
+  String newTicketerAddr = "";
+  RealDAOService service = RealDAOService.getSingleton();
 
   void initEventData() async {
     if (widget.event == null) {
@@ -35,12 +38,102 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
     setState(() {
       categories = cs;
     });
+
+    // Future<void> addTicketer(String ticketerAddress);
+
+    List<String> ttrs = await service.getTicketers();
+
+    setState(() {
+      ticketers = ttrs;
+    });
   }
 
   @override
   void initState() {
     super.initState();
     initEventData();
+  }
+
+  addTicketer(String ttrToAdd) async {
+    bool resp = await service.addTicketer(ttrToAdd);
+    if (resp) {
+      ticketers = [...ticketers, ttrToAdd];
+    }
+    newTicketerAddr = "";
+  }
+
+  deleteTicketer(String ttrToDelete) async {
+    bool resp = await service.deleteTicketer(ttrToDelete);
+    if (resp) {
+      setState(() {
+        ticketers = [...ticketers.where((String ttr) => ttr != ttrToDelete)];
+      });
+    }
+  }
+
+  List<Widget> renderCategoriesEditor() {
+    return categories.isNotEmpty
+        ? [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+              child: CategoriesEditor(
+                value: categories,
+                onChanged: (value) {
+                  setState(() {
+                    categories = value;
+                    pricesChanged = true;
+                  });
+                },
+                pricesOnly: true,
+              ),
+            )
+          ]
+        : [];
+  }
+
+  List<Widget> getTicketerInputs() {
+    return ticketers.isNotEmpty
+        ? [
+            const Text("Ticketers",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ...ticketers.map((String ttr) => Padding(
+                padding: const EdgeInsets.all(5),
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(ttr),
+                    IconButton(
+                        onPressed: () {
+                          deleteTicketer(ttr);
+                        },
+                        icon: const Icon(Icons.delete_outline))
+                  ],
+                ))),
+            Padding(
+                padding: const EdgeInsets.all(5),
+                child: Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TextField(
+                      decoration: const InputDecoration(
+                          label: Text("Ticketer address")),
+                      onChanged: (value) {
+                        newTicketerAddr = value;
+                      },
+                    ),
+                    IconButton(
+                        onPressed: () {
+                          addTicketer(newTicketerAddr);
+                        },
+                        icon: const Icon(Icons.add_circle_outline))
+                  ],
+                ))
+          ]
+        : [];
   }
 
   @override
@@ -73,21 +166,8 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
               ),
-              categories.isNotEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
-                      child: CategoriesEditor(
-                        value: categories,
-                        onChanged: (value) {
-                          setState(() {
-                            categories = value;
-                            pricesChanged = true;
-                          });
-                        },
-                        pricesOnly: true,
-                      ),
-                    )
-                  : Container(),
+              ...renderCategoriesEditor(),
+              ...getTicketerInputs(),
             ],
           ),
         ),
