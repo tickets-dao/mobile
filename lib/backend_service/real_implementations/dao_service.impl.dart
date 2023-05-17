@@ -194,6 +194,23 @@ class RealDAOService implements IDAOService {
   }
 
   @override
+  Future<void> addTicketer(String ticketerAddress) async {
+    final payload = await invokeWithSign([
+      ticketerAddress,
+    ], 'addTicketer');
+
+    print('transfer $payload succeeded');
+  }
+
+  @override
+  Future<List<String>> getTicketers() async {
+    final payload = await invokeWithSign([], 'ticketers');
+
+    print('transfer $payload succeeded');
+    return [];
+  }
+
+  @override
   Future<int> getUserBalance() async {
     final keyPairData = (await _instance._getPrivate());
     final result = await doRequest(

@@ -39,4 +39,8 @@ abstract class IDAOService {
 
   Future<bool> setCategoryPrices(
       String eventID, List<PriceCategory> categories);
+
+  Future<void> addTicketer(String ticketerAddress);
+
+  Future<List<String>> getTicketers();
 }

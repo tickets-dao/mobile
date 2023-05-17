@@ -51,7 +51,7 @@ class TicketScreenState extends State<TicketScreen> {
                         style: const TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold)),
                     Text(
-                        "${widget.ticket.category}, price: ${widget.ticket.price}"),
+                        "${widget.ticket.category}, row: ${widget.ticket.row}, seat: ${widget.ticket.number}"),
                   ],
                 )),
             ElevatedButton(

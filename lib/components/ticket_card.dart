@@ -47,7 +47,8 @@ class TicketCard extends StatelessWidget {
                           fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
                 Text(dateFormatter.format(event.startTime)),
-                Text("${ticket.category}, price ${ticket.price}"),
+                Text(
+                    "${ticket.category},  row: ${ticket.row}, seat: ${ticket.number}"),
               ]),
           ElevatedButton(
               onPressed: () {
