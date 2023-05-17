@@ -34,6 +34,7 @@ class GenerateScreenState extends State<GenerateScreen> {
       setState(() {
         ticketPrepared = true;
       });
+      print("Your secret for ticket: $_secret");
     });
   }
 
@@ -51,6 +52,7 @@ class GenerateScreenState extends State<GenerateScreen> {
       setState(() {
         ticketPrepared = true;
       });
+      print("Your secret for ticket: $_secret");
     }
   }
 

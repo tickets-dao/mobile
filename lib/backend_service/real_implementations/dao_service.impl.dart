@@ -20,17 +20,6 @@ class RealDAOService implements IDAOService {
 
   static late RealDAOService _instance;
 
-  Future<SimpleKeyPairData> _getPrivate() async {
-    // We will never need this fallback, but flutter will never shutup abt the
-    // keypair that we have to initialize asyncronously and not in the constructor
-    // of the backendService that calls this function
-    final fallbackKPair = SimpleKeyPairData([],
-        publicKey: SimplePublicKey([], type: KeyPairType.ed25519),
-        type: KeyPairType.ed25519);
-
-    return await _instance._privateKey?.extract() ?? fallbackKPair;
-  }
-
   // lines 19 through 36 make this class a singleton
   RealDAOService._privateConstructor([bool? isLocal]) {
     late String address;
@@ -51,6 +40,17 @@ class RealDAOService implements IDAOService {
 
   factory RealDAOService.getSingleton() {
     return _instance;
+  }
+
+  Future<SimpleKeyPairData> _getPrivate() async {
+    // We will never need this fallback, but flutter will never shutup abt the
+    // keypair that we have to initialize asyncronously and not in the constructor
+    // of the backendService that calls this function
+    final fallbackKPair = SimpleKeyPairData([],
+        publicKey: SimplePublicKey([], type: KeyPairType.ed25519),
+        type: KeyPairType.ed25519);
+
+    return await _instance._privateKey?.extract() ?? fallbackKPair;
   }
 
   // необходимо вызвать перед инвоуком

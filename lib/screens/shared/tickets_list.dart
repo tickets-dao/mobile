@@ -27,7 +27,6 @@ class TicketListScreenState extends State<TicketListScreen> {
           .then((events) {
         Map<String, Event> map = {};
         for (Event event in events) {
-          print("adding to map");
           map.addAll({event.id: event});
         }
         setState(() {

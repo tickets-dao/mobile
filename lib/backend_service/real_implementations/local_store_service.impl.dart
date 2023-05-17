@@ -10,11 +10,13 @@ class DAOLocalStoreService extends LocalStoreService {
 
   static late DAOLocalStoreService _instance;
 
-  DAOLocalStoreService._privateConstructor();
+  DAOLocalStoreService._privateConstructor() {
+    localStorage = LocalStorage('ticketer_data.json');
+  }
 
   DAOLocalStoreService() {
     _instance = DAOLocalStoreService._privateConstructor();
-    _instance.localStorage = LocalStorage('ticketer_data.json');
+    print("inited localStorageService instance: $_instance");
   }
 
   factory DAOLocalStoreService.getSingleton() {
