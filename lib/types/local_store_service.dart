@@ -1,3 +1,4 @@
+import 'package:dao_ticketer/types/user.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 
 abstract class LocalStoreService {
@@ -8,5 +9,6 @@ abstract class LocalStoreService {
 
   void setLocalTicketSecret(Ticket t, String secret);
 
-  void addUserSecret();
+  void addUserSecret(String userSecret, String userName);
+  List<DAOUser> getLocalySavedUsers();
 }

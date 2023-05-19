@@ -2,6 +2,7 @@ import 'package:dao_ticketer/types/local_store_service.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 import "package:localstorage/localstorage.dart" show LocalStorage;
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:dao_ticketer/types/user.dart' show DAOUser;
 import 'dart:convert';
 
 class DAOLocalStoreService extends LocalStoreService {
@@ -58,5 +59,37 @@ class DAOLocalStoreService extends LocalStoreService {
   }
 
   @override
-  addUserSecret() {}
+  void addUserSecret(String userSecret, String userName) {
+    List<dynamic> usersKeys =
+        json.decode(_instance.localStorage.getItem("usersKeys") ?? "[]");
+    String userID = "$userName-${usersKeys.length}";
+    usersKeys.add(userID);
+
+    Map<String, dynamic> usersMap =
+        json.decode(_instance.localStorage.getItem("usersMap") ?? "{}");
+
+    usersMap.addAll({
+      userID: {"name": userName, "secret": userSecret}
+    });
+
+    _instance.localStorage.setItem("usersKeys", usersKeys);
+    _instance.localStorage.setItem("usersMap", json.encode(usersMap));
+    print(
+        'added new user data: id: ${userID}, userName: ${userName}, userSecret: ${userSecret}');
+    print("updated users map: ${json.encode(usersMap)}");
+  }
+
+  @override
+  List<DAOUser> getLocalySavedUsers() {
+    Map<String, dynamic> usersMap =
+        json.decode(_instance.localStorage.getItem("usersMap") ?? "{}");
+
+    List<DAOUser> users = [];
+
+    for (dynamic userJson in usersMap.values) {
+      users.add(DAOUser.fromJson(userJson));
+    }
+    print('getLocalySavedUsers(): saved json: $usersMap');
+    return users;
+  }
 }

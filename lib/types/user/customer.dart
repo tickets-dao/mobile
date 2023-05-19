@@ -1,5 +1,5 @@
 import 'package:dao_ticketer/types/ticket.dart';
-import 'package:dao_ticketer/types/user.dart';
+import 'package:dao_ticketer/types/user/user.dart';
 
 abstract class ICustomer extends IDAOUser {
   @override

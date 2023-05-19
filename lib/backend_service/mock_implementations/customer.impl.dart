@@ -1,5 +1,5 @@
-import 'package:dao_ticketer/types/customer.dart';
-import 'package:dao_ticketer/types/user.dart';
+import 'package:dao_ticketer/types/user/customer.dart';
+import 'package:dao_ticketer/types/user/user.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 
 import "./async_utils.dart";
