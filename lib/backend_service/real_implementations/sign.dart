@@ -8,40 +8,6 @@ import "package:pointycastle/pointycastle.dart" as pc;
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 
-// Future<void> main() async {
-//   final privateKey = await readPrivateKeyFromFile('./keys/user.private');
-//   final publicKey = await privateKey.extractPublicKey();
-
-//   final queryArgs = [
-//     '5unWkjiVbpAkDDvyS8pxT1hWuwqEFgFShTb8i4WBr2KdDWuuf',
-//     'industrialBalanceOf',
-//   ];
-//   final List<String> encodedqueryArgsList =
-//       queryArgs.map(base64EncodeString).toList();
-
-//   final result =
-//       await doRequest(Uri(), encodedqueryArgsList, "industrialBalanceOf");
-
-//   print(result);
-
-//   List<String> signedAddBalanceArgs =
-//       await sign(privateKey, 'tickets', 'tickets', 'addAlowedBalance', []);
-
-//   final List<String> encodedAddBalanceList =
-//       signedAddBalanceArgs.map(base64EncodeString).toList();
-
-// print(await doRequest(Uri(),encodedAddBalanceList, "addAllowedBalance"));
-//
-// List<String> signedEmitArgs = await sign(
-//     privateKey, 'tickets', 'tickets', 'buy', ["parter", "1", "1", "1"]);
-// print(signedEmitArgs);
-
-//   final List<String> encodedList =
-//       signedEmitArgs.map(base64EncodeString).toList();
-
-//   await doRequest(Uri(), encodedList, "buy");
-// }
-
 String getAddressByPublicKey(SimplePublicKey publicKey) {
   final hash = sha3_256(publicKey.bytes);
   final encoded = Base58CheckCodec(Base58CheckCodec.BITCOIN_ALPHABET)
@@ -52,11 +18,7 @@ String getAddressByPublicKey(SimplePublicKey publicKey) {
   return encoded;
 }
 
-Future<SimpleKeyPairData> readPrivateKeyFromFile(String filename) async {
-  // final fileString = await rootBundle.loadString('assets/keys/user.private');
-  final fileString = await rootBundle.loadString(filename);
-
-  // final fileString = await File(filename).readAsString();
+Future<SimpleKeyPairData> readPrivateKeyFromString(String fileString) async {
   final keySeedBytes = base64Decode(fileString);
 
   final key = await Ed25519().newKeyPairFromSeed(keySeedBytes);

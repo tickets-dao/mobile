@@ -55,9 +55,9 @@ class RealDAOService implements IDAOService {
 
   // необходимо вызвать перед инвоуком
   // инициализация ключа - async, поэтому нельзя вызывать в конструкторе
-  init(String filename) async {
+  init(String fileString) async {
     if (_instance._privateKey != null) return;
-    _instance._privateKey = await readPrivateKeyFromFile(filename);
+    _instance._privateKey = await readPrivateKeyFromString(fileString);
   }
 
   Future<String> invokeWithSign(List<String> params, String fnName) async {

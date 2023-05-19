@@ -59,7 +59,7 @@ class DAOLocalStoreService extends LocalStoreService {
   }
 
   @override
-  void addUserSecret(String userSecret, String userName) {
+  void addUserSecret(String userSecret, String userName) async {
     List<dynamic> usersKeys =
         json.decode(_instance.localStorage.getItem("usersKeys") ?? "[]");
     String userID = "$userName-${usersKeys.length}";
@@ -72,11 +72,8 @@ class DAOLocalStoreService extends LocalStoreService {
       userID: {"name": userName, "secret": userSecret}
     });
 
-    _instance.localStorage.setItem("usersKeys", usersKeys);
-    _instance.localStorage.setItem("usersMap", json.encode(usersMap));
-    print(
-        'added new user data: id: ${userID}, userName: ${userName}, userSecret: ${userSecret}');
-    print("updated users map: ${json.encode(usersMap)}");
+    await _instance.localStorage.setItem("usersKeys", json.encode(usersKeys));
+    await _instance.localStorage.setItem("usersMap", json.encode(usersMap));
   }
 
   @override

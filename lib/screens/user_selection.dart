@@ -5,35 +5,24 @@ import 'package:dao_ticketer/types/screen_arguments.dart';
 import 'package:dao_ticketer/types/user.dart' show DAOUser;
 import 'package:flutter/material.dart';
 
-class AssetFileSelectionWidget extends StatefulWidget {
-  const AssetFileSelectionWidget({super.key});
+class UserSelectionWidget extends StatefulWidget {
+  const UserSelectionWidget({super.key});
 
   @override
-  _AssetFileSelectionWidgetState createState() =>
-      _AssetFileSelectionWidgetState();
+  UserSelectionWidgetState createState() => UserSelectionWidgetState();
 }
 
-class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
+class UserSelectionWidgetState extends State<UserSelectionWidget> {
   List<String> files = [];
 
   late DAOLocalStoreService lsService;
   late RealDAOService service;
 
-  // todo create map to display nice roles, and not filenames
-  Map<String, String> filesMap = {};
-  String _selectedOption = "";
+  String _selectedUserOption = "";
   String newUserAddr = "";
   String newUserName = "";
 
   late final List<DAOUser> localUsers;
-
-  loadAssetFileList() async {
-    List<String> loadedPaths = await lsService.loadKeyFiles();
-
-    setState(() {
-      files = loadedPaths;
-    });
-  }
 
   @override
   void initState() {
@@ -44,14 +33,7 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
     DAOLocalStoreService();
     lsService = DAOLocalStoreService.getSingleton();
     service = RealDAOService();
-    // lsService.loadKeyFiles();
-    loadAssetFileList();
     localUsers = lsService.getLocalySavedUsers();
-
-    for (DAOUser localUser in localUsers) {
-      print(
-          'loaded local user: ${localUser.name}, secret: ${localUser.secret}');
-    }
   }
 
   @override
@@ -62,29 +44,52 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
         child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
             child: Column(
-              children: <Widget>[
-                ...files.map((option) {
-                  return ListTile(
-                    title: Text(option),
-                    leading: Radio<String>(
-                      value: option,
-                      groupValue: _selectedOption,
-                      onChanged: (value) {
-                        setState(() {
-                          _selectedOption = value!;
-                        });
-                      },
-                    ),
-                  );
-                }).toList(),
-                ElevatedButton(
-                  onPressed: () {
-                    print('Selected option: $_selectedOption');
+              children: [
+                Container(
+                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Color.fromARGB(255, 211, 228, 239),
+                        spreadRadius: 5,
+                        blurRadius: 7,
+                      ),
+                    ],
+                  ),
+                  child: Flex(
+                    direction: Axis.vertical,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      ...localUsers.map((DAOUser savedUser) {
+                        return ListTile(
+                          title: Text(savedUser.name),
+                          leading: Radio<String>(
+                            value: savedUser.secret,
+                            groupValue: _selectedUserOption,
+                            onChanged: (value) {
+                              setState(() {
+                                _selectedUserOption = value!;
+                              });
+                            },
+                          ),
+                        );
+                      }),
+                      ElevatedButton(
+                        onPressed: () {
+                          print('Selected option: $_selectedUserOption');
 
-                    Navigator.pushNamed(context, AppRouteName.home,
-                        arguments: HomeScreenArguments(_selectedOption));
-                  },
-                  child: const Text('Confirm'),
+                          Navigator.pushNamed(context, AppRouteName.home,
+                              arguments:
+                                  HomeScreenArguments(_selectedUserOption));
+                        },
+                        child: const Text('Confirm'),
+                      ),
+                    ],
+                  ),
                 ),
                 Container(
                   margin: const EdgeInsets.all(10),

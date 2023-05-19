@@ -1,4 +1,5 @@
-import 'package:dao_ticketer/screens/asset_file_selection.dart';
+import 'package:dao_ticketer/screens/user_selection.dart'
+    show UserSelectionWidget;
 import 'package:dao_ticketer/screens/customer/ticket_purchase.dart';
 import 'package:dao_ticketer/screens/customer/event_list.dart';
 import 'package:dao_ticketer/screens/issuer/event.dart';
@@ -15,7 +16,7 @@ import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/route_names.dart';
 
 Map<String, WidgetBuilder> appRoutes = {
-  AppRouteName.userSelect: (context) => const AssetFileSelectionWidget(),
+  AppRouteName.userSelect: (context) => const UserSelectionWidget(),
   '/home': (context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as HomeScreenArguments;
