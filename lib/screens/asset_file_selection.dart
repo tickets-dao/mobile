@@ -22,6 +22,7 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
   // todo create map to display nice roles, and not filenames
   Map<String, String> filesMap = {};
   String _selectedOption = "";
+  String newUserAddr = "";
 
   loadAssetFileList() async {
     List<String> loadedPaths = await lsService.loadKeyFiles();
@@ -74,6 +75,51 @@ class _AssetFileSelectionWidgetState extends State<AssetFileSelectionWidget> {
                 },
                 child: const Text('Confirm'),
               ),
+              Container(
+                margin: const EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Color.fromARGB(255, 211, 228, 239),
+                      spreadRadius: 5,
+                      blurRadius: 7,
+                    ),
+                  ],
+                ),
+                child: Flex(
+                  direction: Axis.vertical,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: Text("Add new user",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: TextField(
+                        decoration: const InputDecoration(
+                          label: Text("Paste secret here"),
+                          border: OutlineInputBorder(),
+                        ),
+                        onChanged: (value) {
+                          newUserAddr = value;
+                        },
+                      ),
+                    ),
+                    ElevatedButton(
+                        onPressed: () {
+                          // lsService.addUserSecret(newUserAddr);
+                        },
+                        child: const Text("Add"))
+                  ],
+                ),
+              )
             ],
           )),
     );

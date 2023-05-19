@@ -55,20 +55,20 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
   }
 
   addTicketer(String ttrToAdd) async {
-    bool resp = await service.addTicketer(ttrToAdd);
-    if (resp) {
-      ticketers = [...ticketers, ttrToAdd];
-    }
-    newTicketerAddr = "";
+    // bool resp = await service.addTicketer(ttrToAdd);
+    // if (resp) {
+    //   ticketers = [...ticketers, ttrToAdd];
+    // }
+    // newTicketerAddr = "";
   }
 
   deleteTicketer(String ttrToDelete) async {
-    bool resp = await service.deleteTicketer(ttrToDelete);
-    if (resp) {
-      setState(() {
-        ticketers = [...ticketers.where((String ttr) => ttr != ttrToDelete)];
-      });
-    }
+    // bool resp = await service.deleteTicketer(ttrToDelete);
+    // if (resp) {
+    //   setState(() {
+    //     ticketers = [...ticketers.where((String ttr) => ttr != ttrToDelete)];
+    //   });
+    // }
   }
 
   List<Widget> renderCategoriesEditor() {

@@ -7,4 +7,6 @@ abstract class LocalStoreService {
   void setSecretKeyFilename(String filename);
 
   void setLocalTicketSecret(Ticket t, String secret);
+
+  void addUserSecret();
 }

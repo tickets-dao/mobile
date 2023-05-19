@@ -56,4 +56,7 @@ class DAOLocalStoreService extends LocalStoreService {
     _instance.localStorage
         .setItem("${t.eventID}:${t.category}:${t.row}${t.number}", secret);
   }
+
+  @override
+  addUserSecret() {}
 }
