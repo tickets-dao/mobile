@@ -39,8 +39,6 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
       categories = cs;
     });
 
-    // Future<void> addTicketer(String ticketerAddress);
-
     List<String> ttrs = await service.getTicketers();
 
     setState(() {
@@ -55,20 +53,19 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
   }
 
   addTicketer(String ttrToAdd) async {
-    // bool resp = await service.addTicketer(ttrToAdd);
-    // if (resp) {
-    //   ticketers = [...ticketers, ttrToAdd];
-    // }
-    // newTicketerAddr = "";
+    await service.addTicketer(ttrToAdd);
+
+    setState(() {
+      newTicketerAddr = "";
+      ticketers = [...ticketers, ttrToAdd];
+    });
   }
 
   deleteTicketer(String ttrToDelete) async {
-    // bool resp = await service.deleteTicketer(ttrToDelete);
-    // if (resp) {
-    //   setState(() {
-    //     ticketers = [...ticketers.where((String ttr) => ttr != ttrToDelete)];
-    //   });
-    // }
+    await service.deleteTicketer(ttrToDelete);
+    setState(() {
+      ticketers = [...ticketers.where((String ttr) => ttr != ttrToDelete)];
+    });
   }
 
   List<Widget> renderCategoriesEditor() {
@@ -81,7 +78,13 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
                 onChanged: (value) {
                   setState(() {
                     categories = value;
-                    pricesChanged = true;
+                    for (int ind
+                        in List.generate(categories.length, (ind) => ind)) {
+                      if (categories[ind].price != value[ind].price) {
+                        pricesChanged = true;
+                        break;
+                      }
+                    }
                   });
                 },
                 pricesOnly: true,
@@ -92,48 +95,60 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
   }
 
   List<Widget> getTicketerInputs() {
-    return ticketers.isNotEmpty
-        ? [
-            const Text("Ticketers",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            ...ticketers.map((String ttr) => Padding(
-                padding: const EdgeInsets.all(5),
-                child: Flex(
-                  direction: Axis.horizontal,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(ttr),
-                    IconButton(
-                        onPressed: () {
-                          deleteTicketer(ttr);
-                        },
-                        icon: const Icon(Icons.delete_outline))
-                  ],
-                ))),
-            Padding(
-                padding: const EdgeInsets.all(5),
-                child: Flex(
-                  direction: Axis.horizontal,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TextField(
-                      decoration: const InputDecoration(
-                          label: Text("Ticketer address")),
-                      onChanged: (value) {
-                        newTicketerAddr = value;
-                      },
-                    ),
-                    IconButton(
-                        onPressed: () {
-                          addTicketer(newTicketerAddr);
-                        },
-                        icon: const Icon(Icons.add_circle_outline))
-                  ],
-                ))
-          ]
-        : [];
+    return [
+      Text(ticketers.isNotEmpty ? "Ticketers" : "No ticketers added",
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+      ...ticketers.map((String ttr) => Padding(
+          padding: const EdgeInsets.all(5),
+          child: Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(ttr),
+              IconButton(
+                  onPressed: () {
+                    deleteTicketer(ttr);
+                  },
+                  icon: const Icon(Icons.delete_outline))
+            ],
+          ))),
+      Padding(
+          padding: const EdgeInsets.all(5),
+          child: Flex(
+            direction: Axis.horizontal,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: TextField(
+                  decoration: const InputDecoration(
+                      label: Text("Ticketer address"),
+                      border: OutlineInputBorder()),
+                  onChanged: (value) {
+                    newTicketerAddr = value;
+                  },
+                ),
+              ),
+              IconButton(
+                  onPressed: () {
+                    if (newTicketerAddr == "") return;
+                    addTicketer(newTicketerAddr);
+                  },
+                  icon: const Icon(Icons.save_outlined))
+            ],
+          )),
+      Padding(
+          padding: const EdgeInsets.all(5),
+          child: ElevatedButton(
+            onPressed: () {
+              setState(() {
+                ticketers.add("");
+              });
+            },
+            child: const Text("add ticketer"),
+          ))
+    ];
   }
 
   @override

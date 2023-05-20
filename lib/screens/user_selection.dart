@@ -42,6 +42,27 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
     loadLocalUsers();
   }
 
+  getLocalUsers() {
+    return localUsers.isNotEmpty
+        ? [
+            ...localUsers.map((DAOUser savedUser) {
+              return ListTile(
+                title: Text(savedUser.name),
+                leading: Radio<String>(
+                  value: savedUser.secret,
+                  groupValue: _selectedUserOption,
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedUserOption = value!;
+                    });
+                  },
+                ),
+              );
+            })
+          ]
+        : [const Text("No saved users, plz add one below")];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,21 +91,8 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      ...localUsers.map((DAOUser savedUser) {
-                        return ListTile(
-                          title: Text(savedUser.name),
-                          leading: Radio<String>(
-                            value: savedUser.secret,
-                            groupValue: _selectedUserOption,
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedUserOption = value!;
-                              });
-                            },
-                          ),
-                        );
-                      }),
-                      localUsers.isNotEmpty
+                      ...getLocalUsers(),
+                      _selectedUserOption != ""
                           ? ElevatedButton(
                               onPressed: () {
                                 print('Selected option: $_selectedUserOption');
