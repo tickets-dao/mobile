@@ -84,16 +84,18 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                           ),
                         );
                       }),
-                      ElevatedButton(
-                        onPressed: () {
-                          print('Selected option: $_selectedUserOption');
+                      localUsers.isNotEmpty
+                          ? ElevatedButton(
+                              onPressed: () {
+                                print('Selected option: $_selectedUserOption');
 
-                          Navigator.pushNamed(context, AppRouteName.home,
-                              arguments:
-                                  HomeScreenArguments(_selectedUserOption));
-                        },
-                        child: const Text('Confirm'),
-                      ),
+                                Navigator.pushNamed(context, AppRouteName.home,
+                                    arguments: HomeScreenArguments(
+                                        _selectedUserOption));
+                              },
+                              child: const Text('Confirm'),
+                            )
+                          : const Container(),
                     ],
                   ),
                 ),
