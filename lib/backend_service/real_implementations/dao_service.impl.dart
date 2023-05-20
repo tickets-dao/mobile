@@ -199,15 +199,24 @@ class RealDAOService implements IDAOService {
       ticketerAddress,
     ], 'addTicketer');
 
-    print('transfer $payload succeeded');
+    print('add ticketer $payload succeeded');
   }
 
   @override
   Future<List<String>> getTicketers() async {
-    final payload = await invokeWithSign([], 'ticketers');
+    final payload = await doRequest(queryURL, [], 'ticketers');
 
     print('transfer $payload succeeded');
     return [];
+  }
+
+  @override
+  Future<void> deleteTicketer(String ticketerAddress) async {
+    final payload = await invokeWithSign([
+      ticketerAddress,
+    ], 'deleteTicketer');
+
+    print('delete ticketer $payload succeeded');
   }
 
   @override
