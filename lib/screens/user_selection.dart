@@ -95,7 +95,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                               },
                               child: const Text('Confirm'),
                             )
-                          : const Container(),
+                          : Container(),
                     ],
                   ),
                 ),
