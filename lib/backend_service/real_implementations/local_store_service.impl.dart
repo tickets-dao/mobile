@@ -59,7 +59,7 @@ class DAOLocalStoreService extends LocalStoreService {
   }
 
   @override
-  void addUserSecret(String userSecret, String userName) async {
+  Future<bool> addUserSecret(String userSecret, String userName) async {
     List<dynamic> usersKeys =
         json.decode(_instance.localStorage.getItem("usersKeys") ?? "[]");
     String userID = "$userName-${usersKeys.length}";
@@ -74,6 +74,7 @@ class DAOLocalStoreService extends LocalStoreService {
 
     await _instance.localStorage.setItem("usersKeys", json.encode(usersKeys));
     await _instance.localStorage.setItem("usersMap", json.encode(usersMap));
+    return true;
   }
 
   @override

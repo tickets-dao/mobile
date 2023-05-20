@@ -22,7 +22,13 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
   String newUserAddr = "";
   String newUserName = "";
 
-  late final List<DAOUser> localUsers;
+  late List<DAOUser> localUsers;
+
+  loadLocalUsers() {
+    setState(() {
+      localUsers = lsService.getLocalySavedUsers();
+    });
+  }
 
   @override
   void initState() {
@@ -33,7 +39,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
     DAOLocalStoreService();
     lsService = DAOLocalStoreService.getSingleton();
     service = RealDAOService();
-    localUsers = lsService.getLocalySavedUsers();
+    loadLocalUsers();
   }
 
   @override
@@ -142,7 +148,13 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                       ),
                       ElevatedButton(
                           onPressed: () {
-                            lsService.addUserSecret(newUserAddr, newUserName);
+                            lsService
+                                .addUserSecret(newUserAddr, newUserName)
+                                .then((res) {
+                              setState(() {
+                                localUsers = lsService.getLocalySavedUsers();
+                              });
+                            });
                           },
                           child: const Text("Add"))
                     ],
