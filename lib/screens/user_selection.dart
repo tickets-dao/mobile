@@ -46,7 +46,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
 
   clearStore() async {
     await lsService.clearStorage();
-    getLocalUsers();
+    loadLocalUsers();
   }
 
   getLocalUsers() {
