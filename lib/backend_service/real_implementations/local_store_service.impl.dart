@@ -6,7 +6,6 @@ import 'package:dao_ticketer/types/user.dart' show DAOUser;
 import 'dart:convert';
 
 class DAOLocalStoreService extends LocalStoreService {
-  String? _filename;
   late final LocalStorage localStorage;
 
   static late DAOLocalStoreService _instance;
@@ -45,11 +44,6 @@ class DAOLocalStoreService extends LocalStoreService {
   }
 
   @override
-  void setSecretKeyFilename(String filename) {
-    _instance._filename = filename;
-  }
-
-  @override
   String? getLocalTicketSecret(Ticket t) {
     return _instance.localStorage
         .getItem("${t.eventID}:${t.category}:${t.row}${t.number}");
@@ -63,19 +57,13 @@ class DAOLocalStoreService extends LocalStoreService {
 
   @override
   Future<bool> addUserSecret(String userSecret, String userName) async {
-    List<dynamic> usersKeys =
-        json.decode(_instance.localStorage.getItem("usersKeys") ?? "[]");
-    String userID = "$userName-${usersKeys.length}";
-    usersKeys.add(userID);
-
     Map<String, dynamic> usersMap =
         json.decode(_instance.localStorage.getItem("usersMap") ?? "{}");
 
     usersMap.addAll({
-      userID: {"name": userName, "secret": userSecret}
+      userSecret: {"name": userName, "secret": userSecret}
     });
 
-    await _instance.localStorage.setItem("usersKeys", json.encode(usersKeys));
     await _instance.localStorage.setItem("usersMap", json.encode(usersMap));
     return true;
   }
@@ -91,5 +79,10 @@ class DAOLocalStoreService extends LocalStoreService {
       users.add(DAOUser.fromJson(userJson));
     }
     return users;
+  }
+
+  @override
+  Future clearStorage() {
+    return _instance.localStorage.clear();
   }
 }

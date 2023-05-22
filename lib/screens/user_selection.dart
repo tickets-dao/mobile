@@ -44,6 +44,11 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
     loadLocalUsers();
   }
 
+  clearStore() async {
+    await lsService.clearStorage();
+    getLocalUsers();
+  }
+
   getLocalUsers() {
     return localUsers.isNotEmpty
         ? [
@@ -97,8 +102,6 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                       _selectedUserOption != ""
                           ? ElevatedButton(
                               onPressed: () {
-                                print('Selected option: $_selectedUserOption');
-
                                 Navigator.pushNamed(context, AppRouteName.home,
                                     arguments: HomeScreenArguments(
                                         _selectedUserOption));
@@ -171,7 +174,17 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                           child: const Text("Add"))
                     ],
                   ),
-                )
+                ),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.red)),
+                        onPressed: () {
+                          clearStore();
+                        },
+                        child: const Text("Clear users")))
               ],
             )),
       ),
