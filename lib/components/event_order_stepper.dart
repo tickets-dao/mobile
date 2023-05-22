@@ -71,7 +71,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
         }
       },
       onStepContinue: () {
-        if (_stepIndex <= 3) {
+        if (_stepIndex < 2) {
           setState(() {
             _stepIndex += 1;
           });

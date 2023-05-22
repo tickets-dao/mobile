@@ -48,6 +48,11 @@ ListView getDrawerItems(BuildContext context) => ListView(
               onTap: () {
                 Navigator.pushNamed(context, AppRouteName.issuerEventList);
               }),
+          ListTile(
+              title: const Text('Scan QR-code'),
+              onTap: () {
+                Navigator.pushNamed(context, AppRouteName.ticketerScan);
+              }),
         ]);
 
 class HomeScreen extends StatefulWidget {

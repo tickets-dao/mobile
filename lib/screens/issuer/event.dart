@@ -105,12 +105,20 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(ttr),
+              SizedBox(
+                width: 285,
+                child: Text(
+                  ttr,
+                  maxLines: 3,
+                  softWrap: true,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
               IconButton(
                   onPressed: () {
                     deleteTicketer(ttr);
                   },
-                  icon: const Icon(Icons.delete_outline))
+                  icon: const Icon(Icons.delete_outline)),
             ],
           ))),
       Padding(

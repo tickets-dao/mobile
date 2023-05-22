@@ -204,10 +204,21 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<List<String>> getTicketers() async {
-    final payload = await doRequest(queryURL, [], 'ticketers');
+    final keyPairData = (await _instance._getPrivate());
+    final result = await doRequest(
+        queryURL,
+        [getAddressByPublicKey(await keyPairData.extractPublicKey())],
+        'ticketers');
 
-    print('transfer $payload succeeded');
-    return [];
+    print('query ticketers succeeded: $result');
+    if (result == "null"){
+      return [];
+    }
+
+    List<dynamic> dynamicList = jsonDecode(result);
+    List<String> stringList = dynamicList.cast<String>();
+
+    return stringList;
   }
 
   @override

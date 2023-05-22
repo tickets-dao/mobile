@@ -88,8 +88,10 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(), label: Text("Rows")),
                 onChanged: (newRows) {
-                  e.setRows(int.parse(newRows));
-                  syncWithParent();
+                  if (newRows != "") {
+                    e.setRows(int.parse(newRows));
+                    syncWithParent();
+                  }
                 },
               ),
             ),
@@ -100,8 +102,10 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                 decoration: const InputDecoration(
                     border: OutlineInputBorder(), label: Text("Seats")),
                 onChanged: (newSeats) {
-                  e.setSeats(int.parse(newSeats));
-                  syncWithParent();
+                  if (newSeats != "") {
+                    e.setSeats(int.parse(newSeats));
+                    syncWithParent();
+                  }
                 },
               ),
             ),
