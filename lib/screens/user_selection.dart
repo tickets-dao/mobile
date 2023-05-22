@@ -22,11 +22,13 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
   String newUserAddr = "";
   String newUserName = "";
 
-  late List<DAOUser> localUsers;
+  List<DAOUser> localUsers = [];
 
-  loadLocalUsers() {
+  loadLocalUsers() async {
+    await lsService.readyFuture();
+    List<DAOUser> users = lsService.getLocalySavedUsers();
     setState(() {
-      localUsers = lsService.getLocalySavedUsers();
+      localUsers = users;
     });
   }
 
@@ -37,8 +39,8 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
     // these calls to the service constructors are the first ones in the
     // life cycle of the application, so they will instantiate the singletons
     DAOLocalStoreService();
-    lsService = DAOLocalStoreService.getSingleton();
     service = RealDAOService();
+    lsService = DAOLocalStoreService.getSingleton();
     loadLocalUsers();
   }
 

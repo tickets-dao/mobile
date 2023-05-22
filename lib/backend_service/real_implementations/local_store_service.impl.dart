@@ -17,11 +17,14 @@ class DAOLocalStoreService extends LocalStoreService {
 
   DAOLocalStoreService() {
     _instance = DAOLocalStoreService._privateConstructor();
-    print("inited localStorageService instance: $_instance");
   }
 
   factory DAOLocalStoreService.getSingleton() {
     return _instance;
+  }
+
+  Future readyFuture() {
+    return _instance.localStorage.ready;
   }
 
   @override
@@ -87,7 +90,6 @@ class DAOLocalStoreService extends LocalStoreService {
     for (dynamic userJson in usersMap.values) {
       users.add(DAOUser.fromJson(userJson));
     }
-    print('getLocalySavedUsers(): saved json: $usersMap');
     return users;
   }
 }

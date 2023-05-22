@@ -63,8 +63,6 @@ class _ScanState extends State<ScanScreen> {
                     ElevatedButton(
                         onPressed: () => scanQR(),
                         child: const Text('Start QR scan')),
-                    Text('Scan result : $_scanBarcode\n',
-                        style: const TextStyle(fontSize: 20))
                   ]));
         }));
   }
