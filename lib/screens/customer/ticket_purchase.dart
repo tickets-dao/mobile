@@ -6,7 +6,7 @@ import 'package:dao_ticketer/types/event.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart'
     show RealDAOService;
 import 'package:dao_ticketer/components/event_card.dart' show EventCard;
-import 'package:dao_ticketer/components/event_order_stepper.dart'
+import 'package:dao_ticketer/components/purchase_stepper.dart'
     show EventOrderStepper;
 
 class TicketPurchaseScreen extends StatefulWidget {

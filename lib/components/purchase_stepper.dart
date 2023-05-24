@@ -16,48 +16,80 @@ class EventOrderStepper extends StatefulWidget {
 }
 
 class EventOrderStepperState extends State<EventOrderStepper> {
-  String selectedCategory = "unselected";
-
   int number = 0;
   Ticket? selectedTicket;
 
   int _stepIndex = 0;
 
-  @override
-  Widget build(BuildContext context) {
-    final tickets = widget.eventTicketsByCategory;
-    final List<String> categories = [...widget.eventTicketsByCategory.keys];
-    String selectedCategory = categories[0];
-    Map<String, Set<int>> rowsByCategories = {};
+  late Map<String, List<Ticket>> tickets;
+  List<String> categories = [];
+  late String selectedCategory = "unselected";
 
+  int selectedRow = 0;
+  Map<String, Set<int>> rowsByCategories = {};
+
+  @override
+  void initState() {
+    super.initState();
+    tickets = widget.eventTicketsByCategory;
+    categories = [...widget.eventTicketsByCategory.keys];
+    Map<String, Set<int>> map = {};
     for (String category in categories) {
-      rowsByCategories.addAll({
+      map.addAll({
         category: tickets[category]?.map((Ticket t) => t.row).toSet() ?? {}
       });
     }
+    rowsByCategories = map;
 
-    getTicketsCount(int count) {
-      final int remainder10 = count % 10;
-      final int fullDiv10 = int.parse(((count % 100) / 10).toStringAsFixed(0));
-      if (remainder10 == 0) return "$count билетов";
-      if (remainder10 == 1) {
-        if (fullDiv10 != 1) {
-          return "$count билет";
-        } else {
-          return "$count билетов";
-        }
-      }
-      if (remainder10 <= 4) {
-        return "$count билета";
-      }
+    for (String category in rowsByCategories.keys) {
+      print("added category $category");
+    }
+  }
 
-      return "$count билетов";
+  getTicketsCount(int count) {
+    final int remainder10 = count % 10;
+    final int fullDiv10 = int.parse(((count % 100) / 10).toStringAsFixed(0));
+    if (remainder10 == 0) return "$count билетов";
+    if (remainder10 == 1) {
+      if (fullDiv10 != 1) {
+        return "$count билет";
+      } else {
+        return "$count билетов";
+      }
+    }
+    if (remainder10 <= 4) {
+      return "$count билета";
     }
 
-    getTicketsByRow(int row) {
-      final rowTickets = (tickets[selectedCategory] ?? [])
-          .where((ticket) => ticket.row == row);
-      return [
+    return "$count билетов";
+  }
+
+  getEventRowsByCategory(String category) {
+    print("gettin tickets by category $category");
+    return [
+      ...(rowsByCategories[category]?.toList() ?? []).map((row) => Row(
+            children: [
+              Radio<int>(
+                groupValue: selectedRow,
+                value: row,
+                onChanged: (int? tappedRow) {
+                  print("row tapped: $tappedRow");
+                  setState(() {
+                    selectedRow = tappedRow ?? row;
+                  });
+                },
+              ),
+              Text("$row")
+            ],
+          ))
+    ];
+  }
+
+  getTicketsByRow(int row) {
+    final rowTickets =
+        (tickets[selectedCategory] ?? []).where((ticket) => ticket.row == row);
+    return [
+      Wrap(direction: Axis.horizontal, children: [
         ...rowTickets.map((Ticket ticket) => Row(
               children: [
                 Radio<Ticket>(
@@ -73,9 +105,12 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                 Text('${ticket.number}'),
               ],
             ))
-      ];
-    }
+      ])
+    ];
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Stepper(
       physics: const ClampingScrollPhysics(),
       currentStep: _stepIndex,
@@ -100,7 +135,9 @@ class EventOrderStepperState extends State<EventOrderStepper> {
       },
       steps: <Step>[
         Step(
-          title: const Text('Выберите категорию'),
+          title: selectedCategory == "unselected"
+              ? const Text('Выберите категорию')
+              : Text(selectedCategory),
           content: Column(
             children: <Widget>[
               ...categories.map((category) {
@@ -111,6 +148,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                     groupValue: selectedCategory,
                     onChanged: (String? value) {
                       String newCategory = value ?? category;
+                      print("new category: $newCategory");
                       setState(() {
                         selectedCategory = newCategory;
                       });
@@ -122,25 +160,16 @@ class EventOrderStepperState extends State<EventOrderStepper> {
           ),
         ),
         Step(
-          title: const Text('Выберите билет'),
+            title: selectedRow == 0
+                ? const Text('Выберите ряд')
+                : Text("Ряд $selectedRow"),
+            content: Wrap(
+                direction: Axis.horizontal,
+                children: getEventRowsByCategory(selectedCategory))),
+        Step(
+          title: const Text('Выберите место'),
           content: Column(
-            children: <Widget>[
-              ...rowsByCategories[selectedCategory]?.map((row) {
-                    return Flex(
-                        direction: Axis.vertical,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text('ряд $row'),
-                          Wrap(
-                            direction: Axis.horizontal,
-                            // scrollDirection: Axis.horizontal,
-                            children: getTicketsByRow(row),
-                          )
-                        ]);
-                  }) ??
-                  []
-            ],
+            children: getTicketsByRow(selectedRow),
           ),
         ),
       ],
