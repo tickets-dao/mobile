@@ -3,12 +3,13 @@ import 'package:dao_ticketer/types/event.dart';
 
 class EventCard extends StatelessWidget {
   const EventCard(this.event, this.renderButton, this.redirectTo,
-      {this.redirectArguments, super.key});
+      {this.redirectArguments, required this.buttonText, super.key});
 
   final Event event;
   final bool renderButton;
   final String redirectTo;
   final Object? redirectArguments;
+  final String buttonText;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +35,7 @@ class EventCard extends StatelessWidget {
                     Navigator.pushNamed(context, redirectTo,
                         arguments: redirectArguments);
                   },
-                  child: const Text('купить билет',
-                      style: TextStyle(fontSize: 15)))
+                  child: Text(buttonText, style: const TextStyle(fontSize: 15)))
             ]
           : [eventInfo];
     }

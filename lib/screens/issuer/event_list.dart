@@ -22,6 +22,7 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
         return Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
           child: EventCard(e, true, AppRouteName.issuerEvent,
+              buttonText: "открыть",
               redirectArguments: IssuerEventScreenArguments(e, null)),
         );
       })

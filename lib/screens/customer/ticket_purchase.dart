@@ -63,10 +63,22 @@ class TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
 
   List<Widget> getEventWidgetChildren() {
     if (_eventTicketsByCategory.isEmpty) {
-      return [EventCard(widget.event, false, AppRouteName.empty)];
+      return [
+        EventCard(
+          widget.event,
+          false,
+          AppRouteName.empty,
+          buttonText: "",
+        )
+      ];
     } else {
       return [
-        EventCard(widget.event, false, AppRouteName.empty),
+        EventCard(
+          widget.event,
+          false,
+          AppRouteName.empty,
+          buttonText: "",
+        ),
         EventOrderStepper(
             eventTicketsByCategory: _eventTicketsByCategory,
             selectTicketCallback: selectTicket),
