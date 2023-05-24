@@ -56,7 +56,7 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
     await service.addTicketer(ttrToAdd);
 
     setState(() {
-      newTicketerAddr = "";
+      newTicketerAddr = ttrToAdd;
       ticketers = [...ticketers, ttrToAdd];
     });
   }

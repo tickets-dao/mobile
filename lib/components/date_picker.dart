@@ -16,8 +16,8 @@ class DatePickerWidgetState extends State<DatePickerWidget> {
     final DateTime picked = await showDatePicker(
           context: context,
           initialDate: selectedDate,
-          firstDate: DateTime(2000),
-          lastDate: DateTime.now(),
+          firstDate: DateTime.now(),
+          lastDate: DateTime(2030),
         ) ??
         DateTime.now();
 

@@ -48,16 +48,33 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
             children: [
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
-                child: TextField(
-                  onChanged: (String value) {
-                    setState(() {
-                      name = value;
-                    });
-                  },
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: "Name of the event",
-                  ),
+                child: Flex(
+                  direction: Axis.vertical,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    TextField(
+                      onChanged: (String value) {
+                        setState(() {
+                          name = value;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Name of the event",
+                      ),
+                    ),
+                    TextField(
+                      onChanged: (String value) {
+                        setState(() {
+                          address = value;
+                        });
+                      },
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        labelText: "Address of the event",
+                      ),
+                    )
+                  ],
                 ),
               ),
               Text("Start time: ${dateFormatter.format(startDateTime)}",
