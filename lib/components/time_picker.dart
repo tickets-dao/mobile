@@ -13,8 +13,6 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
   TimeOfDay selectedTime = TimeOfDay.now();
 
   _selectTime(BuildContext context) async {
-
-
     final TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: selectedTime,
@@ -35,7 +33,7 @@ class TimePickerWidgetState extends State<TimePickerWidget> {
         const SizedBox(height: 20.0),
         ElevatedButton(
           onPressed: () => _selectTime(context),
-          child: const Text('Select time'),
+          child: const Text('Выбрать время'),
         ),
       ],
     );

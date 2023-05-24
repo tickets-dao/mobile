@@ -67,13 +67,16 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
               );
             })
           ]
-        : [const Text("No saved users, plz add one below")];
+        : [
+            const Text(
+                "Нет добавленных пользователей. Пожалуйста, добавьте в форме ниже.")
+          ];
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Select the user')),
+      appBar: AppBar(title: const Text('Выберите пользователя')),
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.fromLTRB(0, 40, 0, 0),
@@ -132,16 +135,15 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                        child: Text("Add new user",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold)),
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+                        child: Text("Укажите данные пользователя",
+                            style: TextStyle(fontSize: 20)),
                       ),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: TextField(
                           decoration: const InputDecoration(
-                            label: Text("Username/role"),
+                            label: Text("Имя"),
                             border: OutlineInputBorder(),
                           ),
                           onChanged: (value) {
@@ -153,7 +155,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                         padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
                         child: TextField(
                           decoration: const InputDecoration(
-                            label: Text("Paste secret here"),
+                            label: Text("Приватный ключ"),
                             border: OutlineInputBorder(),
                           ),
                           onChanged: (value) {
@@ -162,6 +164,9 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                         ),
                       ),
                       ElevatedButton(
+                          style: const ButtonStyle(
+                              backgroundColor:
+                                  MaterialStatePropertyAll(Colors.green)),
                           onPressed: () {
                             lsService
                                 .addUserSecret(newUserAddr, newUserName)
@@ -171,7 +176,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                               });
                             });
                           },
-                          child: const Text("Add"))
+                          child: const Text("Добавить"))
                     ],
                   ),
                 ),
@@ -184,7 +189,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                         onPressed: () {
                           clearStore();
                         },
-                        child: const Text("Clear users")))
+                        child: const Text("Удалить всех пользователей")))
               ],
             )),
       ),

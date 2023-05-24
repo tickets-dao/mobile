@@ -60,7 +60,10 @@ class TicketScreenState extends State<TicketScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Ticket')),
       body: SingleChildScrollView(
-        child: Column(
+        child: Flex(
+          direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
                 padding: const EdgeInsets.all(10),
@@ -76,19 +79,36 @@ class TicketScreenState extends State<TicketScreen> {
                         style: const TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold)),
                     Text(
-                        "${widget.ticket.category}, row: ${widget.ticket.row}, seat: ${widget.ticket.number}"),
+                        "${widget.ticket.category}, row: ${widget.ticket.row}, seat: ${widget.ticket.number}",
+                        style: const TextStyle(fontSize: 20)),
                   ],
                 )),
-            ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(
-                      context,
-                      // GenerateScreen(ticket: widget.ticket)
-                      AppRouteName.customerGenerateQR,
-                      arguments:
-                          CustomerGenerateQRScreenArguments(widget.ticket));
-                },
-                child: const Text('Generate QR code')),
+            const Divider(),
+            Container(
+              margin: const EdgeInsets.all(10),
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(
+                        context, AppRouteName.customerGenerateQR,
+                        arguments:
+                            CustomerGenerateQRScreenArguments(widget.ticket));
+                  },
+                  child: const Text('Generate QR code',
+                      style: TextStyle(fontSize: 18))),
+            ),
+            Container(
+                margin: const EdgeInsets.all(10),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.orange)),
+                  onPressed: () {
+                    service.returnTicket(widget.ticket);
+                  },
+                  child: const Text("Return ticket",
+                      style: TextStyle(fontSize: 18)),
+                )),
+            const Divider(),
             Container(
                 margin: const EdgeInsets.all(10),
                 child: Flex(
@@ -111,24 +131,14 @@ class TicketScreenState extends State<TicketScreen> {
                       ),
                       Container(
                         margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                        child: ElevatedButton(
-                            onPressed: () {
-                              showConfirmationDialog();
-                            },
-                            child: const Text('Send ticket')),
+                        child: IconButton(
+                          icon: const Icon(Icons.send, color: Colors.blue),
+                          onPressed: () {
+                            showConfirmationDialog();
+                          },
+                        ),
                       )
                     ])),
-            Container(
-                margin: const EdgeInsets.all(10),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Colors.orange)),
-                  onPressed: () {
-                    service.returnTicket(widget.ticket);
-                  },
-                  child: const Text("Return ticket"),
-                ))
           ],
         ),
       ),

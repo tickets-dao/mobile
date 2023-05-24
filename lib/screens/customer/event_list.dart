@@ -30,9 +30,11 @@ class EventListScreenState extends State<EventsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Available events')),
+        appBar: AppBar(title: const Text('Доступные мероприятия')),
         body: Container(
-          alignment: Alignment.center,
+          margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+          padding: const EdgeInsets.all(10),
+          alignment: Alignment.topCenter,
           child: SingleChildScrollView(
             child: Flex(
                 direction: Axis.vertical,

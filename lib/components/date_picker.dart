@@ -37,7 +37,7 @@ class DatePickerWidgetState extends State<DatePickerWidget> {
         const SizedBox(height: 20.0),
         ElevatedButton(
           onPressed: () => _selectDate(context),
-          child: const Text('Select date'),
+          child: const Text('Выбрать дату'),
         ),
       ],
     );

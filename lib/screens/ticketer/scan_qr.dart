@@ -69,7 +69,11 @@ class _ScanState extends State<ScanScreen> {
                   children: <Widget>[
                     ElevatedButton(
                         onPressed: () => scanQR(),
-                        child: const Text('Start QR scan')),
+                        child: Container(
+                          padding: const EdgeInsets.all(10),
+                          child: const Text('Открыть сканер',
+                              style: TextStyle(fontSize: 20)),
+                        )),
                   ]));
         }));
   }

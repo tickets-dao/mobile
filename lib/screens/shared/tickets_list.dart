@@ -46,10 +46,11 @@ class TicketListScreenState extends State<TicketListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Your tickets')),
+      appBar: AppBar(title: const Text('Мои билеты')),
       body: SingleChildScrollView(
         child: Container(
-            padding: const EdgeInsets.all(20),
+            margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+            padding: const EdgeInsets.all(10),
             child: SingleChildScrollView(
               child: Flex(
                 direction: Axis.vertical,

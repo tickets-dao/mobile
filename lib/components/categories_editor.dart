@@ -1,6 +1,6 @@
 import 'package:dao_ticketer/types/price_category.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
+// import 'dart:async';
 
 class CategoriesEditor extends StatefulWidget {
   const CategoriesEditor(
@@ -21,7 +21,7 @@ class CategoriesEditor extends StatefulWidget {
 class _CategoriesEditorState extends State<CategoriesEditor> {
   List<PriceCategory> editableValue = [];
 
-  Timer? _debounce;
+  // Timer? _debounce;
 
   @override
   void initState() {
@@ -52,7 +52,8 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                 Expanded(
                   child: TextField(
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(), label: Text("Cat. name")),
+                        border: OutlineInputBorder(),
+                        label: Text("Название категории")),
                     onChanged: (newName) {
                       e.setName(newName);
                       syncWithParent();
@@ -86,7 +87,8 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(), label: Text("Rows")),
+                    border: OutlineInputBorder(),
+                    label: Text("Количество рядов")),
                 onChanged: (newRows) {
                   if (newRows != "") {
                     e.setRows(int.parse(newRows));
@@ -100,7 +102,8 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
               child: TextField(
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                    border: OutlineInputBorder(), label: Text("Seats")),
+                    border: OutlineInputBorder(),
+                    label: Text("Количество мест")),
                 onChanged: (newSeats) {
                   if (newSeats != "") {
                     e.setSeats(int.parse(newSeats));
@@ -127,12 +130,11 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                   controller: TextEditingController(text: "${e.price}"),
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                      border: OutlineInputBorder(), label: Text("Price")),
+                      border: OutlineInputBorder(), label: Text("Цена")),
                   onSubmitted: (newPrice) {
                     // Check if the input is a valid number
                     var tryParsePrice = int.tryParse(newPrice);
                     if (tryParsePrice != null) {
-                      print('Price: $newPrice');
                       e.setPrice(tryParsePrice);
                       syncWithParent();
                     }
@@ -155,7 +157,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
                   PriceCategory(name: "", price: 200, rows: 10, seats: 10));
             });
           },
-          child: const Text("+ add category"));
+          child: const Text("+ добавить категорию"));
       res.add(addCategoryButton);
     }
     res.add(

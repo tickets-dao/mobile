@@ -90,7 +90,7 @@ class TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
         floatingActionButton: selectedTicket != null
             ? ElevatedButton(
                 child: Text(
-                    "row ${selectedTicket?.row} | seat ${selectedTicket?.number} | price ${selectedTicket?.price}"),
+                    "ряд ${selectedTicket?.row} | место ${selectedTicket?.number} | цена ${selectedTicket?.price}"),
                 onPressed: () {
                   if (selectedTicket != null) {
                     service.buyTicket(selectedTicket ??

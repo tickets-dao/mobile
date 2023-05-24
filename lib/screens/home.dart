@@ -13,11 +13,11 @@ ListView getDrawerItems(BuildContext context) => ListView(
               color: Colors.blue,
             ),
             child: Flex(
-              direction: Axis.vertical,
+              direction: Axis.horizontal,
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const Text('Ticketer Menu'),
+                const Text('Сменить пользователя'),
                 IconButton(
                     onPressed: () {
                       Navigator.pushReplacementNamed(
@@ -28,28 +28,28 @@ ListView getDrawerItems(BuildContext context) => ListView(
             ),
           ),
           ListTile(
-              title: const Text('Your balance'),
+              title: const Text('Баланс'),
               onTap: () {
                 Navigator.pushNamed(context, AppRouteName.userBalance);
               }),
           ListTile(
-              title: const Text('Your tickets'),
+              title: const Text('Мои билеты'),
               onTap: () {
                 Navigator.pushNamed(context, AppRouteName.userTickets);
               }),
           ListTile(
-            title: const Text('Customer: Events'),
+            title: const Text('Покупатель: мероприятия'),
             onTap: () {
               Navigator.pushNamed(context, AppRouteName.customerEvents);
             },
           ),
           ListTile(
-              title: const Text('Issuer: events'),
+              title: const Text('Организатор: мероприятия'),
               onTap: () {
                 Navigator.pushNamed(context, AppRouteName.issuerEventList);
               }),
           ListTile(
-              title: const Text('Scan QR-code'),
+              title: const Text('Биллетер: отсканировать QR'),
               onTap: () {
                 Navigator.pushNamed(context, AppRouteName.ticketerScan);
               }),

@@ -33,7 +33,7 @@ class TicketCard extends StatelessWidget {
       child: Flex(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Flex(
               direction: Axis.vertical,
@@ -48,17 +48,21 @@ class TicketCard extends StatelessWidget {
                 ),
                 Text(dateFormatter.format(event.startTime)),
                 Text(
-                    "${ticket.category},  row: ${ticket.row}, seat: ${ticket.number}"),
+                    "${ticket.category} ряд ${ticket.row} место ${ticket.number}"),
               ]),
-          ElevatedButton(
+          IconButton(
+              icon: const Icon(
+                Icons.visibility,
+                color: Colors.blue,
+                size: 30,
+              ),
               onPressed: () {
                 Navigator.pushNamed(
                   context,
                   AppRouteName.userTicket,
                   arguments: TicketScreenArguments(ticket, event),
                 );
-              },
-              child: const Text('Open'))
+              })
         ],
       ),
     );

@@ -117,7 +117,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text('row $row'),
+                          Text('ряд $row'),
                           Wrap(
                             direction: Axis.horizontal,
                             // scrollDirection: Axis.horizontal,

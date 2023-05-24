@@ -22,7 +22,7 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
         return Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
           child: EventCard(e, true, AppRouteName.issuerEvent,
-             redirectArguments: IssuerEventScreenArguments(e, null)),
+              redirectArguments: IssuerEventScreenArguments(e, null)),
         );
       })
     ];
@@ -41,7 +41,7 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Created events')),
+      appBar: AppBar(title: const Text('Мои мероприятия')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 30, 10, 0),
@@ -54,7 +54,7 @@ class _IssuerEventsListScreenState extends State<IssuerEventsListScreen> {
         ),
       ),
       floatingActionButton: ElevatedButton(
-        child: const Text('+ add new event'),
+        child: const Text('+ добавить мероприятие'),
         onPressed: () {
           Navigator.pushNamed(context, AppRouteName.issuerEventCreation);
         },

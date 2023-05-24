@@ -24,12 +24,13 @@ class EventCard extends StatelessWidget {
       return renderButton
           ? [
               eventInfo,
-              ElevatedButton(
+              TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, redirectTo,
                         arguments: redirectArguments);
                   },
-                  child: const Text('tickets'))
+                  child: const Text('Открыть билеты',
+                      style: TextStyle(fontSize: 15)))
             ]
           : [eventInfo];
     }
@@ -46,7 +47,7 @@ class EventCard extends StatelessWidget {
           ),
         ],
       ),
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(10),
       child: Flex(
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

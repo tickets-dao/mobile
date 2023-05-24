@@ -30,27 +30,34 @@ class BalanceScreenState extends State<BalanceScreen> {
   Widget build(Object context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Wallet')),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Flex(
-          direction: Axis.vertical,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text("Your current balance: $balance",
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
-              child: ElevatedButton(
-                  onPressed: () {
-                    service.addFunds().then((_) {
-                      getUserBalance();
-                    });
-                  },
-                  child: const Text("Add funds")),
-            )
-          ],
+      body: Container(
+        margin: const EdgeInsets.fromLTRB(0, 20, 0, 0),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Flex(
+            direction: Axis.vertical,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text("Ваш баланс: $balance",
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 20),
+                child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.green)),
+                    onPressed: () {
+                      service.addFunds().then((_) {
+                        getUserBalance();
+                      });
+                    },
+                    child: const Text("Пополнить",
+                        style: TextStyle(fontSize: 15))),
+              )
+            ],
+          ),
         ),
       ),
     );

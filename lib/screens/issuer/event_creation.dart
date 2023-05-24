@@ -37,7 +37,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('event creation')),
+      appBar: AppBar(title: const Text('Создание мероприятия')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -52,15 +52,18 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                   direction: Axis.vertical,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    TextField(
-                      onChanged: (String value) {
-                        setState(() {
-                          name = value;
-                        });
-                      },
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "Name of the event",
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+                      child: TextField(
+                        onChanged: (String value) {
+                          setState(() {
+                            name = value;
+                          });
+                        },
+                        decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: "Название мероприятия",
+                        ),
                       ),
                     ),
                     TextField(
@@ -71,15 +74,32 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                       },
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
-                        labelText: "Address of the event",
+                        labelText: "Адрес проведения",
                       ),
-                    )
+                    ),
+                    const Divider(),
                   ],
                 ),
               ),
-              Text("Start time: ${dateFormatter.format(startDateTime)}",
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold)),
+              Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text("Дата и время начала: ",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(0, 2, 0, 0),
+                      child: Text(dateFormatter.format(startDateTime),
+                          style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.blueAccent)),
+                    ),
+                  ]),
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: Flex(
@@ -106,9 +126,10 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                   ],
                 ),
               ),
+              const Divider(),
               const Padding(
                 padding: EdgeInsets.fromLTRB(0, 0, 0, 10),
-                child: Text("Edit categories",
+                child: Text("Настроить категории билетов",
                     style:
                         TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
               ),
@@ -121,7 +142,8 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
                 child: ElevatedButton(
-                  child: const Text('create event'),
+                  style: const ButtonStyle(
+                      backgroundColor: MaterialStatePropertyAll(Colors.green)),
                   onPressed: () {
                     service
                         .createEvent(
@@ -130,6 +152,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                       Navigator.pop(context);
                     });
                   },
+                  child: const Text('Создать мероприятие'),
                 ),
               ),
             ],
