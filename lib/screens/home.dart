@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('DAO ticketer'),
+        title: const Text('DAO билетошная'),
       ),
       drawer: Drawer(
         child: getDrawerItems(context),
