@@ -41,8 +41,10 @@ class EventOrderStepperState extends State<EventOrderStepper> {
     }
     rowsByCategories = map;
 
-    for (String category in rowsByCategories.keys) {
-      print("added category $category");
+    for (String category in widget.eventTicketsByCategory.keys) {
+      for (Ticket t in widget.eventTicketsByCategory[category] ?? []) {
+        print("$category row: ${t.row} seat: ${t.number}");
+      }
     }
   }
 
@@ -65,7 +67,6 @@ class EventOrderStepperState extends State<EventOrderStepper> {
   }
 
   getEventRowsByCategory(String category) {
-    print("gettin tickets by category $category");
     return [
       ...(rowsByCategories[category]?.toList() ?? []).map((row) => Row(
             children: [

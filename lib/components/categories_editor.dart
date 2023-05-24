@@ -42,7 +42,7 @@ class _CategoriesEditorState extends State<CategoriesEditor> {
     return widget.pricesOnly
         ? Padding(
             padding: const EdgeInsets.fromLTRB(0, 0, 0, 4),
-            child: Text("Category: ${e.name}",
+            child: Text("Категория: ${e.name}",
                 style: const TextStyle(fontSize: 18)),
           )
         : Padding(

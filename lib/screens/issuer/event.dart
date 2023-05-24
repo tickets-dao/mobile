@@ -94,88 +94,104 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
         : [];
   }
 
-  List<Widget> getTicketerInputs() {
-    return [
-      Text(ticketers.isNotEmpty ? "Ticketers" : "No ticketers added",
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-      ...ticketers.map((String ttr) => Padding(
-          padding: const EdgeInsets.all(5),
-          child: Flex(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: 285,
-                child: Text(
-                  ttr,
-                  maxLines: 3,
-                  softWrap: true,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    deleteTicketer(ttr);
-                  },
-                  icon: const Icon(Icons.delete_outline)),
-            ],
-          ))),
-      Padding(
-          padding: const EdgeInsets.all(5),
-          child: Flex(
-            direction: Axis.horizontal,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: TextField(
-                  decoration: const InputDecoration(
-                      label: Text("Ticketer address"),
-                      border: OutlineInputBorder()),
-                  onChanged: (value) {
-                    newTicketerAddr = value;
-                  },
-                ),
-              ),
-              IconButton(
-                  onPressed: () {
-                    if (newTicketerAddr == "") return;
-                    addTicketer(newTicketerAddr);
-                  },
-                  icon: const Icon(Icons.save_outlined))
-            ],
-          )),
-      Padding(
-          padding: const EdgeInsets.all(5),
-          child: ElevatedButton(
-            onPressed: () {
-              setState(() {
-                ticketers.add("");
-              });
-            },
-            child: const Text("add ticketer"),
-          ))
-    ];
+  Widget getTicketerInputs() {
+    return Flex(
+        direction: Axis.vertical,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(5, 0, 0, 10),
+            child: Text(
+                ticketers.isNotEmpty ? "Биллетеры" : "Биллетеры не добавлены ",
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          ...ticketers.map((String ttr) => Padding(
+              padding: const EdgeInsets.all(5),
+              child: Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    width: 285,
+                    child: Text(
+                      ttr,
+                      maxLines: 3,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        deleteTicketer(ttr);
+                      },
+                      icon: const Icon(Icons.delete_outline)),
+                ],
+              ))),
+          Padding(
+              padding: const EdgeInsets.all(5),
+              child: Flex(
+                direction: Axis.horizontal,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextField(
+                      decoration: const InputDecoration(
+                          label: Text("Идентификатор биллетера"),
+                          border: OutlineInputBorder()),
+                      onChanged: (value) {
+                        newTicketerAddr = value;
+                      },
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: () {
+                        if (newTicketerAddr == "") return;
+                        addTicketer(newTicketerAddr);
+                      },
+                      icon: const Icon(Icons.save_outlined))
+                ],
+              )),
+          Padding(
+              padding: const EdgeInsets.all(5),
+              child: ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    ticketers.add("");
+                  });
+                },
+                child: const Text("Добавить"),
+              ))
+        ]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Event')),
+      appBar: AppBar(title: const Text('Мероприятие')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Column(
+          child: Flex(
+            direction: Axis.vertical,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(5),
                 child: Flex(
                     direction: Axis.vertical,
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Text>[
-                      Text(event.name),
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+                        child: Text(event.name,
+                            style: const TextStyle(
+                                fontSize: 25, fontWeight: FontWeight.bold)),
+                      ),
                       Text(event.address),
                     ]),
               ),
@@ -184,13 +200,13 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
                 child: Align(
                   alignment: Alignment.topLeft,
-                  child: Text("Update category prices",
+                  child: Text("Обновить цены категорий",
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
               ),
               ...renderCategoriesEditor(),
-              ...getTicketerInputs(),
+              getTicketerInputs(),
             ],
           ),
         ),
