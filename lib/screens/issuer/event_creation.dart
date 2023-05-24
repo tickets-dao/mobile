@@ -89,7 +89,7 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                     DatePickerWidget(
                       onSelected: (value) {
                         setState(() {
-                          startDateTime = value.copyWith(hour: 0, minute: 0);
+                          startDateTime = value;
                         });
                       },
                     ),
