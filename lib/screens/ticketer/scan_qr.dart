@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 import 'package:dao_ticketer/types/ticket.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -33,8 +34,14 @@ class _ScanState extends State<ScanScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.QR);
-      service.burnTicket(Ticket("", 0, 0, 0, ""), barcodeScanRes);
       print(barcodeScanRes);
+
+      var jsonResp = jsonDecode(barcodeScanRes);
+
+      await service.burnTicket(
+          Ticket.fromJson(jsonResp['ticket']), jsonResp['secret']);
+
+      _showAlert(context, "burn succeeded");
     } on PlatformException {
       barcodeScanRes = 'Failed to get platform version.';
     }
@@ -65,5 +72,25 @@ class _ScanState extends State<ScanScreen> {
                         child: const Text('Start QR scan')),
                   ]));
         }));
+  }
+
+  void _showAlert(BuildContext context, String alert) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Alert'),
+          content: Text(alert),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Close'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -19,6 +19,14 @@ class Ticket {
         row = json['row'],
         number = json['number'],
         eventID = json['event_id'];
+
+  Map<String, dynamic> toJson() => {
+        'category': category,
+        'price': price,
+        'row': row,
+        'number': number,
+        'event_id': eventID
+      };
 }
 
 List<Ticket> parseTickets(String jsonString) {

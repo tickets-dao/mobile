@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dao_ticketer/backend_service/real_implementations/dao_service.impl.dart';
 import 'package:dao_ticketer/backend_service/real_implementations/local_store_service.impl.dart';
 import 'package:flutter/material.dart';
@@ -79,7 +81,10 @@ class GenerateScreenState extends State<GenerateScreen> {
                     child: RepaintBoundary(
                       key: globalKey,
                       child: QrImage(
-                        data: _secret,
+                        data: jsonEncode({
+                          "ticket": widget.ticket,
+                          "secret": _secret,
+                        }),
                         size: 0.5 * bodyHeight,
                         // onError: (ex) {
                         //   setState(() {
