@@ -62,6 +62,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
     }
 
     return Stepper(
+      physics: const ClampingScrollPhysics(),
       currentStep: _stepIndex,
       onStepCancel: () {
         if (_stepIndex > 0) {
@@ -94,8 +95,10 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                     value: category,
                     groupValue: selectedCategory,
                     onChanged: (String? value) {
+                      print("on changed category called $value");
+                      String newCategory = value ?? category;
                       setState(() {
-                        selectedCategory = value ?? category;
+                        selectedCategory = newCategory;
                       });
                     },
                   ),
@@ -105,7 +108,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
           ),
         ),
         Step(
-          title: const Text('Select row'),
+          title: const Text('Select ticket'),
           content: Column(
             children: <Widget>[
               ...rowsByCategories[selectedCategory]?.map((row) {
