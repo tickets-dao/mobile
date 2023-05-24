@@ -167,9 +167,7 @@ class RealDAOService implements IDAOService {
 
   @override
   Future<void> sendTicketTo(Ticket t, String destinationUser) async {
-    final keyPairData = await _instance._getPrivate();
     final payload = await invokeWithSign([
-      getAddressByPublicKey(await keyPairData.extractPublicKey()),
       destinationUser,
       t.eventID,
       t.category,
