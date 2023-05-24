@@ -117,7 +117,18 @@ class TicketScreenState extends State<TicketScreen> {
                             },
                             child: const Text('Send ticket')),
                       )
-                    ]))
+                    ])),
+            Container(
+                margin: const EdgeInsets.all(10),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.orange)),
+                  onPressed: () {
+                    service.returnTicket(widget.ticket);
+                  },
+                  child: const Text("Return ticket"),
+                ))
           ],
         ),
       ),
