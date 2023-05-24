@@ -20,7 +20,7 @@ class EventCreationScreen extends StatefulWidget {
 class _EventCreationScreenState extends State<EventCreationScreen> {
   String name = "";
   String address = "";
-  DateTime startDateTime = DateTime.now();
+  DateTime startDateTime = DateTime.now().copyWith(hour: 0, minute: 0);
   List<PriceCategory> categories = [];
 
   final dateFormatter = DateFormat("dd.MM hh:mm");
@@ -89,15 +89,17 @@ class _EventCreationScreenState extends State<EventCreationScreen> {
                     DatePickerWidget(
                       onSelected: (value) {
                         setState(() {
-                          startDateTime = value;
+                          startDateTime = value.copyWith(hour: 0, minute: 0);
                         });
                       },
                     ),
                     TimePickerWidget(
                       onSelected: (TimeOfDay time) {
                         setState(() {
-                          startDateTime = startDateTime.add(
-                              Duration(hours: time.hour, minutes: time.minute));
+                          startDateTime = startDateTime
+                              .copyWith(hour: 0, minute: 0)
+                              .add(Duration(
+                                  hours: time.hour, minutes: time.minute));
                         });
                       },
                     ),
