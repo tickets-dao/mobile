@@ -17,8 +17,13 @@ class EventCard extends StatelessWidget {
           direction: Axis.vertical,
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Text>[
-            Text(event.name),
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+              child: Text(event.name,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
+            ),
             Text(event.address),
           ]);
       return renderButton

@@ -36,8 +36,23 @@ class EventOrderStepperState extends State<EventOrderStepper> {
       });
     }
 
-    getTicketsCount(int count) =>
-        count > 1 ? "$count tickets" : "$count ticket";
+    getTicketsCount(int count) {
+      final int remainder10 = count % 10;
+      final int fullDiv10 = int.parse(((count % 100) / 10).toStringAsFixed(0));
+      if (remainder10 == 0) return "$count билетов";
+      if (remainder10 == 1) {
+        if (fullDiv10 != 1) {
+          return "$count билет";
+        } else {
+          return "$count билетов";
+        }
+      }
+      if (remainder10 <= 4) {
+        return "$count билета";
+      }
+
+      return "$count билетов";
+    }
 
     getTicketsByRow(int row) {
       final rowTickets = (tickets[selectedCategory] ?? [])
@@ -85,7 +100,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
       },
       steps: <Step>[
         Step(
-          title: const Text('Select category'),
+          title: const Text('Выберите категорию'),
           content: Column(
             children: <Widget>[
               ...categories.map((category) {
@@ -95,7 +110,6 @@ class EventOrderStepperState extends State<EventOrderStepper> {
                     value: category,
                     groupValue: selectedCategory,
                     onChanged: (String? value) {
-                      print("on changed category called $value");
                       String newCategory = value ?? category;
                       setState(() {
                         selectedCategory = newCategory;
@@ -108,7 +122,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
           ),
         ),
         Step(
-          title: const Text('Select ticket'),
+          title: const Text('Выберите билет'),
           content: Column(
             children: <Widget>[
               ...rowsByCategories[selectedCategory]?.map((row) {

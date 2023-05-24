@@ -109,7 +109,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                                     arguments: HomeScreenArguments(
                                         _selectedUserOption));
                               },
-                              child: const Text('Confirm'),
+                              child: const Text('Подтвердить'),
                             )
                           : Container(),
                     ],

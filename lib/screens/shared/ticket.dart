@@ -36,10 +36,11 @@ class TicketScreenState extends State<TicketScreen> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text("Confirm ticket transfer"),
+            title: const Text("Подтверждение передачи билета"),
             content: Flex(direction: Axis.vertical, children: [
-              Text("Send '${widget.event.name}' ticket"),
-              Text("To $sendTo"),
+              Text(
+                  "Вы уверены, что хотите передать билет на '${widget.event.name}'"),
+              Text("пользователю с адресом $sendTo"),
             ]),
             actions: [
               TextButton(
@@ -48,7 +49,7 @@ class TicketScreenState extends State<TicketScreen> {
                     Navigator.pushNamed(context, AppRouteName.userTickets);
                   });
                 },
-                child: const Text("Confirm"),
+                child: const Text("Да"),
               )
             ],
           );
@@ -58,7 +59,7 @@ class TicketScreenState extends State<TicketScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ticket')),
+      appBar: AppBar(title: const Text('Билет')),
       body: SingleChildScrollView(
         child: Flex(
           direction: Axis.vertical,
@@ -79,7 +80,7 @@ class TicketScreenState extends State<TicketScreen> {
                         style: const TextStyle(
                             fontSize: 30, fontWeight: FontWeight.bold)),
                     Text(
-                        "${widget.ticket.category}, row: ${widget.ticket.row}, seat: ${widget.ticket.number}",
+                        "${widget.ticket.category}, ряд: ${widget.ticket.row}, место: ${widget.ticket.number}",
                         style: const TextStyle(fontSize: 20)),
                   ],
                 )),
@@ -93,7 +94,7 @@ class TicketScreenState extends State<TicketScreen> {
                         arguments:
                             CustomerGenerateQRScreenArguments(widget.ticket));
                   },
-                  child: const Text('Generate QR code',
+                  child: const Text('Сгенерировать QR',
                       style: TextStyle(fontSize: 18))),
             ),
             Container(
@@ -105,7 +106,7 @@ class TicketScreenState extends State<TicketScreen> {
                   onPressed: () {
                     service.returnTicket(widget.ticket);
                   },
-                  child: const Text("Return ticket",
+                  child: const Text("Вернуть билет",
                       style: TextStyle(fontSize: 18)),
                 )),
             const Divider(),
@@ -120,7 +121,7 @@ class TicketScreenState extends State<TicketScreen> {
                         child: TextField(
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            labelText: "Send ticket to",
+                            labelText: "Адрес отправки",
                           ),
                           onChanged: (String value) {
                             setState(() {
