@@ -34,7 +34,7 @@ class EventCard extends StatelessWidget {
                     Navigator.pushNamed(context, redirectTo,
                         arguments: redirectArguments);
                   },
-                  child: const Text('Открыть билеты',
+                  child: const Text('купить билет',
                       style: TextStyle(fontSize: 15)))
             ]
           : [eventInfo];
