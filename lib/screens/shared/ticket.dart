@@ -24,10 +24,35 @@ class TicketScreen extends StatefulWidget {
 class TicketScreenState extends State<TicketScreen> {
   RealDAOService service = RealDAOService.getSingleton();
   late final DateFormat dateFormatter = DateFormat("dd.MM hh:mm");
+  String sendTo = "";
 
   @override
   void initState() {
     super.initState();
+  }
+
+  showConfirmationDialog() async {
+    await showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Confirm ticket transfer"),
+            content: Flex(direction: Axis.vertical, children: [
+              Text("Send '${widget.event.name}' ticket"),
+              Text("To $sendTo"),
+            ]),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  service.sendTicketTo(widget.ticket, sendTo).then((_) {
+                    Navigator.pushNamed(context, AppRouteName.userTickets);
+                  });
+                },
+                child: const Text("Confirm"),
+              )
+            ],
+          );
+        });
   }
 
   @override
@@ -77,43 +102,20 @@ class TicketScreenState extends State<TicketScreen> {
                             border: OutlineInputBorder(),
                             labelText: "Send ticket to",
                           ),
-                          onSubmitted: (String value) async {
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title:
-                                        const Text("Confirm ticket transfer"),
-                                    content: Flex(
-                                        direction: Axis.vertical,
-                                        children: [
-                                          Text(
-                                              "Send '${widget.event.name}' ticket"),
-                                          Text("To $value"),
-                                        ]),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          service
-                                              .sendTicketTo(
-                                                  widget.ticket, value)
-                                              .then((_) {
-                                            Navigator.pushNamed(context,
-                                                AppRouteName.userTickets);
-                                          });
-                                        },
-                                        child: const Text("Confirm"),
-                                      )
-                                    ],
-                                  );
-                                });
+                          onChanged: (String value) {
+                            setState(() {
+                              sendTo = value;
+                            });
                           },
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.all(5),
+                        margin: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                         child: ElevatedButton(
-                            onPressed: () {}, child: const Text('Send ticket')),
+                            onPressed: () {
+                              showConfirmationDialog();
+                            },
+                            child: const Text('Send ticket')),
                       )
                     ]))
           ],
