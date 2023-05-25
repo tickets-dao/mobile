@@ -21,7 +21,7 @@ class EventOrderStepperState extends State<EventOrderStepper> {
 
   int _stepIndex = 0;
 
-  late Map<String, List<Ticket>> tickets;
+  late Map<String, List<Ticket>> ticketsByCategory;
   List<String> categories = [];
   late String selectedCategory = "unselected";
 
@@ -31,18 +31,19 @@ class EventOrderStepperState extends State<EventOrderStepper> {
   @override
   void initState() {
     super.initState();
-    tickets = widget.eventTicketsByCategory;
+    ticketsByCategory = widget.eventTicketsByCategory;
     categories = [...widget.eventTicketsByCategory.keys];
     Map<String, Set<int>> map = {};
     for (String category in categories) {
       map.addAll({
-        category: tickets[category]?.map((Ticket t) => t.row).toSet() ?? {}
+        category:
+            ticketsByCategory[category]?.map((Ticket t) => t.row).toSet() ?? {}
       });
     }
     rowsByCategories = map;
 
-    for (String category in widget.eventTicketsByCategory.keys) {
-      for (Ticket t in widget.eventTicketsByCategory[category] ?? []) {
+    for (String category in ticketsByCategory.keys) {
+      for (Ticket t in ticketsByCategory[category] ?? []) {
         print("$category row: ${t.row} seat: ${t.number}");
       }
     }
@@ -87,8 +88,8 @@ class EventOrderStepperState extends State<EventOrderStepper> {
   }
 
   getTicketsByRow(int row) {
-    final rowTickets =
-        (tickets[selectedCategory] ?? []).where((ticket) => ticket.row == row);
+    final rowTickets = (ticketsByCategory[selectedCategory] ?? [])
+        .where((ticket) => ticket.row == row);
     return [
       Wrap(direction: Axis.horizontal, children: [
         ...rowTickets.map((Ticket ticket) => Row(
@@ -143,7 +144,8 @@ class EventOrderStepperState extends State<EventOrderStepper> {
             children: <Widget>[
               ...categories.map((category) {
                 return ListTile(
-                  title: Text('$category: ${getTicketsCount(tickets.length)}'),
+                  title: Text(
+                      '$category: ${getTicketsCount(ticketsByCategory[category]?.length ?? 0)}'),
                   leading: Radio<String>(
                     value: category,
                     groupValue: selectedCategory,

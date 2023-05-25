@@ -55,6 +55,11 @@ class TicketPurchaseScreenState extends State<TicketPurchaseScreen> {
         catTicketsMap.addAll({category.name: ticketsByCategory[index]});
       });
 
+      for (String category in catTicketsMap.keys) {
+        print(
+            'got category $category with ${catTicketsMap[category]?.length ?? 0} tickets');
+      }
+
       setState(() {
         _eventTicketsByCategory = catTicketsMap;
       });
