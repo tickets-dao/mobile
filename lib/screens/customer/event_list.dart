@@ -46,7 +46,7 @@ class EventListScreenState extends State<EventsListScreen> {
                         margin: const EdgeInsets.all(10),
                         child: EventCard(
                             event, true, AppRouteName.customerTicketPurchase,
-                            buttonText: "купить билет",
+                            buttonText: "купить",
                             redirectArguments:
                                 CustomerTicketPurchaseScreenArguments(event)));
                   })
