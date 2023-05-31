@@ -14,7 +14,7 @@ class TicketCard extends StatelessWidget {
 
   TicketCard(this.ticket, this.event, {super.key}) {
     dateFormatter = DateFormat("dd.MM hh:mm");
-    expired = event.startTime.compareTo(DateTime.now()) > 0;
+    expired = event.startTime.compareTo(DateTime.now()) < 0;
   }
 
   @override
@@ -22,11 +22,15 @@ class TicketCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: expired ? Colors.orangeAccent : Colors.white,
+        color: Colors.white,
+        border:
+            expired ? Border.all(color: Colors.orangeAccent, width: 2) : null,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
-        boxShadow: const [
+        boxShadow: [
           BoxShadow(
-            color: Color.fromARGB(255, 211, 228, 239),
+            color: expired
+                ? Colors.orangeAccent
+                : const Color.fromARGB(255, 211, 228, 239),
             spreadRadius: 5,
             blurRadius: 7,
           ),
@@ -48,7 +52,18 @@ class TicketCard extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
-                Text(dateFormatter.format(event.startTime)),
+                expired
+                    ? const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
+                        child: Text("просрочен",
+                            style:
+                                TextStyle(fontSize: 17, color: Colors.orange)),
+                      )
+                    : Container(),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
+                  child: Text(dateFormatter.format(event.startTime)),
+                ),
                 Text(
                     "${ticket.category} ряд ${ticket.row} место ${ticket.number}"),
               ]),

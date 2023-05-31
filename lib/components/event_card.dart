@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:dao_ticketer/types/event.dart';
+import 'package:intl/intl.dart';
 
 class EventCard extends StatelessWidget {
-  const EventCard(this.event, this.renderButton, this.redirectTo,
-      {this.redirectArguments, required this.buttonText, super.key});
-
   final Event event;
   final bool renderButton;
   final String redirectTo;
   final Object? redirectArguments;
   final String buttonText;
+  late final DateFormat dateFormatter;
+
+  EventCard(this.event, this.renderButton, this.redirectTo,
+      {this.redirectArguments, required this.buttonText, super.key}) {
+    dateFormatter = DateFormat("dd.MM hh:mm");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +29,11 @@ class EventCard extends StatelessWidget {
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold)),
             ),
-            Text(event.address),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(0, 0, 0, 5),
+              child: Text(event.address),
+            ),
+            Text(dateFormatter.format(event.startTime)),
           ]);
       return renderButton
           ? [

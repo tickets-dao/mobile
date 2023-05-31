@@ -20,22 +20,18 @@ class TicketListScreenState extends State<TicketListScreen> {
   Map<String, Event> eventsMap = {};
   RealDAOService service = RealDAOService.getSingleton();
 
-  fetchTickets() {
-    service.getTicketsByUser().then((ts) {
-      service
-          .getEventsByID(ts.map((Ticket t) => t.eventID).toList())
-          .then((events) {
-        Map<String, Event> map = {};
-        events.asMap().forEach((index, event) {
-          map.addAll({event.id: event});
-          tickets[index].expired =
-              event.startTime.compareTo(DateTime.now()) > 0;
-        });
-        setState(() {
-          tickets = ts;
-          eventsMap = map;
-        });
-      });
+  fetchTickets() async {
+    List<Ticket> ts = await service.getTicketsByUser();
+    List<Event> events =
+        await service.getEventsByID(ts.map((Ticket t) => t.eventID).toList());
+    Map<String, Event> map = {};
+    events.asMap().forEach((index, event) {
+      map.addAll({event.id: event});
+      ts[index].expired = event.startTime.compareTo(DateTime.now()) < 0;
+    });
+    setState(() {
+      tickets = ts;
+      eventsMap = map;
     });
   }
 
