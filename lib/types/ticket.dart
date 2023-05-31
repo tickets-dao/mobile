@@ -6,8 +6,10 @@ class Ticket {
   late final int row;
   late final int number;
   late final String eventID;
+  late final bool? expired;
 
-  Ticket(this.category, this.price, this.row, this.number, this.eventID);
+  Ticket(this.category, this.price, this.row, this.number, this.eventID,
+      {this.expired = false});
 
   factory Ticket.emptyPlug() {
     return Ticket("no category", -1, -1, -1, "no event");

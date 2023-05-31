@@ -6,23 +6,25 @@ import 'package:dao_ticketer/types/screen_arguments.dart';
 import 'package:intl/intl.dart';
 
 class TicketCard extends StatelessWidget {
-  TicketCard(this.ticket, this.event, {super.key}) {
-    dateFormatter = DateFormat("dd.MM hh:mm");
-  }
-
   final Ticket ticket;
   final Event event;
 
   late final DateFormat dateFormatter;
+  late final bool expired;
+
+  TicketCard(this.ticket, this.event, {super.key}) {
+    dateFormatter = DateFormat("dd.MM hh:mm");
+    expired = event.startTime.compareTo(DateTime.now()) > 0;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: [
+      decoration: BoxDecoration(
+        color: expired ? Colors.orangeAccent : Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        boxShadow: const [
           BoxShadow(
             color: Color.fromARGB(255, 211, 228, 239),
             spreadRadius: 5,

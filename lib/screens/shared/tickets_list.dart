@@ -26,9 +26,11 @@ class TicketListScreenState extends State<TicketListScreen> {
           .getEventsByID(ts.map((Ticket t) => t.eventID).toList())
           .then((events) {
         Map<String, Event> map = {};
-        for (Event event in events) {
+        events.asMap().forEach((index, event) {
           map.addAll({event.id: event});
-        }
+          tickets[index].expired =
+              event.startTime.compareTo(DateTime.now()) > 0;
+        });
         setState(() {
           tickets = ts;
           eventsMap = map;
