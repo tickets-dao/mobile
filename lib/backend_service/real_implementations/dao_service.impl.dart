@@ -6,6 +6,7 @@ import "package:dao_ticketer/types/price_category.dart";
 import "package:dao_ticketer/types/ticket.dart";
 import "package:dao_ticketer/types/event.dart";
 import "package:dao_ticketer/types/dao_service.dart";
+import "package:intl/intl.dart";
 
 import "./async_utils.dart";
 
@@ -183,6 +184,7 @@ class RealDAOService implements IDAOService {
     final payload = await invokeWithSign([
       ticket.eventID,
       ticket.category,
+      nowTimeInUTC(),
       ticket.row.toString(),
       ticket.number.toString(),
       secretPhrase
@@ -209,7 +211,7 @@ class RealDAOService implements IDAOService {
         'ticketers');
 
     print('query ticketers succeeded: $result');
-    if (result == "null"){
+    if (result == "null") {
       return [];
     }
 
@@ -286,4 +288,13 @@ class RealDAOService implements IDAOService {
 
     return true;
   }
+}
+
+// backend use time in UTC
+String nowTimeInUTC() {
+  final DateTime now = DateTime.now().toUtc();
+  final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+  final String formatted = formatter.format(now);
+
+  return formatted;
 }
