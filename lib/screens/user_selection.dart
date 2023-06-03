@@ -40,7 +40,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
     // these calls to the service constructors are the first ones in the
     // life cycle of the application, so they will instantiate the singletons
     DAOLocalStoreService();
-    service = RealDAOService();
+    service = RealDAOService(true);
     lsService = DAOLocalStoreService.getSingleton();
     loadLocalUsers();
   }

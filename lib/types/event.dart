@@ -10,7 +10,7 @@ class Event {
   Event(this.startTime, this.address, this.name, this.id);
 
   Event.fromJson(Map<String, dynamic> json)
-      : startTime = DateTime.parse(json['start_time']),
+      : startTime = DateTime.parse(json['start_time']).toLocal(),
         address = json['address'],
         name = json['name'],
         id = json['id'];
