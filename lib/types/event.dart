@@ -5,6 +5,7 @@ class Event {
   final String address;
   final String name;
   final String id;
+  bool? passed = false;
 
   Event(this.startTime, this.address, this.name, this.id);
 

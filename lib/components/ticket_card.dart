@@ -14,7 +14,10 @@ class TicketCard extends StatelessWidget {
 
   TicketCard(this.ticket, this.event, {super.key}) {
     dateFormatter = DateFormat("dd.MM hh:mm");
-    expired = event.startTime.compareTo(DateTime.now()) < 0;
+    expired = event.startTime
+            .add(const Duration(hours: 3))
+            .compareTo(DateTime.now()) <
+        0;
   }
 
   @override
@@ -26,11 +29,9 @@ class TicketCard extends StatelessWidget {
         border:
             expired ? Border.all(color: Colors.orangeAccent, width: 2) : null,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            color: expired
-                ? Colors.orangeAccent
-                : const Color.fromARGB(255, 211, 228, 239),
+            color: Color.fromARGB(255, 211, 228, 239),
             spreadRadius: 5,
             blurRadius: 7,
           ),
@@ -52,34 +53,36 @@ class TicketCard extends StatelessWidget {
                       style: const TextStyle(
                           fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
-                expired
-                    ? const Padding(
-                        padding: EdgeInsets.fromLTRB(0, 0, 0, 4),
-                        child: Text("просрочен",
-                            style:
-                                TextStyle(fontSize: 17, color: Colors.orange)),
-                      )
-                    : Container(),
                 Padding(
                   padding: const EdgeInsets.fromLTRB(0, 0, 0, 2),
                   child: Text(dateFormatter.format(event.startTime)),
                 ),
                 Text(
                     "${ticket.category} ряд ${ticket.row} место ${ticket.number}"),
+                expired
+                    ? const Padding(
+                        padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+                        child: Text("просрочен",
+                            style: TextStyle(
+                                fontSize: 17, color: Colors.deepOrangeAccent)),
+                      )
+                    : Container(),
               ]),
-          IconButton(
-              icon: const Icon(
-                Icons.visibility,
-                color: Colors.blue,
-                size: 30,
-              ),
-              onPressed: () {
-                Navigator.pushNamed(
-                  context,
-                  AppRouteName.userTicket,
-                  arguments: TicketScreenArguments(ticket, event),
-                );
-              })
+          expired
+              ? Container()
+              : IconButton(
+                  icon: const Icon(
+                    Icons.visibility,
+                    color: Colors.blue,
+                    size: 30,
+                  ),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRouteName.userTicket,
+                      arguments: TicketScreenArguments(ticket, event),
+                    );
+                  })
         ],
       ),
     );

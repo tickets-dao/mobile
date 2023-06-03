@@ -3,9 +3,10 @@ import "package:dao_ticketer/types/ticket.dart";
 
 /// Shared Screens
 class HomeScreenArguments {
-  final String selectedFile;
+  final String selectedSecret;
+  final String selectedUserName;
 
-  HomeScreenArguments(this.selectedFile);
+  HomeScreenArguments(this.selectedSecret, this.selectedUserName);
 }
 
 class TicketScreenArguments {

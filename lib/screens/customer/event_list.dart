@@ -21,6 +21,12 @@ class EventListScreenState extends State<EventsListScreen> {
   void initState() {
     super.initState();
     service.getEvents().then((events) {
+      for (Event e in events) {
+        e.passed = e.startTime
+                .add(const Duration(hours: 3))
+                .compareTo(DateTime.now()) <
+            0;
+      }
       setState(() {
         _events = events;
       });

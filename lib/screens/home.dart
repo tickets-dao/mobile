@@ -4,7 +4,8 @@ import 'package:dao_ticketer/backend_service/real_implementations/dao_service.im
 
 import 'package:dao_ticketer/types/route_names.dart';
 
-ListView getDrawerItems(BuildContext context) => ListView(
+ListView getDrawerItems(BuildContext context, String selectedUserName) =>
+    ListView(
         // Important: Remove any padding from the ListView.
         padding: EdgeInsets.zero,
         children: [
@@ -13,17 +14,25 @@ ListView getDrawerItems(BuildContext context) => ListView(
               color: Colors.blue,
             ),
             child: Flex(
-              direction: Axis.horizontal,
+              direction: Axis.vertical,
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text('Сменить пользователя'),
-                IconButton(
-                    onPressed: () {
-                      Navigator.pushReplacementNamed(
-                          context, AppRouteName.userSelect);
-                    },
-                    icon: const Icon(Icons.logout_outlined))
+                Text(selectedUserName, style: const TextStyle(fontSize: 25)),
+                Flex(
+                  direction: Axis.horizontal,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const Text('Сменить пользователя'),
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(
+                              context, AppRouteName.userSelect);
+                        },
+                        icon: const Icon(Icons.logout_outlined))
+                  ],
+                ),
               ],
             ),
           ),
@@ -56,27 +65,33 @@ ListView getDrawerItems(BuildContext context) => ListView(
         ]);
 
 class HomeScreen extends StatefulWidget {
-  final String selectedFile;
+  final String selectedSecret;
+  final String selectedUserName;
 
-  const HomeScreen({required this.selectedFile, super.key});
+  const HomeScreen(
+      {required this.selectedSecret,
+      required this.selectedUserName,
+      super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String get selectedFile => widget.selectedFile;
+  String get selectedSecret => widget.selectedSecret;
+  String get selectedUserName => widget.selectedUserName;
   RealDAOService service = RealDAOService.getSingleton();
 
   @override
   void initState() {
     super.initState();
-    print("selected file: $selectedFile");
+    print("selected user: $selectedUserName");
+    print("selected secret: $selectedSecret");
 
     // for local chaincode use
     // RealDAOService service = RealDAOService(true);
 
-    service.init(selectedFile);
+    service.init(selectedSecret);
   }
 
   @override
@@ -87,7 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('DAO билетошная'),
       ),
       drawer: Drawer(
-        child: getDrawerItems(context),
+        child: getDrawerItems(context, selectedUserName),
       ),
       body: Center(
           child: Column(

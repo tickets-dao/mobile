@@ -20,7 +20,10 @@ Map<String, WidgetBuilder> appRoutes = {
   '/home': (context) {
     final args =
         ModalRoute.of(context)!.settings.arguments as HomeScreenArguments;
-    return HomeScreen(selectedFile: args.selectedFile);
+    return HomeScreen(
+      selectedSecret: args.selectedSecret,
+      selectedUserName: args.selectedUserName,
+    );
   },
   AppRouteName.userBalance: (context) => const BalanceScreen(),
   AppRouteName.userTickets: (context) => const TicketListScreen(),

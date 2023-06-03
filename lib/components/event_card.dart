@@ -17,7 +17,7 @@ class EventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> getChildren() {
+    List<Widget> genEventCardInfo() {
       Flex eventInfo = Flex(
           direction: Axis.vertical,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -34,8 +34,14 @@ class EventCard extends StatelessWidget {
               child: Text(event.address),
             ),
             Text(dateFormatter.format(event.startTime)),
+            (event.passed ?? false)
+                ? const Padding(
+                    padding: EdgeInsets.fromLTRB(0, 4, 0, 0),
+                    child: Text("мероприятие состоялось",
+                        style: TextStyle(color: Colors.deepOrangeAccent)))
+                : Container(),
           ]);
-      return renderButton
+      return renderButton && !(event.passed ?? false)
           ? [
               eventInfo,
               TextButton(
@@ -49,10 +55,13 @@ class EventCard extends StatelessWidget {
     }
 
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
-        boxShadow: [
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+        border: (event.passed ?? false)
+            ? Border.all(color: Colors.orangeAccent, width: 2)
+            : null,
+        boxShadow: const [
           BoxShadow(
             color: Color.fromARGB(255, 211, 228, 239),
             spreadRadius: 5,
@@ -65,7 +74,7 @@ class EventCard extends StatelessWidget {
         direction: Axis.horizontal,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: getChildren(),
+        children: genEventCardInfo(),
       ),
     );
   }

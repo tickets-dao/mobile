@@ -19,6 +19,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
   late RealDAOService service;
 
   String _selectedUserOption = "";
+  String _selectedUserName = "";
   String newUserAddr = "";
   String newUserName = "";
 
@@ -61,6 +62,7 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                   onChanged: (value) {
                     setState(() {
                       _selectedUserOption = value!;
+                      _selectedUserName = savedUser.name;
                     });
                   },
                 ),
@@ -107,7 +109,8 @@ class UserSelectionWidgetState extends State<UserSelectionWidget> {
                               onPressed: () {
                                 Navigator.pushNamed(context, AppRouteName.home,
                                     arguments: HomeScreenArguments(
-                                        _selectedUserOption));
+                                        _selectedUserOption,
+                                        _selectedUserName));
                               },
                               child: const Text('Подтвердить'),
                             )
