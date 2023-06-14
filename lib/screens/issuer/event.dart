@@ -153,16 +153,6 @@ class _IssuerEventScreenState extends State<IssuerEventScreen> {
                       icon: const Icon(Icons.save_outlined))
                 ],
               )),
-          Padding(
-              padding: const EdgeInsets.all(5),
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    ticketers.add("");
-                  });
-                },
-                child: const Text("Добавить"),
-              ))
         ]);
   }
 
