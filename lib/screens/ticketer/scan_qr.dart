@@ -10,11 +10,10 @@ class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
 
   @override
-  _ScanState createState() => _ScanState();
+  ScanState createState() => ScanState();
 }
 
-class _ScanState extends State<ScanScreen> {
-  String _scanBarcode = 'Unknown';
+class ScanState extends State<ScanScreen> {
   RealDAOService service = RealDAOService.getSingleton();
 
   @override
@@ -24,8 +23,7 @@ class _ScanState extends State<ScanScreen> {
 
   Future<void> startBarcodeScanStream() async {
     FlutterBarcodeScanner.getBarcodeStreamReceiver(
-            '#ff6666', 'Cancel', true, ScanMode.BARCODE)!
-        .listen((barcode) => print(barcode));
+        '#ff6666', 'Cancel', true, ScanMode.BARCODE);
   }
 
   Future<void> scanQR() async {
@@ -34,7 +32,6 @@ class _ScanState extends State<ScanScreen> {
     try {
       barcodeScanRes = await FlutterBarcodeScanner.scanBarcode(
           '#ff6666', 'Cancel', true, ScanMode.QR);
-      print(barcodeScanRes);
 
       var jsonResp = jsonDecode(barcodeScanRes);
 
@@ -50,10 +47,6 @@ class _ScanState extends State<ScanScreen> {
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.
     if (!mounted) return;
-
-    setState(() {
-      _scanBarcode = barcodeScanRes;
-    });
   }
 
   @override
@@ -83,11 +76,11 @@ class _ScanState extends State<ScanScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Alert'),
+          title: const Text('Alert'),
           content: Text(alert),
           actions: <Widget>[
             TextButton(
-              child: Text('Close'),
+              child: const Text('Close'),
               onPressed: () {
                 Navigator.of(context).pop();
               },

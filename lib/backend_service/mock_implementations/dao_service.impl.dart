@@ -71,26 +71,6 @@ class MockedDAOService implements IDAOService {
   }
 
   @override
-  Future<void> sendPostRequest(String url, String jsonBody) async {
-    try {
-      http.Response response = await http.post(
-        Uri.parse(url),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonBody,
-      );
-
-      if (response.statusCode == 200) {
-        print('Запрос успешно выполнен: ${response.body}');
-      } else {
-        print(
-            'Ошибка при выполнении запроса. Код ответа: ${response.statusCode}');
-      }
-    } catch (e) {
-      print('Произошла ошибка при отправке запроса: $e');
-    }
-  }
-
-  @override
   Future<List<Event>> getEventsByID(List<String> eventID) {
     if (getRandom(10) > 5) {
       throw "Network error! Please try again.";
@@ -121,67 +101,88 @@ class MockedDAOService implements IDAOService {
   }
 
   @override
-  Future<void> burnTicket(String ticketID) {
-    // TODO: implement burnTicket
-    throw UnimplementedError();
+  Future<void> burnTicket(Ticket t, String tID) {
+    return Future.delayed(
+      getRandomDuration(3),
+    );
   }
 
   @override
   Future<String> createEvent(Event e, List<PriceCategory> prices) {
-    // TODO: implement createEvent
-    throw UnimplementedError();
-  }
-
-  @override
-  Future<void> createEventCategories(String eid, Map<String, int> categories) {
-    // TODO: implement createEventCategories
-    throw UnimplementedError();
+    return Future.delayed(
+      getRandomDuration(3),
+      () => "newely-created-id-333",
+    );
   }
 
   @override
   Future<List<Event>> getEventsByIssuer() {
-    // TODO: implement getEventsByEmittent
-    throw UnimplementedError();
+    return Future.delayed(
+        getRandomDuration(3),
+        () => [
+              Event(DateTime.now(), "Лубянка 2", "Щелкунчик",
+                  "test-event-id-string-1"),
+              Event(DateTime.now(), "Лубянка 3", "Щелкунчик и Мышиный Король",
+                  "test-event-id-string-2"),
+              Event(DateTime.now(), "Лубянка 4", "Щелкунчик на лебедином озере",
+                  "test-event-id-string-3"),
+            ]);
   }
 
   @override
   Future<int> getUserBalance() {
-    // TODO: implement getUserBalance
-    throw UnimplementedError();
+    return Future.delayed(getRandomDuration(3), () => 2000);
   }
 
   @override
   Future<void> sendTicketTo(Ticket t, String destinationUser) {
-    // TODO: implement sendTicketTo
-    throw UnimplementedError();
+    return Future.delayed(
+      getRandomDuration(3),
+    );
   }
 
   @override
   Future<List<PriceCategory>> getIssuerEventCategories(String eid) {
-    // TODO: implement getEmittentEventCategories
-    throw UnimplementedError();
+    return Future.delayed(
+        getRandomDuration(3),
+        () => [
+              PriceCategory(name: "Партер", price: 2000, rows: 20, seats: 10),
+              PriceCategory(name: "VIP", price: 8000, rows: 5, seats: 4),
+              PriceCategory(name: "Балкон", price: 1500, rows: 20, seats: 4),
+            ]);
   }
 
   @override
-  Future<String> getUserErrorState(String role, String invokeKey) {
-    // TODO: implement getUserErrorState
-    throw UnimplementedError();
+  Future<bool> setCategoryPrices(String eID, List<PriceCategory> categories) {
+    return Future.delayed(
+      getRandomDuration(3),
+      () => true,
+    );
   }
 
   @override
-  Future<bool> setCategoryPrices(List<PriceCategory> categories) {
-    // TODO: implement setCategoryPices
-    throw UnimplementedError();
+  Future<void> addTicketer(String ticketerAddress) {
+    return Future.delayed(
+      getRandomDuration(3),
+    );
   }
 
   @override
-  String getLocalTicketSecret(Ticket t) {
-    // TODO: implement getLocalTicketSecret
-    throw UnimplementedError();
+  Future<void> deleteTicketer(String ticketerAddress) {
+    return Future.delayed(
+      getRandomDuration(3),
+    );
   }
 
   @override
-  void setLocalTicketSecret(Ticket t, String secret) {
-    // TODO: implement setLocalTicketSecret
+  Future<List<String>> getTicketers() {
+    return Future.delayed(
+        getRandomDuration(3),
+        () => [
+              "ticketer-1-address",
+              "ticketer-2-address",
+              "ticketer-3-address",
+              "ticketer-4-address",
+            ]);
   }
 }

@@ -6,10 +6,13 @@ import "./async_utils.dart";
 
 class Customer implements ICustomer {
   @override
-  UserType userType = UserType.customer;
+  String name = "test-user-name";
 
   @override
-  Future<int> getBalance() => Future.delayed(getRandomDuration(3), () => 321);
+  String secret = "test-user-secret";
+
+  @override
+  UserType userType = UserType.customer;
 
   @override
   Future<bool> prepareTicket(Ticket ticket, String secret) {
